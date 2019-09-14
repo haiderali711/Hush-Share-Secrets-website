@@ -109,7 +109,6 @@ Express server listening on port 3000, in development mode
 
 > **Solution:** Your MongoDB server is not up and running. Start `mongod` and try again. You can go back to the Data Managment course and check your [dit032-setup](https://github.com/joe4dev/dit032-setup).
 
-
 ## GET http://localhost:3000/api [errored] connect ECONNREFUSED 127.0.0.1:3000
 
 When trying to `npm test`

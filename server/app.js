@@ -9,17 +9,18 @@ var history = require('connect-history-api-fallback');
 var camelsController = require('./controllers/camels');
 
 // Variables
-var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/animalDevelopmentDB';
+var mongoURI =
+  process.env.MONGODB_URI || 'mongodb://localhost:27017/animalDevelopmentDB';
 var port = process.env.PORT || 3000;
 
 // Connect to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true }, function(err) {
-    if (err) {
-        console.error(`Failed to connect to MongoDB with URI: ${mongoURI}`);
-        console.error(err.stack);
-        process.exit(1);
-    }
-    console.log(`Connected to MongoDB with URI: ${mongoURI}`);
+  if (err) {
+    console.error(`Failed to connect to MongoDB with URI: ${mongoURI}`);
+    console.error(err.stack);
+    process.exit(1);
+  }
+  console.log(`Connected to MongoDB with URI: ${mongoURI}`);
 });
 
 // Create Express app
@@ -34,13 +35,13 @@ app.use(cors());
 
 // Define routes
 app.get('/api', function(req, res) {
-    res.json({'message': 'Welcome to your DIT341 backend ExpressJS project!'});
+  res.json({ message: 'Welcome to your DIT341 backend ExpressJS project!' });
 });
 app.use('/api/camels', camelsController);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
-app.use('/api/*', function (req, res) {
-    res.status(404).json({ 'message': 'Not Found' });
+app.use('/api/*', function(req, res) {
+  res.status(404).json({ message: 'Not Found' });
 });
 
 // Configuration for serving frontend in production mode
@@ -55,23 +56,23 @@ app.use(express.static(client));
 var env = app.get('env');
 // eslint-disable-next-line no-unused-vars
 app.use(function(err, req, res, next) {
-    console.error(err.stack);
-    var err_res = {
-        'message': err.message,
-        'error': {}
-    };
-    if (env === 'development') {
-        err_res['error'] = err;
-    }
-    res.status(err.status || 500);
-    res.json(err_res);
+  console.error(err.stack);
+  var err_res = {
+    message: err.message,
+    error: {}
+  };
+  if (env === 'development') {
+    err_res['error'] = err;
+  }
+  res.status(err.status || 500);
+  res.json(err_res);
 });
 
 app.listen(port, function(err) {
-    if (err) throw err;
-    console.log(`Express server listening on port ${port}, in ${env} mode`);
-    console.log(`Backend: http://localhost:${port}/api/`);
-    console.log(`Frontend (production): http://localhost:${port}/`);
+  if (err) throw err;
+  console.log(`Express server listening on port ${port}, in ${env} mode`);
+  console.log(`Backend: http://localhost:${port}/api/`);
+  console.log(`Frontend (production): http://localhost:${port}/`);
 });
 
 module.exports = app;
