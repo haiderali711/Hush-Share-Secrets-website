@@ -7,17 +7,26 @@ cache:
     - server/node_modules/
 
 stages:
-  - build
+  - install
+  - lint
   - test
   - deploy
 
-build:
-  stage: build
+install:
+  stage: install
   tags:
     - docker
   script:
     - cd server
     - npm install
+
+lint:
+  stage: lint
+  tags:
+    - docker
+  script:
+    - cd server
+    - npm run lint
 
 test:
   stage: test

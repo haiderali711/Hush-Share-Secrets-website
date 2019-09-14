@@ -5,22 +5,25 @@
     "node": "10.x"
   },
   "private": true,
-  "description": "Template for ExpressJS API with Mongoose for Web and Mobile Engineering (DIT341)",
+  "description": "Server for Anonymous Posting System",
   "main": "./app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://git.ita.chalmers.se/courses/dit341/2019/group-11-web.git"
+  },
   "scripts": {
     "start": "node ./app.js",
     "dev": "nodemon ./app.js",
-    "lint": "eslint .",
+    "lint": "eslint . --ignore-path ../.gitignore",
+    "lint:check": "eslint --print-config \"./src/**/*.js\" | eslint-config-prettier-check",
+    "format": "prettier --write \"**/*.+(js|json|md)\" --ignore-path ../.gitignore",
     "test": "cross-env-shell MONGODB_URI=mongodb://localhost:27017/serverTestDB \"npm run newman-server\"",
     "ci-test": "npm run newman-server",
     "newman-server": "cross-env-shell PORT=3001 \"npm run dropdb && run-p --race start newman-wait\"",
     "newman-wait": "wait-on http://localhost:3001/api && npm run newman",
-    "newman": "newman run ./tests/server.postman_collection.json --env-var host=http://localhost:3001",
+    "newman": "npm run combine:collections && newman run ./tests/server.collection.json --env-var host=http://localhost:3001",
+    "combine:collections": "postman-combine-collections --filePath \"./tests/collections/**/*.json\" --output ./tests/server.collection.json",
     "dropdb": "node ./tests/dropdb.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://gitlab.com/dit341/group-00-web.git"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -28,13 +31,37 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^5.6.10",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "postman-combine-collections": "^1.1.1"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",
+    "dotenv": "^8.1.0",
+    "eslint": "^6.3.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "husky": "^3.0.5",
+    "lint-staged": "^9.2.5",
     "newman": "^4.5.4",
     "nodemon": "^1.19.1",
     "npm-run-all": "^4.1.5",
+    "prettier": "^1.18.2",
+    "prettier-eslint-cli": "^5.0.0",
     "wait-on": "^3.3.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint"
+    ],
+    "*.{js,json,md}": [
+      "npm run format",
+      "git add"
+    ]
   }
 }
