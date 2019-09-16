@@ -6,7 +6,8 @@ var path = require('path');
 var cors = require('cors');
 var history = require('connect-history-api-fallback');
 
-var camelsController = require('./controllers/camels');
+var commentsController = require('./routes/comments');
+var storiesController = require('./routes/stories');
 
 // Variables
 var mongoURI =
@@ -25,7 +26,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true }, function(err) {
 
 // Create Express app
 var app = express();
-// Parse requests of content-type 'application/json'
++// Parse requests of content-type 'application/json'
 app.use(bodyParser.json());
 // HTTP request logger
 app.use(morgan('dev'));
@@ -37,7 +38,9 @@ app.use(cors());
 app.get('/api', function(req, res) {
   res.json({ message: 'Welcome to your DIT341 backend ExpressJS project!' });
 });
-app.use('/api/camels', camelsController);
+
+app.use('/api/comments', commentsController);
+app.use('/api/stories', storiesController);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function(req, res) {
