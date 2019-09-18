@@ -1,4 +1,4 @@
-var User = require('../models/user');
+var User = require('../models/User');
 
 // Return a list of all users
 const getAllUsers = (req, res, next) => {
