@@ -1,4 +1,4 @@
-var Category = require('../models/category');
+var Category = require('../models/Category');
 
 //Instance with just the Post (Secret)  ID
 
