@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var Diary = require('../models/diary');
+var Diary = require('../models/Diary');
 
 const createNewDiaryPage = (req, res) => {
   console.log(req.body);
