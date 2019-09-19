@@ -1,0 +1,321 @@
+{
+  "info": {
+    "_postman_id": "9b150c80-dc4e-437a-9014-c95fbf1b3d93",
+    "name": "Comments Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "create User POST",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "cc16c42f-3f29-44f1-9d1c-6bd23463a735",
+            "exec": [
+              "",
+              " let jsonData= pm.response.json();",
+              " var userId = jsonData._id;",
+              " pm.environment.set(\"user_id\", userId);",
+              " let getUserId= pm.variables.get(\"user_id\")",
+              " ",
+              " pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });",
+              "",
+              "     pm.test(\"Comment has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(getUserId);",
+              "})",
+              " pm.test(\"user has uploaded correct data\", function() {",
+              " pm.expect(jsonData.username).to.eql(\"hello\");",
+              " pm.expect(jsonData.email).to.eql(\"Hello@gmail.com\");",
+              " pm.expect(jsonData.password).to.eql(\"ThisIsNotFun\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "      {  \r\n            \"username\": \"hello\",\r\n            \"email\": \"Hello@gmail.com\",\r\n            \"password\": \"ThisIsNotFun\"\r\n      }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3000/api/users",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create new comment POST",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "ab861e3c-bedb-41b9-9b79-079822cc3673",
+            "exec": [
+              "",
+              " let jsonData= pm.response.json();",
+              " var commentId = jsonData._id;",
+              " pm.environment.set(\"comment_id\", commentId);",
+              " ",
+              " let getCommentId= pm.variables.get(\"comment_id\")",
+              " var userId=jsonData.user;",
+              " let getUserId= pm.variables.get(\"user_id\")",
+              "",
+              " pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });",
+              "",
+              "     pm.test(\"Comment has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(getCommentId);",
+              "})",
+              " pm.test(\"comment has uploaded correct data\", function() {",
+              " pm.expect(jsonData.post).to.eql(\"5d8296147284cc7f396d68e3\");",
+              " pm.expect(jsonData.content).to.eql(\"this is a comment\");",
+              " pm.expect(jsonData.user).to.eql(getUserId);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"content\": \"this is a comment\",\n\t\"user\": \"{{user_id}}\",\n\t\"post\":\"5d8296147284cc7f396d68e3\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3000/api/comments/",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "comments", ""]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all comments GET",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "dc613b21-f1f7-4d57-b1e0-28250339cf4c",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3000/api/comments",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "comments"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get comment by Id GET",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "c02982d6-c2a1-48eb-b4de-0d9a22976d08",
+            "exec": [
+              "",
+              "",
+              " let jsonData= pm.response.json();",
+              " let getCommentId= pm.variables.get(\"comment_id\")",
+              " var userId=jsonData.user;",
+              " let getUserId= pm.variables.get(\"user_id\")",
+              "",
+              "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
+              "     pm.test(\"Comment has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(getCommentId);",
+              "})",
+              "",
+              "pm.test(\"comment has correct data\", function() {",
+              "    let jsonData= pm.response.json();",
+              "    ",
+              "    pm.expect(jsonData.post).to.eql(\"5d8296147284cc7f396d68e3\");",
+              "    pm.expect(jsonData.content).to.eql(\"this is a comment\");",
+              "    pm.expect(jsonData.user).to.eql(getUserId);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3000/api/comments/{{comment_id}}",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "comments", "{{comment_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update comment by ID PATCH",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "6beb7101-d954-4b1e-b328-a57d67108134",
+            "exec": [
+              "",
+              " let jsonData= pm.response.json();",
+              " let getCommentId= pm.variables.get(\"comment_id\")",
+              "  var userId=jsonData.user;",
+              " let getUserId= pm.variables.get(\"user_id\")",
+              "",
+              "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
+              "     pm.test(\"Comment has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(getCommentId);",
+              "})",
+              "",
+              "pm.test(\"comment has updated to data\", function() {",
+              "    let jsonData= pm.response.json();",
+              "    pm.expect(jsonData.post).to.eql(\"5d8296147284cc7f396d68e3\");",
+              "    pm.expect(jsonData.content).to.eql(\"this is NOT a comment\");",
+              "    pm.expect(jsonData.user).to.eql(getUserId);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"content\":\"this is NOT a comment\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3000/api/comments/{{comment_id}}",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "comments", "{{comment_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete comment by ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "81fed14f-9b7d-4dcd-a3a0-655278ac6387",
+            "exec": [
+              "let jsonData = pm.response.json();\r",
+              "let statusCode = pm.response.code;\r",
+              "\r",
+              "pm.test(`Status code is ${statusCode}`, () => {\r",
+              "    if (jsonData._id) pm.response.to.have.status(200);\r",
+              "    else if (jsonData.error) pm.response.to.have.status(404);\r",
+              "    else pm.response.to.have.status(500);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "localhost:3000/api/comments/{{comment_id}}",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "comments", "{{comment_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete all comments DELETE",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "ae4fd45b-ca23-4aaf-9bce-c047be6aea9f",
+            "exec": [
+              "let jsonData = pm.response.json();\r",
+              "let statusCode = pm.response.code;\r",
+              "\r",
+              "pm.test(`Status code is ${statusCode}`, () => {\r",
+              "    if (jsonData.deletedCount >= 1) pm.response.to.have.status(200);\r",
+              "    else if (jsonData.error) pm.response.to.have.status(404);\r",
+              "    else pm.response.to.have.status(500);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "localhost:3000/api/comments/",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "comments", ""]
+        }
+      },
+      "response": []
+    }
+  ]
+}
