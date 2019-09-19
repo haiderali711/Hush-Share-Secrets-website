@@ -240,7 +240,7 @@
       "response": []
     },
     {
-      "name": "localhost:3000/api/posts/{{post_id}}",
+      "name": "localhost:3000/api/posts/post_id",
       "event": [
         {
           "listen": "test",
@@ -351,16 +351,16 @@
           }
         },
         "url": {
-          "raw": "localhost:3000/api/posts/{{post_id}}",
+          "raw": "localhost:3000/api/posts/post_id",
           "host": ["localhost"],
           "port": "3000",
-          "path": ["api", "posts", "{{post_id}}"]
+          "path": ["api", "posts", "post_id"]
         }
       },
       "response": []
     },
     {
-      "name": "localhost:3000/api/groups/{{post_id}}",
+      "name": "localhost:3000/api/groups/post_id",
       "event": [
         {
           "listen": "test",
@@ -384,10 +384,10 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/posts/{{post_id}}",
+          "raw": "localhost:3000/api/posts/post_id",
           "host": ["localhost"],
           "port": "3000",
-          "path": ["api", "posts", "{{post_id}}"]
+          "path": ["api", "posts", "post_id"]
         }
       },
       "response": []
