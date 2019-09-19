@@ -10,8 +10,7 @@ var commentsController = require('./routes/comments');
 var storiesController = require('./routes/stories');
 
 // Variables
-var mongoURI =
-  process.env.MONGODB_URI || 'mongodb://localhost:27017/animalDevelopmentDB';
+var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/anonymous';
 var port = process.env.PORT || 3000;
 
 // Connect to MongoDB

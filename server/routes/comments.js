@@ -15,6 +15,4 @@ router.delete('/', CommentsController.deleteComments);
 
 router.delete('/:id', CommentsController.deleteCommentWithId);
 
-//router.put("/:id", CommentsController.replaceComment);
-
 module.exports = router;

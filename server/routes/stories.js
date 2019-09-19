@@ -15,4 +15,6 @@ router.delete('/:id', StoriesController.deleteStoryWithId);
 
 router.patch('/:id', StoriesController.updateStoryById);
 
+router.get('/:id/user', StoriesController.getUserWithStoryId);
+
 module.exports = router;

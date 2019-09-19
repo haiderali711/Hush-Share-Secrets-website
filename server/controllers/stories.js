@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
 const Story = require('../models/Story');
 
 const getAllStories = (req, res) => {
   Story.find()
     .select('-__v')
+    .populate('user', '-__v')
     .exec()
     .then(docs => {
       if (!docs.length) throw 404;
@@ -12,7 +12,25 @@ const getAllStories = (req, res) => {
         count: docs.length,
         stories: docs.map(doc => {
           return {
-            doc: doc._doc
+            _id: doc._id,
+            title: doc.title,
+            content: doc.content,
+            user: doc.user,
+            published: doc.published,
+            likes: doc.likes,
+            dislikes: doc.dislikes,
+            request: [
+              {
+                type: 'GET',
+                url: `http://localhost:3000/api/stories/${doc._id}`
+              },
+              {
+                type: 'GET',
+                url: `http://localhost:3000/api/users/${
+                  doc.user === null ? null : doc.user._id
+                }`
+              }
+            ]
           };
         })
       });
@@ -27,36 +45,62 @@ const getStoryWithId = (req, res) => {
   const id = req.params.id;
   Story.findById(id)
     .select('-__v')
+    .populate('user')
     .exec()
     .then(doc => {
       if (!doc) throw 404;
 
-      res.status(200).json(doc);
+      res.status(200).json({
+        _id: doc._id,
+        title: doc.title,
+        content: doc.content,
+        user: doc.user,
+        published: doc.published,
+        likes: doc.likes,
+        dislikes: doc.dislikes,
+        request: [
+          {
+            type: 'GET',
+            url: 'http://localhost:3000/api/stories'
+          },
+          {
+            type: 'GET',
+            url: `http://localhost:3000/api/users/${doc.user}`
+          }
+        ]
+      });
     })
     .catch(error => {
       if (error === 404)
-        res.status(404).json({ error: `Story with Id: ${id} not found.` });
+        res.status(404).json({ error: `Story with Id:${id} not found.` });
       else res.status(500).json({ error: error });
     });
 };
 
 const createNewStory = (req, res) => {
-  const story = new Story({
-    _id: new mongoose.Types.ObjectId(),
-    title: req.body.title,
-    content: req.body.content,
-    user: req.body.user
-  });
+  const story = new Story(req.body);
 
   story
     .save()
     .then(result => {
-      res.status(200).json({
+      res.status(201).json({
         _id: result._id,
         title: result.title,
         content: result.content,
         user: result.user,
-        published: result.published
+        published: result.published,
+        likes: result.likes,
+        dislikes: result.dislikes,
+        request: [
+          {
+            type: 'GET',
+            url: 'http://localhost:3000/api/stpries'
+          },
+          {
+            type: 'GET',
+            url: `http://localhost:3000/api/users/${result.user}`
+          }
+        ]
       });
     })
     .catch(error => {
@@ -67,21 +111,19 @@ const createNewStory = (req, res) => {
 const updateStoryById = (req, res) => {
   const id = req.params.id;
 
-  Story.findOneAndUpdate(
-    { _id: id },
-    { content: req.body.content },
-    { new: true }
-  )
+  Story.findOneAndUpdate({ _id: id }, req.body, { new: true })
     .exec()
     .then(result => {
       if (!result) throw 404;
 
       res.status(200).json({
-        message: 'post updated.',
+        message: 'story updated.',
         _id: result._id,
         title: result.title,
         content: result.content,
         user: result.user,
+        likes: result.likes,
+        dislikes: result.dislikes,
         published: result.published
       });
     })
@@ -116,6 +158,7 @@ const deleteStories = (req, res) => {
 
 const deleteStoryWithId = (req, res) => {
   const id = req.params.id;
+
   Story.findOneAndDelete({ _id: id })
     .exec()
     .then(result => {
@@ -123,13 +166,7 @@ const deleteStoryWithId = (req, res) => {
 
       res.status(200).json({
         message: 'story deleted.',
-        story: {
-          _id: result._id,
-          title: result.title,
-          content: result.content,
-          user: result.user,
-          published: result.published
-        },
+        ...result._doc,
         request: {
           type: 'STORY',
           url: 'http://localhost:3000/api/stories',
@@ -139,7 +176,26 @@ const deleteStoryWithId = (req, res) => {
     })
     .catch(error => {
       if (error === 404)
-        res.status(404).json({ error: `Comment with Id:${id} not found.` });
+        res.status(404).json({ error: `Story with Id:${id} not found.` });
+      else res.status(500).json({ error: error });
+    });
+};
+
+const getUserWithStoryId = (req, res) => {
+  const id = req.params.id;
+
+  Story.findById(id)
+    .select()
+    .populate('user', '-__v')
+    .exec()
+    .then(doc => {
+      if (!doc) throw 404;
+
+      res.status(200).json(doc.user);
+    })
+    .catch(error => {
+      if (error === 404)
+        res.status(404).json({ error: `Story with Id:${id} not found.` });
       else res.status(500).json({ error: error });
     });
 };
@@ -150,5 +206,6 @@ module.exports = {
   createNewStory,
   updateStoryById,
   deleteStories,
-  deleteStoryWithId
+  deleteStoryWithId,
+  getUserWithStoryId
 };
