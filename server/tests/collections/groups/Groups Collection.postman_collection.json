@@ -56,9 +56,8 @@
           }
         },
         "url": {
-          "raw": "localhost:3000/api/groups",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/groups",
+          "host": ["{{host}}"],
           "path": ["api", "groups"]
         }
       },
@@ -84,9 +83,8 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/groups",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/groups",
+          "host": ["{{host}}"],
           "path": ["api", "groups"]
         }
       },
@@ -108,9 +106,8 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/posts/{{post_id}}/comments",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/posts/{{post_id}}/comments",
+          "host": ["{{host}}"],
           "path": ["api", "posts", "{{post_id}}", "comments"]
         }
       },
@@ -150,9 +147,8 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/groups/{{group_id}}",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/groups/{{group_id}}",
+          "host": ["{{host}}"],
           "path": ["api", "groups", "{{group_id}}"]
         }
       },
@@ -208,9 +204,8 @@
           }
         },
         "url": {
-          "raw": "localhost:3000/api/groups/{{group_id}}",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/groups/{{group_id}}",
+          "host": ["{{host}}"],
           "path": ["api", "groups", "{{group_id}}"]
         }
       },
@@ -241,9 +236,8 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/groups/{{group_id}}",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/groups/{{group_id}}",
+          "host": ["{{host}}"],
           "path": ["api", "groups", "{{group_id}}"]
         }
       },
@@ -274,9 +268,8 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/groups",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/groups",
+          "host": ["{{host}}"],
           "path": ["api", "groups"]
         }
       },

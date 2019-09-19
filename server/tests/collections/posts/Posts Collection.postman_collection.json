@@ -56,9 +56,8 @@
           }
         },
         "url": {
-          "raw": "localhost:3000/api/groups",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/groups",
+          "host": ["{{host}}"],
           "path": ["api", "groups"]
         }
       },
@@ -118,9 +117,8 @@
           }
         },
         "url": {
-          "raw": "localhost:3000/api/users",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/users",
+          "host": ["{{host}}"],
           "path": ["api", "users"]
         }
       },
@@ -135,7 +133,7 @@
             "id": "27d4eae4-b3b2-4981-9cd8-f14e20b9f4d3",
             "exec": [
               "var jsonData = pm.response.json();",
-              " postId = jsonData._id;",
+              "var postId = jsonData._id;",
               "pm.environment.set(\"post_id\", postId);",
               "",
               "var getPostId = pm.variables.get(\"post_id\");",
@@ -183,9 +181,8 @@
           }
         },
         "url": {
-          "raw": "localhost:3000/api/posts",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/posts",
+          "host": ["{{host}}"],
           "path": ["api", "posts"]
         },
         "description": "Create a new Post"
@@ -230,9 +227,8 @@
           "urlencoded": []
         },
         "url": {
-          "raw": "localhost:3000/api/posts/",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/posts/",
+          "host": ["{{host}}"],
           "path": ["api", "posts", ""]
         },
         "description": "Get all Posts"
@@ -247,32 +243,26 @@
           "script": {
             "id": "9be96aea-2726-4896-b731-bf9103df00a4",
             "exec": [
-              "var jsonData = JSON.parse(responseBody);",
-              "postman.setEnvironmentVariable(\"post_id\", jsonData._id);",
+              "var jsonData = pm.response.json();",
+              "var getPostId = pm.variables.get(\"post_id\");",
+              "var userId = pm.variables.get(\"user_id\");",
+              "var groupId = pm.variables.get(\"group_id\");",
               "",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200)",
+              "})",
               "",
-              "console.log(postman.getEnvironmentVariable(\"post_id\"));",
+              "pm.test(\"Post has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(getPostId);",
+              "})",
               "",
-              "// var jsonData = pm.response.json();",
-              "// var getPostId = pm.variables.get(\"post_id\");",
-              "// var userId = pm.variables.get(\"user_id\");",
-              "// var groupId = pm.variables.get(\"group_id\");",
-              "",
-              "// pm.test(\"Status code is 200\", () => {",
-              "//     pm.response.to.have.status(200)",
-              "// })",
-              "",
-              "// pm.test(\"Post has correct ID\", () => {",
-              "//     pm.expect(jsonData._id).to.eql(getPostId);",
-              "// })",
-              "",
-              "// pm.test(\"Body has correct data\", () => {",
-              "//     pm.expect(jsonData.content).to.eql(\"This is a Post\");",
-              "//     pm.expect(jsonData.user._id).to.eql(userId);",
-              "//     pm.expect(jsonData.likes).to.eql(0);",
-              "//     pm.expect(jsonData.dislikes).to.eql(0);",
-              "//     pm.expect(jsonData.group).to.eql(groupId);",
-              "// })",
+              "pm.test(\"Body has correct data\", () => {",
+              "    pm.expect(jsonData.content).to.eql(\"This is a Post\");",
+              "    pm.expect(jsonData.user._id).to.eql(userId);",
+              "    pm.expect(jsonData.likes).to.eql(0);",
+              "    pm.expect(jsonData.dislikes).to.eql(0);",
+              "    pm.expect(jsonData.group).to.eql(groupId);",
+              "})",
               ""
             ],
             "type": "text/javascript"
@@ -300,10 +290,9 @@
           "urlencoded": []
         },
         "url": {
-          "raw": "localhost:3000/api/posts/post_id",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["api", "posts", "post_id"]
+          "raw": "{{host}}/api/posts/{{post_id}}",
+          "host": ["{{host}}"],
+          "path": ["api", "posts", "{{post_id}}"]
         },
         "description": "Get Post with Id."
       },
@@ -318,7 +307,6 @@
             "id": "fa6aff6d-bd76-4124-8a28-b5b0e9b6bbc6",
             "exec": [
               "var jsonData = pm.response.json();",
-              "",
               "var groupId = pm.variables.get(\"group_id\");",
               "",
               "pm.test(\"Status code is 200\", () => {",
@@ -357,9 +345,8 @@
           }
         },
         "url": {
-          "raw": "localhost:3000/api/posts/{{post_id}}",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/posts/{{post_id}}",
+          "host": ["{{host}}"],
           "path": ["api", "posts", "{{post_id}}"]
         }
       },
@@ -390,9 +377,8 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/posts/{{post_id}}",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/posts/{{post_id}}",
+          "host": ["{{host}}"],
           "path": ["api", "posts", "{{post_id}}"]
         }
       },
@@ -423,9 +409,8 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/posts",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/posts",
+          "host": ["{{host}}"],
           "path": ["api", "posts"]
         }
       },
