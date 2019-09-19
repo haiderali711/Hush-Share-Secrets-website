@@ -6,8 +6,9 @@ var path = require('path');
 var cors = require('cors');
 var history = require('connect-history-api-fallback');
 
-var commentsController = require('./routes/comments');
-var storiesController = require('./routes/stories');
+var userController = require('./routes/users');
+var diaryController = require('./routes/diaries');
+var categoryController = require('./routes/categories');
 
 // Variables
 var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/anonymous';
@@ -37,9 +38,9 @@ app.use(cors());
 app.get('/api', function(req, res) {
   res.json({ message: 'Welcome to your DIT341 backend ExpressJS project!' });
 });
-
-app.use('/api/comments', commentsController);
-app.use('/api/stories', storiesController);
+app.use('/api/users', userController);
+app.use('/api/diaries', diaryController);
+app.use('/api/categories', categoryController);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function(req, res) {
