@@ -1,0 +1,340 @@
+{
+  "info": {
+    "_postman_id": "52ef4004-689f-4d2f-acfb-9e474b0e24c2",
+    "name": "users",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "http://localhost:3000/api/users/",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "d2bb3bb9-9091-43fe-9c71-3e9928edc42f",
+            "exec": [""],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "3c9a8d15-9af9-4e61-ba8f-0aa3242010c8",
+            "exec": [
+              "var userG = pm.response.json();",
+              "",
+              "//--------------------------------",
+              "",
+              "pm.test(\"Successful POST request\", function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+              "});",
+              "//pm.globals.set(\"userID\", userG._id);",
+              "pm.environment.set(\"userID\", userG._id);",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"ali\",\n    \"email\":\"ali@gmail.com\",\n    \"username\":\"ali.111\",\n    \"password\": \"abcdefgh\",\n    \"age\": 24\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/users/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "users", ""]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/api/users/",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "f3cb0873-88c5-480d-a0c3-470d471e17f1",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/users/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "users", ""]
+        }
+      },
+      "response": [
+        {
+          "name": "http://localhost:3000/api/users/",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/users/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "users", ""]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 19 Sep 2019 09:41:05 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Content-Length",
+              "value": "0"
+            }
+          ],
+          "cookie": [],
+          "body": null
+        }
+      ]
+    },
+    {
+      "name": "http://localhost:3000/api/users/{{userID}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "f3cb0873-88c5-480d-a0c3-470d471e17f1",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/users/{{userID}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "users", "{{userID}}"]
+        }
+      },
+      "response": [
+        {
+          "name": "http://localhost:3000/api/users/",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/users/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "users", ""]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 19 Sep 2019 09:41:05 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Content-Length",
+              "value": "0"
+            }
+          ],
+          "cookie": [],
+          "body": null
+        }
+      ]
+    },
+    {
+      "name": "http://localhost:3000/api/users/{{userID}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "ce1c8d81-257a-4a91-b49d-1ec6f3c3c927",
+            "exec": [
+              "",
+              "pm.test(\"User turned into Moderator\", function () {",
+              "    pm.expect(pm.response.json().nModified).to.eql(1);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/x-www-form-urlencoded",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": []
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/users/{{userID}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "users", "{{userID}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/api/users/{{userID}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "4c353f97-9bfd-4a0a-b5d4-c3d045b46699",
+            "exec": [
+              "pm.test(\"User has been deleted successfully\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"ranim\",\n    \"email\": \"koshkosh@gmail.com\",\n    \"username\": \"myheart\",\n    \"password\": \"Abcd786786\",\n    \"age\": 20\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/users/{{userID}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "users", "{{userID}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/api/users/{{userID}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "576bd5ed-95b0-4801-ba9c-ba8b5677aec1",
+            "exec": [""],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"gagan\",\n    \"email\" : \"gaganaaaaa@gmail.com\",\n    \"username\" :\"gagagagaga\",\n    \"password\" : \"gagagagag\",\n    \"age\": 22\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/users/{{userID}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "users", "{{userID}}"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
