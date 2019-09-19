@@ -8,7 +8,7 @@ module.exports = {
     'prettier/standard'
   ],
   parserOptions: {
-    ecmaVersion: 6
+    ecmaVersion: 2018
   },
   rules: {
     'no-console': 'off',

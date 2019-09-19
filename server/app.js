@@ -9,6 +9,8 @@ var history = require('connect-history-api-fallback');
 var userController = require('./routes/users');
 var diaryController = require('./routes/diaries');
 var categoryController = require('./routes/categories');
+var commentsController = require('./routes/comments');
+var storiesController = require('./routes/stories');
 
 // Variables
 var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/anonymous';
@@ -26,7 +28,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true }, function(err) {
 
 // Create Express app
 var app = express();
-// Parse requests of content-type 'application/json'
++// Parse requests of content-type 'application/json'
 app.use(bodyParser.json());
 // HTTP request logger
 app.use(morgan('dev'));
@@ -41,6 +43,8 @@ app.get('/api', function(req, res) {
 app.use('/api/users', userController);
 app.use('/api/diaries', diaryController);
 app.use('/api/categories', categoryController);
+app.use('/api/comments', commentsController);
+app.use('/api/stories', storiesController);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function(req, res) {
