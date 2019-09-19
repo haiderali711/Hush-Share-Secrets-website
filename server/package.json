@@ -16,7 +16,7 @@
     "dev": "nodemon ./app.js",
     "lint": "eslint . --ignore-path ../.gitignore",
     "lint:check": "eslint --print-config \"./src/**/*.js\" | eslint-config-prettier-check",
-    "format": "prettier --write \"**/*.+(js|json|md)\" --ignore-path ../.gitignore",
+    "format": "prettier --write \"**/*.+(js|md)\" --ignore-path ../.gitignore",
     "test": "cross-env-shell MONGODB_URI=mongodb://localhost:27017/serverTestDB \"npm run newman-server\"",
     "ci-test": "npm run newman-server",
     "newman-server": "cross-env-shell PORT=3001 \"npm run dropdb && run-p --race start newman-wait\"",

@@ -1,0 +1,287 @@
+{
+  "info": {
+    "_postman_id": "807a2799-02f7-41f2-aba0-7e941872ebe1",
+    "name": "Groups",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "localhost:3000/api/groups",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "586a8c19-66a1-4053-af17-93ed9bacccb9",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "let groupId = jsonData._id;",
+              "pm.environment.set(\"group_id\", groupId);",
+              "",
+              "let getPostId = pm.variables.get(\"group_id\");",
+              "",
+              "pm.test(\"Status code is 201\", () => {",
+              "    pm.response.to.have.status(201)",
+              "})",
+              "",
+              "pm.test(\"Group has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(groupId);",
+              "})",
+              "",
+              "pm.test(\"Body has correct data\", () => {",
+              "    pm.expect(jsonData.name).to.eql(\"This is a group\");",
+              "})",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"name\": \"This is a group\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3000/api/groups",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "groups"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/groups",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "072bd73e-e13b-41b8-92d4-b7529c656456",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200)",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3000/api/groups",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "groups"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/posts/{{post_id}}/comments",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "072bd73e-e13b-41b8-92d4-b7529c656456",
+            "exec": [""],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3000/api/posts/{{post_id}}/comments",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "posts", "{{post_id}}", "comments"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/groups/{{group_id}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "3c2d528a-031f-4104-8976-114a868082e0",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "",
+              "let groupId = pm.variables.get(\"group_id\");",
+              "",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200)",
+              "})",
+              "",
+              "pm.test(\"Group has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(groupId);",
+              "})",
+              "",
+              "pm.test(\"Body has correct data\", () => {",
+              "    pm.expect(jsonData.name).to.eql(\"This is a group\");",
+              "    pm.expect(jsonData._id).to.eql(groupId);",
+              "})",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3000/api/groups/{{group_id}}",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "groups", "{{group_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/api/posts/{{post_id}} Copy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "fa6aff6d-bd76-4124-8a28-b5b0e9b6bbc6",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "",
+              "let groupId = pm.variables.get(\"group_id\");",
+              "",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200)",
+              "})",
+              "",
+              "pm.test(\"Group has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(groupId);",
+              "})",
+              "",
+              "pm.test(\"Body has correct data\", () => {",
+              "    pm.expect(jsonData.name).to.eql(\"Some random group.\");",
+              "    pm.expect(jsonData._id).to.eql(groupId);",
+              "})",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"name\": \"Some random group.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3000/api/groups/{{group_id}}",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "groups", "{{group_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/groups/{{group_id}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "32e7f35d-7c40-44cf-8fa3-43dd7cf49c62",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "let statusCode = pm.response.code;",
+              "",
+              "pm.test(`Status code is ${statusCode}`, () => {",
+              "    if (jsonData._id) pm.response.to.have.status(200);",
+              "    else if (jsonData.error) pm.response.to.have.status(404);",
+              "    else pm.response.to.have.status(500);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "localhost:3000/api/groups/{{group_id}}",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "groups", "{{group_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/groups",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "32e7f35d-7c40-44cf-8fa3-43dd7cf49c62",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "let statusCode = pm.response.code;",
+              "",
+              "pm.test(`Status code is ${statusCode}`, () => {",
+              "    if (jsonData.deletedCount >= 1) pm.response.to.have.status(200);",
+              "    else if (jsonData.error) pm.response.to.have.status(404);",
+              "    else pm.response.to.have.status(500);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "localhost:3000/api/groups",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "groups"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "protocolProfileBehavior": {}
+}
