@@ -1,23 +1,26 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var morgan = require('morgan');
-var path = require('path');
-var cors = require('cors');
-var history = require('connect-history-api-fallback');
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const morgan = require('morgan');
+const path = require('path');
+const cors = require('cors');
+const history = require('connect-history-api-fallback');
+require('dotenv/config');
 
-var userController = require('./routes/users');
-var diaryController = require('./routes/diaries');
-var categoryController = require('./routes/categories');
-var commentsController = require('./routes/comments');
-var storiesController = require('./routes/stories');
+const userController = require('./routes/users');
+const diaryController = require('./routes/diaries');
+const categoryController = require('./routes/categories');
+const commentsController = require('./routes/comments');
+const storiesController = require('./routes/stories');
+const postsController = require('./routes/posts');
+const groupsController = require('./routes/groups');
 
-// Variables
-var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/anonymous';
-var port = process.env.PORT || 3000;
+const mongoURI =
+  process.env.MONGODB_URI || 'mongodb://localhost:27017/anonymous';
+const port = process.env.PORT || 3000;
 
 // Connect to MongoDB
-mongoose.connect(mongoURI, { useNewUrlParser: true }, function(err) {
+mongoose.connect(mongoURI, { useNewUrlParser: true }, err => {
   if (err) {
     console.error(`Failed to connect to MongoDB with URI: ${mongoURI}`);
     console.error(err.stack);
@@ -26,27 +29,24 @@ mongoose.connect(mongoURI, { useNewUrlParser: true }, function(err) {
   console.log(`Connected to MongoDB with URI: ${mongoURI}`);
 });
 
-// Create Express app
-var app = express();
-+// Parse requests of content-type 'application/json'
+const app = express();
 app.use(bodyParser.json());
-// HTTP request logger
 app.use(morgan('dev'));
-// Enable cross-origin resource sharing for frontend must be registered before api
 app.options('*', cors());
 app.use(cors());
 
-// Define routes
 app.get('/api', function(req, res) {
   res.json({ message: 'Welcome to your DIT341 backend ExpressJS project!' });
 });
+
+app.use('/api/posts', postsController);
+app.use('/api/groups', groupsController);
 app.use('/api/users', userController);
 app.use('/api/diaries', diaryController);
 app.use('/api/categories', categoryController);
 app.use('/api/comments', commentsController);
 app.use('/api/stories', storiesController);
 
-// Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function(req, res) {
   res.status(404).json({ message: 'Not Found' });
 });
@@ -54,20 +54,19 @@ app.use('/api/*', function(req, res) {
 // Configuration for serving frontend in production mode
 // Support Vuejs HTML 5 history mode
 app.use(history());
-// Serve static assets
-var root = path.normalize(__dirname + '/..');
-var client = path.join(root, 'client', 'dist');
+const root = path.normalize(__dirname + '/..');
+const client = path.join(root, 'client', 'dist');
 app.use(express.static(client));
 
 // Error handler (i.e., when exception is thrown) must be registered last
-var env = app.get('env');
-// eslint-disable-next-line no-unused-vars
-app.use(function(err, req, res, next) {
+const env = app.get('env');
+app.use((err, req, res) => {
   console.error(err.stack);
-  var err_res = {
+  const err_res = {
     message: err.message,
     error: {}
   };
+
   if (env === 'development') {
     err_res['error'] = err;
   }
@@ -75,7 +74,7 @@ app.use(function(err, req, res, next) {
   res.json(err_res);
 });
 
-app.listen(port, function(err) {
+app.listen(port, err => {
   if (err) throw err;
   console.log(`Express server listening on port ${port}, in ${env} mode`);
   console.log(`Backend: http://localhost:${port}/api/`);

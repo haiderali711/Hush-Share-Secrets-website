@@ -1,9 +1,8 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var Diary = require('../models/Diary');
+const Diary = require('../models/Diary');
 
 const createNewDiaryPage = (req, res) => {
-  console.log(req.body);
   const page = new Diary({
     _id: new mongoose.Types.ObjectId(),
     content: req.body.content,
@@ -22,7 +21,6 @@ const createNewDiaryPage = (req, res) => {
 };
 
 //Get all the pages of the diary
-
 const getDiary = (req, res, next) => {
   Diary.find(function(err, foundPages) {
     if (err) {
@@ -36,11 +34,10 @@ const getDiary = (req, res, next) => {
 };
 
 const getDiaryWithDate = (req, res, next) => {
-  var date = new Date(req.params.date);
-  var nextDate = new Date(req.params.date);
+  const date = new Date(req.params.date);
+  const nextDate = new Date(req.params.date);
+
   nextDate.setDate(nextDate.getDate(date) + 1);
-  console.log('first date :       ' + date);
-  console.log('Sec date :       ' + nextDate);
 
   Diary.find({ published: { $gte: date, $lt: nextDate } }, function(
     err,
@@ -57,8 +54,8 @@ const getDiaryWithDate = (req, res, next) => {
 };
 
 const deleteDiaryPage = (req, res, next) => {
-  var date = new Date(req.params.date);
-  var nextDate = new Date(req.params.date);
+  const date = new Date(req.params.date);
+  const nextDate = new Date(req.params.date);
   nextDate.setDate(nextDate.getDate(date) + 1);
 
   Diary.findOneAndDelete(

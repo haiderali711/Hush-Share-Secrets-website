@@ -1,7 +1,6 @@
-var Category = require('../models/Category');
+const Category = require('../models/Category');
 
 //Instance with just the Post (Secret)  ID
-
 const addSecretToCategory = (req, res) => {
   Category.findOneAndUpdate(
     { category: req.body.category },
@@ -32,7 +31,8 @@ const addStoryToCategory = (req, res) => {
 };
 
 const createCategory = (req, res, next) => {
-  var cat = new Category({ category: req.params.category });
+  const cat = new Category({ category: req.params.category });
+
   cat.save(function(err) {
     if (err) {
       return next(err);
@@ -42,7 +42,7 @@ const createCategory = (req, res, next) => {
 };
 
 const getCategory = (req, res, next) => {
-  var cat = req.params.category;
+  const cat = req.params.category;
 
   Category.find({ category: { $regex: cat } }, function(err, foundStories) {
     if (err) {
