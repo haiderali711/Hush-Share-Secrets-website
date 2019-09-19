@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var categorySchema = new Schema({
+const categorySchema = new Schema({
   category: { type: String, index: { unique: true, dropDups: true } },
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
   stories: [{ type: Schema.Types.ObjectId, ref: 'Story' }]

@@ -9,7 +9,6 @@ router.get('/:id', UserController.getUserWithId);
 
 router.post('/', UserController.createNewUser);
 
-//Change the status of the User to Moderator with the given Username
 router.patch('/:id', UserController.changeToMod);
 
 router.delete('/:id', UserController.deleteUserWithId);
