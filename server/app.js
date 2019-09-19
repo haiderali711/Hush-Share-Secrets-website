@@ -8,10 +8,10 @@ var history = require('connect-history-api-fallback');
 
 var userController = require('./routes/users');
 var diaryController = require('./routes/diaries');
-//var categoryController = requires('./routes/categories');
+var categoryController = require('./routes/categories');
+
 // Variables
-var mongoURI =
-  process.env.MONGODB_URI || 'mongodb://localhost:27017/anonymousDB';
+var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/anonymous';
 var port = process.env.PORT || 3000;
 
 // Connect to MongoDB
@@ -40,7 +40,7 @@ app.get('/api', function(req, res) {
 });
 app.use('/api/users', userController);
 app.use('/api/diaries', diaryController);
-//app.use('/api/categories', categoryController);
+app.use('/api/categories', categoryController);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function(req, res) {

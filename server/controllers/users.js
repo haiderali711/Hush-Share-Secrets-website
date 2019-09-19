@@ -6,7 +6,7 @@ const getAllUsers = (req, res, next) => {
     if (err) {
       return next(err);
     }
-    res.json({ users: foundUsers });
+    res.status(200).json({ users: foundUsers });
   });
 };
 
@@ -45,25 +45,22 @@ const deleteUserWithId = (req, res, next) => {
     if (user === null) {
       return res.status(404).json({ message: 'user not found' });
     }
-    res.json(user);
+    res.status(200).json(user);
   });
 };
 
 //Change the status of the User to Moderator with the given Username
 const changeToMod = (req, res, next) => {
-  var userName = req.params.userName;
+  var id = req.params.id;
 
-  User.update({ username: userName }, { $set: { moderator: true } }, function(
-    err,
-    user
-  ) {
+  User.update({ _id: id }, { $set: { moderator: true } }, function(err, user) {
     if (err) {
       return next(err);
     }
     if (user == null) {
       return res.status(404).json({ message: 'user not found' });
     }
-    res.json(user);
+    res.status(200).json(user);
   });
 };
 
