@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var categorySchema = new Schema({
-  category: { type: String },
-  post: { type: Schema.Types.ObjectId, ref: 'Post' },
-  story: { type: Schema.Types.ObjectId, ref: 'Story' }
+  category: { type: String, index: { unique: true, dropDups: true } },
+  posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
+  stories: [{ type: Schema.Types.ObjectId, ref: 'Story' }]
 });
 
-module.exports = mongoose.model('User', categorySchema);
+module.exports = mongoose.model('Category', categorySchema);

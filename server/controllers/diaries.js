@@ -29,7 +29,7 @@ const getDiary = (req, res, next) => {
       return next(err);
     }
     if (foundPages === null) {
-      return res.status(404).json({ message: 'No Pages founbd at all ' });
+      return res.status(404).json({ message: 'No Pages found at all ' });
     }
     res.json({ AllPages: foundPages });
   }).populate('user', 'username');

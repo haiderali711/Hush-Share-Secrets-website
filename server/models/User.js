@@ -7,7 +7,8 @@ var userSchema = new Schema({
   password: { type: String },
   name: { type: String },
   age: { type: Number },
-  moderator: { type: Boolean, default: false }
+  moderator: { type: Boolean, default: false },
+  group: { type: String, default: '' }
 });
 
 module.exports = mongoose.model('User', userSchema);

@@ -2,55 +2,46 @@ var Category = require('../models/Category');
 
 //Instance with just the Post (Secret)  ID
 
-const newCategoryForSecret = (req, res) => {
-  const cat = new Category({
-    category: req.body.category,
-    post: req.body.post
+const addSecretToCategory = (req, res) => {
+  Category.findOneAndUpdate(
+    { category: req.body.category },
+    { $push: { posts: req.body.posts } },
+    { new: true },
+    (err, foundCateg) => {
+      res.status(200).json({ category: foundCateg });
+    }
+  ).catch(error => {
+    if (error === 404) res.status(404).json();
+    else res.status(500).json({ error: error });
   });
-
-  cat
-    .save()
-    .then(result => {
-      res.status(201).json(result);
-    })
-    .catch(error => {
-      res.status(500).json({ error: error });
-    });
 };
 
 //Instance with just the Story ID
-const newCategoryForStory = (req, res) => {
-  const cat = new Category({
-    category: req.body.category,
-    story: req.body.story
+const addStoryToCategory = (req, res) => {
+  Category.findOneAndUpdate(
+    { category: req.body.category },
+    { $push: { stories: req.body.stories } },
+    { new: true },
+    (err, foundCateg) => {
+      res.status(200).json({ category: foundCateg });
+    }
+  ).catch(error => {
+    if (error === 404) res.status(404).json();
+    else res.status(500).json({ error: error });
   });
-
-  cat
-    .save()
-    .then(result => {
-      res.status(201).json(result);
-    })
-    .catch(error => {
-      res.status(500).json({ error: error });
-    });
 };
 
-const getSecretByCat = (req, res, next) => {
-  var cat = req.params.category;
-
-  Category.find({ category: { $regex: cat } }, function(err, foundSecrets) {
+const createCategory = (req, res, next) => {
+  var cat = new Category({ category: req.params.category });
+  cat.save(function(err) {
     if (err) {
       return next(err);
     }
-    if (foundSecrets === null) {
-      return res.status(404).json({ message: 'Nothing found' });
-    }
-    res.json({ Secrets: foundSecrets });
+    res.status(201).json(cat);
   });
-  //.populate('post','content');
 };
 
-const getStoryByCat = (req, res, next) => {
+const getCategory = (req, res, next) => {
   var cat = req.params.category;
 
   Category.find({ category: { $regex: cat } }, function(err, foundStories) {
@@ -62,12 +53,11 @@ const getStoryByCat = (req, res, next) => {
     }
     res.json({ Stories: foundStories });
   });
-  //.populate('stories','content');
 };
 
 module.exports = {
-  newCategoryForSecret,
-  getSecretByCat,
-  getStoryByCat,
-  newCategoryForStory
+  addSecretToCategory,
+  addStoryToCategory,
+  createCategory,
+  getCategory
 };
