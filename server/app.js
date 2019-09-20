@@ -28,6 +28,8 @@ mongoose.connect(mongoURI, { useNewUrlParser: true }, err => {
   }
   console.log(`Connected to MongoDB with URI: ${mongoURI}`);
 });
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
 const app = express();
 app.use(bodyParser.json());

@@ -108,6 +108,26 @@ const createNewStory = (req, res) => {
     });
 };
 
+const putStoryWithId = (req, res) => {
+  const id = req.params.id;
+
+  Story.findOneAndReplace({ _id: id }, req.body, { new: true })
+    .exec()
+    .then(result => {
+      if (!result) throw 404;
+
+      res.status(200).json({
+        message: 'Story replaced.',
+        ...result._doc
+      });
+    })
+    .catch(error => {
+      if (error === 404)
+        res.status(404).json({ error: `Story with Id: ${id} not found.` });
+      else res.status(500).json({ error: error });
+    });
+};
+
 const updateStoryById = (req, res) => {
   const id = req.params.id;
 
@@ -185,7 +205,6 @@ const getUserWithStoryId = (req, res) => {
   const id = req.params.id;
 
   Story.findById(id)
-    .select()
     .populate('user', '-__v')
     .exec()
     .then(doc => {
@@ -204,6 +223,7 @@ module.exports = {
   getAllStories,
   getStoryWithId,
   createNewStory,
+  putStoryWithId,
   updateStoryById,
   deleteStories,
   deleteStoryWithId,

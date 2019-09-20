@@ -1,7 +1,7 @@
 {
   "info": {
-    "_postman_id": "9b150c80-dc4e-437a-9014-c95fbf1b3d93",
-    "name": "Comments Collection",
+    "_postman_id": "66c1f9d4-24d1-4849-8ed6-a8a70fd24630",
+    "name": "Comments_Collection",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -13,18 +13,21 @@
           "script": {
             "id": "cc16c42f-3f29-44f1-9d1c-6bd23463a735",
             "exec": [
+              "let jsonData = pm.response.json();",
+              "let userId = jsonData._id;",
+              "pm.environment.set(\"user_id\", userId);",
               "",
-              " let jsonData= pm.response.json();",
-              " var userId = jsonData._id;",
-              " pm.environment.set(\"user_id\", userId);",
-              " let getUserId= pm.variables.get(\"user_id\")",
-              " ",
-              " pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });",
+              "let getUserId = pm.variables.get(\"user_id\")",
               "",
-              "     pm.test(\"Comment has correct ID\", () => {",
+              "pm.test(\"Status code is 201\", () => {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Comment has correct ID\", () => {",
               "    pm.expect(jsonData._id).to.eql(getUserId);",
               "})",
-              " pm.test(\"user has uploaded correct data\", function() {",
+              "",
+              " pm.test(\"user has uploaded correct data\", () => {",
               " pm.expect(jsonData.username).to.eql(\"hello\");",
               " pm.expect(jsonData.email).to.eql(\"Hello@gmail.com\");",
               " pm.expect(jsonData.password).to.eql(\"ThisIsNotFun\");",
@@ -54,9 +57,8 @@
           }
         },
         "url": {
-          "raw": "localhost:3000/api/users",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/users",
+          "host": ["{{host}}"],
           "path": ["api", "users"]
         }
       },
@@ -70,24 +72,26 @@
           "script": {
             "id": "ab861e3c-bedb-41b9-9b79-079822cc3673",
             "exec": [
-              "",
-              " let jsonData= pm.response.json();",
-              " var commentId = jsonData._id;",
-              " pm.environment.set(\"comment_id\", commentId);",
+              "let jsonData = pm.response.json();",
+              "let commentId = jsonData._id;",
+              "pm.environment.set(\"comment_id\", commentId);",
               " ",
-              " let getCommentId= pm.variables.get(\"comment_id\")",
-              " var userId=jsonData.user;",
-              " let getUserId= pm.variables.get(\"user_id\")",
+              "let getCommentId = pm.variables.get(\"comment_id\")",
+              "let userId = jsonData.user;",
+              "let getUserId = pm.variables.get(\"user_id\")",
               "",
-              " pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });",
+              "pm.test(\"Status code is 201\", () => {",
+              "    pm.response.to.have.status(201);",
+              "});",
               "",
-              "     pm.test(\"Comment has correct ID\", () => {",
+              "pm.test(\"Comment has correct ID\", () => {",
               "    pm.expect(jsonData._id).to.eql(getCommentId);",
               "})",
-              " pm.test(\"comment has uploaded correct data\", function() {",
-              " pm.expect(jsonData.post).to.eql(\"5d8296147284cc7f396d68e3\");",
-              " pm.expect(jsonData.content).to.eql(\"this is a comment\");",
-              " pm.expect(jsonData.user).to.eql(getUserId);",
+              "",
+              "pm.test(\"comment has uploaded correct data\", () => {",
+              "    pm.expect(jsonData.post).to.eql(\"5d8296147284cc7f396d68e3\");",
+              "    pm.expect(jsonData.content).to.eql(\"this is a comment\");",
+              "    pm.expect(jsonData.user).to.eql(getUserId);",
               "});"
             ],
             "type": "text/javascript"
@@ -100,8 +104,8 @@
           {
             "key": "Content-Type",
             "name": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "type": "text",
+            "value": "application/json"
           }
         ],
         "body": {
@@ -114,9 +118,8 @@
           }
         },
         "url": {
-          "raw": "localhost:3000/api/comments/",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/comments/",
+          "host": ["{{host}}"],
           "path": ["api", "comments", ""]
         }
       },
@@ -130,7 +133,9 @@
           "script": {
             "id": "dc613b21-f1f7-4d57-b1e0-28250339cf4c",
             "exec": [
-              "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
               ""
             ],
             "type": "text/javascript"
@@ -141,9 +146,8 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/comments",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/comments",
+          "host": ["{{host}}"],
           "path": ["api", "comments"]
         }
       },
@@ -157,21 +161,21 @@
           "script": {
             "id": "c02982d6-c2a1-48eb-b4de-0d9a22976d08",
             "exec": [
+              "let jsonData = pm.response.json();",
+              "let userId = jsonData.user;",
               "",
+              "let getUserId = pm.variables.get(\"user_id\");",
+              "let getCommentId = pm.variables.get(\"comment_id\");",
               "",
-              " let jsonData= pm.response.json();",
-              " let getCommentId= pm.variables.get(\"comment_id\")",
-              " var userId=jsonData.user;",
-              " let getUserId= pm.variables.get(\"user_id\")",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
               "",
-              "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
-              "     pm.test(\"Comment has correct ID\", () => {",
+              "pm.test(\"Comment has correct ID\", () => {",
               "    pm.expect(jsonData._id).to.eql(getCommentId);",
               "})",
               "",
-              "pm.test(\"comment has correct data\", function() {",
-              "    let jsonData= pm.response.json();",
-              "    ",
+              "pm.test(\"comment has correct data\", () => {",
               "    pm.expect(jsonData.post).to.eql(\"5d8296147284cc7f396d68e3\");",
               "    pm.expect(jsonData.content).to.eql(\"this is a comment\");",
               "    pm.expect(jsonData.user).to.eql(getUserId);",
@@ -185,9 +189,8 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/comments/{{comment_id}}",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/comments/{{comment_id}}",
+          "host": ["{{host}}"],
           "path": ["api", "comments", "{{comment_id}}"]
         }
       },
@@ -201,19 +204,22 @@
           "script": {
             "id": "6beb7101-d954-4b1e-b328-a57d67108134",
             "exec": [
+              "let jsonData = pm.response.json();",
+              "let userId = jsonData.user;",
               "",
-              " let jsonData= pm.response.json();",
-              " let getCommentId= pm.variables.get(\"comment_id\")",
-              "  var userId=jsonData.user;",
-              " let getUserId= pm.variables.get(\"user_id\")",
+              "let getUserId = pm.variables.get(\"user_id\");",
+              "let getCommentId = pm.variables.get(\"comment_id\");",
               "",
-              "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
-              "     pm.test(\"Comment has correct ID\", () => {",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Comment has correct ID\", () => {",
               "    pm.expect(jsonData._id).to.eql(getCommentId);",
               "})",
               "",
-              "pm.test(\"comment has updated to data\", function() {",
-              "    let jsonData= pm.response.json();",
+              "pm.test(\"comment has updated to data\", () => {",
+              "    var jsonData= pm.response.json();",
               "    pm.expect(jsonData.post).to.eql(\"5d8296147284cc7f396d68e3\");",
               "    pm.expect(jsonData.content).to.eql(\"this is NOT a comment\");",
               "    pm.expect(jsonData.user).to.eql(getUserId);",
@@ -243,9 +249,8 @@
           }
         },
         "url": {
-          "raw": "localhost:3000/api/comments/{{comment_id}}",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/comments/{{comment_id}}",
+          "host": ["{{host}}"],
           "path": ["api", "comments", "{{comment_id}}"]
         }
       },
@@ -276,9 +281,8 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/comments/{{comment_id}}",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/comments/{{comment_id}}",
+          "host": ["{{host}}"],
           "path": ["api", "comments", "{{comment_id}}"]
         }
       },
@@ -296,7 +300,7 @@
               "let statusCode = pm.response.code;\r",
               "\r",
               "pm.test(`Status code is ${statusCode}`, () => {\r",
-              "    if (jsonData.deletedCount >= 1) pm.response.to.have.status(200);\r",
+              "    if (jsonData.devaredCount >= 1) pm.response.to.have.status(200);\r",
               "    else if (jsonData.error) pm.response.to.have.status(404);\r",
               "    else pm.response.to.have.status(500);\r",
               "});"
@@ -309,13 +313,13 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/comments/",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/comments/",
+          "host": ["{{host}}"],
           "path": ["api", "comments", ""]
         }
       },
       "response": []
     }
-  ]
+  ],
+  "protocolProfileBehavior": {}
 }
