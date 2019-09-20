@@ -19,7 +19,10 @@ router.delete('/:id', PostsController.deletePostWithId);
 
 router.get('/:id/comments', PostsController.getAllCommentsWithPostId);
 
-router.get('/:id/comments/:commentId', PostsController.getPostCommentWithId);
+router.get(
+  '/:id/comments/:commentId',
+  PostsController.getPostCommentWithPostId
+);
 
 router.post('/:id/comments', PostsController.createPostComment);
 

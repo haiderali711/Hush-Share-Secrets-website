@@ -1,7 +1,7 @@
 {
   "info": {
-    "_postman_id": "d85a6198-2c32-44ac-b4e5-9bb96e088eb8",
-    "name": "Storiescollection",
+    "_postman_id": "86ad5fdd-089d-4c7c-b5fd-f04e6ca07c8d",
+    "name": "Stories_Collection",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -13,30 +13,27 @@
           "script": {
             "id": "cad63ae6-1164-488d-b15b-cfa1929ff442",
             "exec": [
-              " let jsonData= pm.response.json();",
-              " var storyId = jsonData._id;",
-              " pm.environment.set(\"story_id\", storyId);",
-              "  let getStoryId= pm.variables.get(\"story_id\")",
+              "let jsonData = pm.response.json();",
+              "let storyId = jsonData._id;",
+              "pm.environment.set(\"story_id\", storyId);",
               "",
-              " var userId=jsonData.user;",
-              " let getUserId= pm.variables.get(\"user_id\")",
+              "let getStoryId = pm.variables.get(\"story_id\")",
+              "let getUserId = pm.variables.get(\"user_id\")",
               " ",
-              " ",
-              "      pm.test(\"Story has correct ID\", () => {",
+              "pm.test(\"Story has correct ID\", () => {",
               "    pm.expect(jsonData._id).to.eql(getStoryId);",
               "})",
-              "pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });",
               "",
+              "pm.test(\"Status code is 201\", () => {",
+              "    pm.response.to.have.status(201);",
+              "});",
               "",
-              "",
-              "pm.test(\"story has correct data\", function() {",
-              "    let jsonData= pm.response.json();",
+              "pm.test(\"story has correct data\", () => {",
               "    pm.expect(jsonData.likes).to.eql(0);",
               "    pm.expect(jsonData.dislikes).to.eql(0);",
               "    pm.expect(jsonData.title).to.eql(\"darkness is here\");",
               "    pm.expect(jsonData.content).to.eql(\"I guess it is night\");",
-              "",
-              " pm.expect(jsonData.user).to.eql(getUserId);",
+              "    pm.expect(jsonData.user).to.eql(getUserId);",
               "});"
             ],
             "type": "text/javascript"
@@ -55,7 +52,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"title\":\"darkness is here\",\n\t\"content\":\"I guess it is night\",\n\t\"user\":\"{{user_id}}\"\n\t\n}",
+          "raw": "{\n\t\"title\":\"darkness is here\",\n\t\"content\":\"I guess it is night\",\n\t\"user\":\"{{user_id}}\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -63,9 +60,8 @@
           }
         },
         "url": {
-          "raw": "localhost:3000/api/stories/",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/stories/",
+          "host": ["{{host}}"],
           "path": ["api", "stories", ""]
         }
       },
@@ -79,7 +75,9 @@
           "script": {
             "id": "3a0cd157-ecda-4a1e-a188-5f3d3b39d6b8",
             "exec": [
-              "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
               ""
             ],
             "type": "text/javascript"
@@ -90,9 +88,8 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/stories/",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/stories/",
+          "host": ["{{host}}"],
           "path": ["api", "stories", ""]
         }
       },
@@ -107,8 +104,9 @@
             "id": "8a001648-3b2c-4ce3-9cf0-1f8c9b4e17ff",
             "exec": [
               "let jsonData = pm.response.json();\r",
+              "\r",
               "let getStoryId = pm.variables.get(\"story_id\");\r",
-              "let userId = pm.variables.get(\"user_id\");\r",
+              "let getUserId = pm.variables.get(\"user_id\");\r",
               "\r",
               "pm.test(\"Status code is 200\", () => {\r",
               "    pm.response.to.have.status(200)\r",
@@ -121,7 +119,7 @@
               "pm.test(\"Body has correct data\", () => {\r",
               "    pm.expect(jsonData.title).to.eql(\"darkness is here\");\r",
               "    pm.expect(jsonData.content).to.eql(\"I guess it is night\")\r",
-              "    pm.expect(jsonData.user._id).to.eql(userId);\r",
+              "    pm.expect(jsonData.user._id).to.eql(getUserId);\r",
               "    pm.expect(jsonData.likes).to.eql(0);\r",
               "    pm.expect(jsonData.dislikes).to.eql(0);\r",
               "})"
@@ -134,9 +132,8 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/stories/{{story_id}}",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/stories/{{story_id}}",
+          "host": ["{{host}}"],
           "path": ["api", "stories", "{{story_id}}"]
         }
       },
@@ -151,17 +148,19 @@
             "id": "250e2ea5-9b9b-436b-8c52-5d0d0aed8050",
             "exec": [
               "let jsonData = pm.response.json();",
+              "",
               "let getStoryId = pm.variables.get(\"story_id\");",
               "let userId = pm.variables.get(\"user_id\");",
               "",
-              "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
               "pm.test(\"Story has correct ID\", () => {",
               "    pm.expect(jsonData._id).to.eql(getStoryId);",
               "})",
               "",
-              "",
               "pm.test(\"Story has correct data\", function() {",
-              "    let jsonData= pm.response.json();",
               "    pm.expect(jsonData.likes).to.eql(0);",
               "    pm.expect(jsonData.dislikes).to.eql(0);",
               "    pm.expect(jsonData.title).to.eql(\"this is my story\");",
@@ -185,7 +184,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"title\": \"this is my story\",\n\t\"content\": \"once upon a time\"\n\t\n\t\n}",
+          "raw": "{\n\t\"title\": \"this is my story\",\n\t\"content\": \"once upon a time\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -193,9 +192,68 @@
           }
         },
         "url": {
-          "raw": "localhost:3000/api/stories/{{story_id}}",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/stories/{{story_id}}",
+          "host": ["{{host}}"],
+          "path": ["api", "stories", "{{story_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/api/stories/{{story_id}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "fa6aff6d-bd76-4124-8a28-b5b0e9b6bbc6",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "",
+              "let getStoryId = pm.variables.get(\"story_id\");",
+              "let userId = pm.variables.get(\"user_id\");",
+              "",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Story has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(getStoryId);",
+              "})",
+              "",
+              "pm.test(\"Story has correct data\", function() {",
+              "    pm.expect(jsonData.title).to.eql(\"This is a PUT story.\");",
+              "    pm.expect(jsonData.content).to.eql(\"Once upon in a PUT.\");",
+              "    pm.expect(jsonData.user).to.eql(userId);",
+              "    pm.expect(jsonData.likes).to.eql(1000);",
+              "    pm.expect(jsonData.dislikes).to.eql(500);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"title\": \"This is a PUT story.\",\n\t\"content\": \"Once upon in a PUT.\",\n\t\"user\": \"{{user_id}}\",\n\t\"likes\": 1000,\n    \"dislikes\": 500\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/stories/{{story_id}}",
+          "host": ["{{host}}"],
           "path": ["api", "stories", "{{story_id}}"]
         }
       },
@@ -209,19 +267,18 @@
           "script": {
             "id": "95e1bc5c-6d21-459b-a5bf-7379dcb5995e",
             "exec": [
+              "let jsonData = pm.response.json();",
+              "let userId = jsonData.user;",
               "",
-              " let jsonData= pm.response.json();",
-              " let getUserId= pm.variables.get(\"user_id\")",
-              " var userId=jsonData.user;",
+              "let getUserId = pm.variables.get(\"user_id\")",
               "",
-              "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
               "",
               "pm.test(\"user from story has correct data\", function() {",
-              "    let jsonData= pm.response.json();",
-              "    ",
-              "    pm.expect(jsonData.username).to.eql(\"hello\");",
-              "    pm.expect(jsonData.email).to.eql(\"Hello@gmail.com\");",
-              "    pm.expect(jsonData.password).to.eql(\"ThisIsNotFun\");",
+              "    pm.expect(jsonData.username).to.eql(\"gagan\");",
+              "    pm.expect(jsonData.email).to.eql(\"gagan@gmail.com\");",
               "});"
             ],
             "type": "text/javascript"
@@ -232,9 +289,8 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/stories/{{story_id}}/user/",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/stories/{{story_id}}/user/",
+          "host": ["{{host}}"],
           "path": ["api", "stories", "{{story_id}}", "user", ""]
         }
       },
@@ -265,9 +321,8 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/stories/{{story_id}}",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/stories/{{story_id}}",
+          "host": ["{{host}}"],
           "path": ["api", "stories", "{{story_id}}"]
         }
       },
@@ -298,13 +353,13 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "localhost:3000/api/stories/",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/stories/",
+          "host": ["{{host}}"],
           "path": ["api", "stories", ""]
         }
       },
       "response": []
     }
-  ]
+  ],
+  "protocolProfileBehavior": {}
 }

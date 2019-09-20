@@ -2,8 +2,7 @@ const Group = require('../models/Group');
 const Post = require('../models/Post');
 const User = require('../models/User');
 
-/** Returns all the Groups from the database. Groups are returned
- * in particular format as can be seen in response code.
+/** Returns all the Groups from the database.
  *
  * end-point:       /api/groups
  * response-status: 200, if more than 0 Groups were found.
@@ -28,8 +27,7 @@ const getAllGroups = (req, res) => {
     });
 };
 
-/** Returns a Group with a given ID from the database. Group is returned
- * in particular format as can be seen in the code below.
+/** Returns a Group with a given ID from the database.
  *
  * end-point:       /api/groups/:id
  * response-status: 200, if the Group with given ID was found.
@@ -56,7 +54,6 @@ const getGroupWithId = (req, res) => {
 };
 
 /** Creates a new Group with given data from the request and returns it.
- *  Group is returned in particular format as can be seen in response code.
  *
  * end-point:       /api/groups
  * response-status: 201, if the Group was created successfully.
@@ -68,15 +65,18 @@ const createGroup = (req, res) => {
   group
     .save()
     .then(result => {
-      res.status(201).json(result);
+      res.status(201).json({
+        _id: result._id,
+        name: result.name,
+        created: result.created
+      });
     })
     .catch(error => {
       res.status(500).json({ error: error });
     });
 };
 
-/** Partially updates a Group with a given ID. Updated Group is returned
- * in particular format as can be seen in response code.
+/** Partially updates a Group with a given ID.
  *
  * end-point:       /api/groups/:id
  * response-status: 200, if the Group was updated successfully.
@@ -132,8 +132,7 @@ const deleteAllGroups = (req, res) => {
     });
 };
 
-/** Deletes a Group with a given ID from the database. Deleted Group is returned
- * in particular format as can be seen in the code below.
+/** Deletes a Group with a given ID from the database.
  *
  * end-point:       /api/groups/:id
  * response-status: 200, if the Group with given ID was found.
@@ -161,6 +160,13 @@ const deleteGroupWithId = (req, res) => {
     });
 };
 
+/** Returns all the Posts belonging to a particular Group.
+ *
+ * end-point:       /api/groups/:id/posts
+ * response-status: 200, if more than 0 Groups were found.
+ * throws:          404, if no Groups were found.
+ *                  500, if internal server error.
+ */
 const getPostsWithGroupId = (req, res) => {
   const id = req.params.id;
 
@@ -168,8 +174,6 @@ const getPostsWithGroupId = (req, res) => {
     .select('-__v')
     .exec()
     .then(docs => {
-      // todo see if this returns 404 for both if the postId is not found and if the comments are 0
-      //  adjust the comments accordingly
       if (docs.length === 0) throw 404;
 
       res.status(200).json({
@@ -186,6 +190,13 @@ const getPostsWithGroupId = (req, res) => {
     });
 };
 
+/** Returns all the Users belonging to a particular Group.
+ *
+ * end-point:       /api/groups/:id/users
+ * response-status: 200, if more than 0 Groups were found.
+ * throws:          404, if no Groups were found.
+ *                  500, if internal server error.
+ */
 const getUsersWithGroupId = (req, res) => {
   const id = req.params.id;
 
@@ -193,8 +204,6 @@ const getUsersWithGroupId = (req, res) => {
     .select('-__v')
     .exec()
     .then(docs => {
-      // todo see if this returns 404 for both if the postId is not found and if the comments are 0
-      //  adjust the comments accordingly
       if (docs.length === 0) throw 404;
 
       res.status(200).json({
@@ -205,7 +214,7 @@ const getUsersWithGroupId = (req, res) => {
     .catch(error => {
       if (error === 404)
         res.status(404).json({
-          error: `No Posts found associated with Group Id:${id}`
+          error: `No Users found associated with Group Id:${id}`
         });
       else res.status(500).json({ error: error });
     });
