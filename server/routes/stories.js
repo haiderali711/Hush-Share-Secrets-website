@@ -13,6 +13,8 @@ router.delete('/', StoriesController.deleteStories);
 
 router.delete('/:id', StoriesController.deleteStoryWithId);
 
+router.put('/:id', StoriesController.putStoryWithId);
+
 router.patch('/:id', StoriesController.updateStoryById);
 
 router.get('/:id/user', StoriesController.getUserWithStoryId);

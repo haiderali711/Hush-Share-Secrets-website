@@ -1,7 +1,7 @@
 {
   "info": {
-    "_postman_id": "0e4fef8f-19fe-423d-8a39-6046f3f349f3",
-    "name": "Categories",
+    "_postman_id": "d21c79dd-5836-42f0-95af-113828b384cb",
+    "name": "Categories_Collection",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -13,7 +13,7 @@
           "script": {
             "id": "1a90427f-a157-4617-8823-1a3a85813c52",
             "exec": [
-              "pm.test(\"Successful POST request\", function () {",
+              "pm.test(\"Successful POST request\", () => {",
               "    pm.expect(pm.response.code).to.be.oneOf([201,202,500]);",
               "});",
               ""
@@ -26,10 +26,8 @@
         "method": "POST",
         "header": [],
         "url": {
-          "raw": "http://localhost:3000/api/categories/new/ledsen",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/categories/new/ledsen",
+          "host": ["{{host}}"],
           "path": ["api", "categories", "new", "ledsen"]
         }
       },
@@ -58,10 +56,8 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:3000/api/categories/ledsen",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/categories/ledsen",
+          "host": ["{{host}}"],
           "path": ["api", "categories", "ledsen"]
         }
       },
@@ -100,10 +96,8 @@
           "raw": "{\n\t\"category\" : \"happy\",\n\t\"posts\" : \"5d8297b9145e3fbe716b16ff\"\n}"
         },
         "url": {
-          "raw": "http://localhost:3000/api/categories/secret/",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/categories/secret/",
+          "host": ["{{host}}"],
           "path": ["api", "categories", "secret", ""]
         }
       },
@@ -131,14 +125,13 @@
         "method": "PATCH",
         "header": [],
         "url": {
-          "raw": "http://localhost:3000/api/categories/story/",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/categories/story/",
+          "host": ["{{host}}"],
           "path": ["api", "categories", "story", ""]
         }
       },
       "response": []
     }
-  ]
+  ],
+  "protocolProfileBehavior": {}
 }

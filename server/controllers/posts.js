@@ -25,18 +25,7 @@ const getAllPosts = (req, res) => {
 
       res.status(200).json({
         count: docs.length,
-        posts: docs.map(doc => {
-          return {
-            _id: doc._id,
-            content: doc.content,
-            user: doc.user,
-            published: doc.published,
-            likes: doc.likes,
-            dislikes: doc.dislikes,
-            category: doc.category,
-            group: doc.group
-          };
-        })
+        posts: docs.map(doc => doc)
       });
     })
     .catch(error => {
@@ -57,22 +46,13 @@ const getPostWithId = (req, res) => {
   const id = req.params.id;
 
   Post.findById(id)
-    .select()
-    .populate('user')
+    .select('-__v')
+    .populate('user', '-__v')
     .exec()
     .then(doc => {
       if (!doc) throw 404;
 
-      res.status(200).json({
-        _id: doc._id,
-        content: doc.content,
-        user: doc.user,
-        published: doc.published,
-        likes: doc.likes,
-        dislikes: doc.dislikes,
-        category: doc.category,
-        group: doc.group
-      });
+      res.status(200).json(doc);
     })
     .catch(error => {
       if (error === 404)
@@ -111,11 +91,17 @@ const createPost = (req, res) => {
     });
 };
 
+/** Replaces a Post with a given ID.
+ *
+ * end-point:       /api/posts/:id
+ * response-status: 200, if the Post was replaced successfully.
+ * throws:          404, if no Post with given ID was found.
+ *                  500, if internal server error.
+ */
 const putPostWithId = (req, res) => {
   const id = req.params.id;
-  const post = new Post(req.body);
 
-  Post.findOneAndReplace({ _id: id }, { post }, { new: true })
+  Post.findOneAndReplace({ _id: id }, req.body, { new: true })
     .exec()
     .then(result => {
       if (!result) throw 404;
@@ -150,24 +136,7 @@ const patchPostWithId = (req, res) => {
 
       res.status(200).json({
         message: 'Post updated.',
-        _id: result._id,
-        content: result.content,
-        user: result.user,
-        published: result.published,
-        likes: result.likes,
-        dislikes: result.dislikes,
-        category: result.category,
-        group: result.group,
-        request: [
-          {
-            type: 'GET',
-            url: `http://localhost:3000/posts/${id}`
-          },
-          {
-            type: 'GET',
-            url: 'http://localhost:3000/api/posts'
-          }
-        ]
+        ...result._doc
       });
     })
     .catch(error => {
@@ -182,7 +151,7 @@ const patchPostWithId = (req, res) => {
  *
  * end-point:       /api/posts
  * response-status: 200, if all the Posts were deleted successfully.
- *                  Although we should have user '204' as response code,
+ *                  Although we should have used '204' as response code,
  *                  we decided not to use that since it returns no response body.
  * throws:          404, if no Posts were found.
  *                  500, if internal server error.
@@ -236,15 +205,7 @@ const deletePostWithId = (req, res) => {
 
       res.status(200).json({
         message: 'Post deleted.',
-        // todo should we return the deleted post? See deleteAllPosts
-        //  adjust the comments accordingly
-        _id: result._id,
-        content: result.content,
-        user: result.user,
-        published: result.published,
-        likes: result.likes,
-        dislikes: result.dislikes,
-        category: result.category,
+        ...result._doc,
         request: {
           type: 'POST',
           url: 'http://localhost:3000/api/posts',
@@ -284,8 +245,6 @@ const getAllCommentsWithPostId = (req, res) => {
     .populate('user', '-__v')
     .exec()
     .then(docs => {
-      // todo see if this returns 404 for both if the postId is not found and if the comments are 0
-      //  adjust the comments accordingly
       if (docs.length === 0) throw 404;
 
       res.status(200).json({
@@ -302,15 +261,16 @@ const getAllCommentsWithPostId = (req, res) => {
     });
 };
 
-/** Returns all the comments for the Post with a given ID from the database.
+/** Returns a Comment associated with the Post with a given ID from the database.
  *
- * end-point:       /api/posts/:id/comments
+ * end-point:       /api/posts/:id/comments/:commentID
  * response-status: 200, if the Post with given ID was found
- *                  and the Post has more than 0 comments.
- * throws:          404, if no Post with the given ID was found.
+ *                  and the Post has a comment with commentId.
+ * throws:          404, if no Post with the given ID was found
+ *                  or the comment with commentId was not found.
  *                  500, if internal server error.
  */
-const getPostCommentWithId = (req, res) => {
+const getPostCommentWithPostId = (req, res) => {
   const commentId = req.params.commentId;
 
   Comment.findById(commentId)
@@ -334,19 +294,33 @@ const getPostCommentWithId = (req, res) => {
     });
 };
 
+/** Creates a new Comment associated with a given Post from data from the request and returns it.
+ *  Post is returned in particular format as can be seen in response code.
+ *
+ *  If the Post with given postId doesn't exist in the databses '404' is returned.
+ *
+ * end-point:       /api/posts/:id/comments
+ * response-status: 201, if the Post was created successfully.
+ * throws:          500, if internal server error.
+ */
 const createPostComment = (req, res) => {
   const postId = req.params.id;
 
-  const comment = new Comment({
-    content: req.body.content,
-    user: req.body.user,
-    post: postId
-  });
+  // see if we have a post with the postId
+  Post.findById(postId)
+    .then(post => {
+      if (!post) throw 404;
 
-  comment
-    .save()
+      const comment = new Comment({
+        ...req.body,
+        post: postId
+      });
+
+      // since we have a post we save a comment
+      return comment.save();
+    })
     .then(result => {
-      res.status(200).json({
+      res.status(201).json({
         _id: result._id,
         content: result.content,
         user: result.user,
@@ -354,10 +328,18 @@ const createPostComment = (req, res) => {
       });
     })
     .catch(error => {
-      res.status(500).json({ error: error });
+      if (error === 404)
+        res.status(404).json({ message: `Post with ID:${postId} not found.` });
+      else res.status(500).json({ error: error });
     });
 };
 
+/** Deletes a Comment associated with a given Post with given commentID.
+ *
+ * end-point:       /api/posts/:id/comments/:commentId
+ * response-status: 200, if the Comment was deleted successfully.
+ * throws:          500, if internal server error.
+ */
 const deletePostCommentWithId = (req, res) => {
   const commentId = req.params.commentId;
 
@@ -369,7 +351,7 @@ const deletePostCommentWithId = (req, res) => {
 
       res.status(200).json({
         message: 'Comment deleted.',
-        comment: result
+        ...result._doc
       });
     })
     .catch(error => {
@@ -390,7 +372,7 @@ module.exports = {
   deleteAllPosts,
   deletePostWithId,
   getAllCommentsWithPostId,
-  getPostCommentWithId,
+  getPostCommentWithPostId,
   createPostComment,
   deletePostCommentWithId
 };

@@ -1,7 +1,7 @@
 {
   "info": {
-    "_postman_id": "deaf5304-ab79-4201-85fc-8710af005656",
-    "name": "Diary",
+    "_postman_id": "6ddb9246-77ce-4711-ac59-55ba9acbdc33",
+    "name": "Diary_Collection",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -13,16 +13,13 @@
           "script": {
             "id": "2aec9549-81c1-4e0b-92a2-c1e01d43852e",
             "exec": [
-              "var page = pm.response.json();",
-              "//--------------------------------",
+              "let page = pm.response.json();",
               "",
-              "pm.test(\"Successful POST request\", function () {",
+              "pm.test(\"Successful POST request\", () => {",
               "    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
               "});",
               "",
-              "//pm.globals.set(\"pageDate\", page.published);",
-              "pm.environment.set(\"pageDate\", page.published);",
-              ""
+              "pm.environment.set(\"pageDate\", page.published);"
             ],
             "type": "text/javascript"
           }
@@ -43,10 +40,8 @@
           "raw": "{\n    \"content\" : \"Today i pissed \",\n    \"user\" : \"5d7a212f839b5810bcaed086\"\n}"
         },
         "url": {
-          "raw": "http://localhost:3000/api/diaries/",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/diaries/",
+          "host": ["{{host}}"],
           "path": ["api", "diaries", ""]
         }
       },
@@ -60,12 +55,9 @@
           "script": {
             "id": "458f957b-367e-4e33-9ae4-b2933e779005",
             "exec": [
-              "pm.test(\"Status code is 200\", function () {",
+              "pm.test(\"Status code is 200\", () => {",
               "    pm.response.to.have.status(200);",
-              "});",
-              "",
-              "",
-              ""
+              "});"
             ],
             "type": "text/javascript"
           }
@@ -89,10 +81,8 @@
           "raw": "{\n    \"content\" : \"In fact, the experience is exactly the opposite. By blogging, instead of keeping your thoughts private, you’re inviting the public to read them. Understand – once your content is public, it’s owned by your community of readers (unless you limit access through the use of password protection.) On the Internet, your blog is a public record that lives forever (or at least until the software disappears or is sold.) Lastly, blogs provide for engagement through their comments (if you allow them.) \",\n    \"user\" : \"5d7a212f839b5810bcaed086\",\n    \"published\": \"2019-08-19\"\n}"
         },
         "url": {
-          "raw": "http://localhost:3000/api/diaries/{{pageDate}}",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/diaries/{{pageDate}}",
+          "host": ["{{host}}"],
           "path": ["api", "diaries", "{{pageDate}}"]
         }
       },
@@ -135,10 +125,8 @@
           "raw": "{\n    \"content\" : \"In fact, the experience is exactly the opposite. By blogging, instead of keeping your thoughts private, you’re inviting the public to read them. Understand – once your content is public, it’s owned by your community of readers (unless you limit access through the use of password protection.) On the Internet, your blog is a public record that lives forever (or at least until the software disappears or is sold.) Lastly, blogs provide for engagement through their comments (if you allow them.) \",\n    \"user\" : \"5d7a212f839b5810bcaed086\",\n    \"published\": \"2012-04-23T18:25:43.511Z\"\n}"
         },
         "url": {
-          "raw": "http://localhost:3000/api/diaries/",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/diaries/",
+          "host": ["{{host}}"],
           "path": ["api", "diaries", ""]
         }
       },
@@ -152,12 +140,9 @@
           "script": {
             "id": "6712c41d-2d48-477f-977f-d87c6006b5ca",
             "exec": [
-              "pm.test(\"Page has been deleted successfully\", function () {",
+              "pm.test(\"Page has been deleted successfully\", () => {",
               "    pm.response.to.have.status(200);",
-              "});",
-              "",
-              "",
-              ""
+              "});"
             ],
             "type": "text/javascript"
           }
@@ -178,14 +163,13 @@
           "raw": "{\n    \"content\" : \"In fact, the experience is exactly the opposite. By blogging, instead of keeping your thoughts private, you’re inviting the public to read them. Understand – once your content is public, it’s owned by your community of readers (unless you limit access through the use of password protection.) On the Internet, your blog is a public record that lives forever (or at least until the software disappears or is sold.) Lastly, blogs provide for engagement through their comments (if you allow them.) \",\n    \"user\" : \"5d7a212f839b5810bcaed086\"\n}"
         },
         "url": {
-          "raw": "http://localhost:3000/api/diaries/{{pageDate}}",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{host}}/api/diaries/{{pageDate}}",
+          "host": ["{{host}}"],
           "path": ["api", "diaries", "{{pageDate}}"]
         }
       },
       "response": []
     }
-  ]
+  ],
+  "protocolProfileBehavior": {}
 }
