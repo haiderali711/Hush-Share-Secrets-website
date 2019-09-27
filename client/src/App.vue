@@ -1,31 +1,21 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/camels">Camels</router-link>
+    <div class="max_width_wrapper">
+      <router-view/>
     </div>
-    <router-view/>
   </div>
 </template>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  background: #2F303A;
+  height: 100vh;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.max_width_wrapper {
+  max-width: 1400px;
+  margin: auto;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
