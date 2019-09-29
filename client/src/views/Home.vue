@@ -1,41 +1,42 @@
 
 <template>
-  <div class="main_container" >
-  
-    <div>    
+  <div class="main_container">
+    <header>
+      <div class="nav">
       <nav class="navbar fixed-top">
-        <b-navbar id="nav_bar" toggleable="lg" type="dark" variant="info">
+        <b-navbar id="nav_bar"  type="dark" variant="info">
   
           <b-navbar-brand href="#home">
-            <img src="../assets/Group2.svg">
-            <span>Hush</span>
+            <img class="icon" src="../assets/Group2.svg">
+            <span class="icon">Hush</span>
           </b-navbar-brand>
           
           <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav class="ml-auto">
               <b-nav-item  class="menuoption" href="#recent_posts">Discover</b-nav-item>
               <b-nav-item class= "menuoption" href="#" right>Sign in</b-nav-item>
-            </b-navbar-nav>
-          </b-collapse>
-      
-        </b-navbar>
-      </nav>
-    </div>
+             <!--<router-link class="menuoption" to="/mainpage">mainpage</router-link>-->
+              </b-navbar-nav>
+            </b-collapse>
+          </b-navbar>
+        </nav>
+      </div>
+    </header>
 
-
-    <main>
+    <div class="max_width_wrapper">
+     <section>
       <div align="center" id="home">
-        <img class="mask" src="http://clipart-library.com/images_k/masquerade-mask-silhouette/masquerade-mask-silhouette-10.png"  >
+       <img class="mask" src="../assets/mask.svg">
+        <div id="recent_posts" style="height: 1500px; background-color:#FFFFF; color:#black;">
+          <h2>TO BE FIXED</h2>
+        </div>
       </div>
 
       <div class="title">Secrets & Truths</div>
       <div class="subtitle">Share your secret anonymously and be heard.</div>
-    </main>
- 
-    <div id="recent_posts" style="height: 1500px; background-color:#2F303A; color:#FFFFFF;">
-      <h2>Recent Posts</h2>
-    </div>
+    </section>
   </div>
+</div>
   
 </template>
 
@@ -43,6 +44,7 @@
   // @ is an alias to /src
 import { Api } from '@/Api'
 import HomeLogo from '../assets/Group2.svg'
+
 
 export default {
   name: 'home',
@@ -70,66 +72,88 @@ export default {
 </script>
 
 <style>
-
-#nav_bar {
-  background-color: #fff0!important;
-  padding-top: 30px;
-  width: 100%;
-}
-
-.icon{
-  position: absolute;
-  left:36px; 
-  top: 30px;
-  bottom: 0%;
-}
-
-.title{
-  position: absolute;
-  width: 599px;
-  height: 78px;
-  left: 75px;
-  top: 260px;
-  font-size: 49px;
-  color: #FFF5F5;
-}
-
-.subtitle{
-  position: absolute;
-  height: 78px;
-  left: 80px;
-  top: 340px;
-  font-size: 25px;
-  color: #FFF5F5;
-}
-
-.name{
-  position: absolute;
-  top: 30px;
-  left: 98px;
-  font-weight: normal;
-  font-size: 30px;
-  color:#FFFFFF;
-}
-.mask{
-  width: 1000px;
-  height:680px;
-  opacity:0.3;
-  padding: 10px;
-}
-
 .main_container {
   background: #2F303A;
   height: 100vh;
 }
 
-main{
+header, .max_width_wrapper {
   max-width: 1300px;
   margin:auto;
 }
+.nav{
+  position: relative;
+}
+#nav_bar {
+  background-color: #fff0!important;
+  margin-top: 30px;
+  width: 100%;
+}
 
-.menuoption{
+.menuoption {
   margin-right:50px;
+}
+
+.mask {
+  width: 1000px !important;
+  padding: 10px;
+}
+
+.title, .subtitle {
+  position: absolute;
+  top: 260px;
+  font-size: 49px;
+  color: #FFF5F5;
+}
+
+.subtitle {
+  top: 340px;
+  font-size: 25px;
+}
+  .icon{
+    position: relative;
+}
+
+
+@media (max-width: 991.98px) {
+  .mask {
+    display:none;    
+  }
+}
+
+@media (max-width: 1024.98px) {
+.title, .subtitle{
+  left: 25px;
+}
+}
+
+@media (max-width: 767.98px) {
+  .mask {
+    display:none;
+  }  
+  .title{
+    top: 130px;
+    left: 10px;
+    font-size: 25px;
+  }
+  .subtitle{
+    top:170px;
+    left: 10px;
+    font-size: 16px;
+  }
+  .icon{
+    bottom: 20px;
+    right:15px;
+  }
+  #nav-collapse{
+    bottom:10px;
+  }
+  .menuoption{
+    margin-bottom: 40px!important;
+    margin: 0px;
+    font-size: 13px;
+    right: 10px;
+  }
 }
 
 </style>
