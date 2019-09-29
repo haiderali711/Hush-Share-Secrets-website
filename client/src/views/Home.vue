@@ -2,8 +2,8 @@
 <template>
   <div class="main_container">
     <header>
-    <div class="nav">
-    <nav class="navbar fixed-top">
+      <div class="nav">
+      <nav class="navbar fixed-top">
         <b-navbar id="nav_bar"  type="dark" variant="info">
   
           <b-navbar-brand href="#home">
@@ -15,13 +15,13 @@
             <b-navbar-nav class="ml-auto">
               <b-nav-item  class="menuoption" href="#recent_posts">Discover</b-nav-item>
               <b-nav-item class= "menuoption" href="#" right>Sign in</b-nav-item>
-            <!-- <router-link class="menuoption" to="/mainpage">mainpage</router-link>-->
-            </b-navbar-nav>
-          </b-collapse>
-        </b-navbar>
-      </nav>
-    </div>
-      </header>
+             <!--<router-link class="menuoption" to="/mainpage">mainpage</router-link>-->
+              </b-navbar-nav>
+            </b-collapse>
+          </b-navbar>
+        </nav>
+      </div>
+    </header>
 
     <div class="max_width_wrapper">
      <section>
@@ -36,7 +36,7 @@
       <div class="subtitle">Share your secret anonymously and be heard.</div>
     </section>
   </div>
-  </div>
+</div>
   
 </template>
 
@@ -119,8 +119,6 @@ header, .max_width_wrapper {
   .mask {
     display:none;    
   }
-
-  
 }
 
 @media (max-width: 1024.98px) {
@@ -128,6 +126,7 @@ header, .max_width_wrapper {
   left: 25px;
 }
 }
+
 @media (max-width: 767.98px) {
   .mask {
     display:none;
@@ -157,4 +156,4 @@ header, .max_width_wrapper {
   }
 }
 
-</style>>
+</style>
