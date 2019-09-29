@@ -1,21 +1,30 @@
 <template>
   <div id="app">
-    <div class="max_width_wrapper">
-      <router-view/>
-    </div>
-  </div>
+    <router-view/>
+  </div>  
 </template>
 
+
 <style>
+
 #app {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  background: #2F303A;
-  height: 100vh;
+  height: 100vh; 
 }
 
-.max_width_wrapper {
-  max-width: 1400px;
-  margin: auto;
+#app a {
+  text-decoration: none;
 }
 
+nav {
+  padding: 30px;
+}
+
+nav a {
+  color: #ffff;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
+}
 </style>
