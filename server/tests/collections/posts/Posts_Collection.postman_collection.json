@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "ffc9f861-b50e-4960-a9eb-b6c37ad9f7f5",
+    "_postman_id": "1203ed1e-b8ea-4405-86d6-6574a2fb1903",
     "name": "Posts_Collection",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
@@ -48,12 +48,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"name\": \"Some random group\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
+          "raw": "{\n\t\"name\": \"Some random group\"\n}"
         },
         "url": {
           "raw": "{{host}}/api/groups",
@@ -87,7 +82,6 @@
               "})",
               "",
               "pm.test(\"Body has correct data\", () => {",
-              "    pm.expect(jsonData.username).to.eql(\"gagan\");",
               "    pm.expect(jsonData.email).to.eql(\"gagan@gmail.com\");",
               "    pm.expect(jsonData.group).to.eql(groupId);",
               "})",
@@ -109,12 +103,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"username\": \"gagan\",\n\t\"email\": \"gagan@gmail.com\",\n\t\"group\": \"{{group_id}}\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
+          "raw": "{\n\t\"email\": \"gagan@gmail.com\",\n\t\"group\": \"{{group_id}}\"\n}"
         },
         "url": {
           "raw": "{{host}}/api/users",
@@ -173,12 +162,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"content\": \"This is a Post\",\n\t\"user\": \"{{user_id}}\",\n\t\"group\": \"{{group_id}}\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
+          "raw": "{\n\t\"content\": \"This is a Post\",\n\t\"user\": \"{{user_id}}\",\n\t\"group\": \"{{group_id}}\"\n}"
         },
         "url": {
           "raw": "{{host}}/api/posts",
@@ -336,12 +320,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"content\": \"Some random post.\",\n\t\"likes\": 10,\n\t\"dislikes\": 5,\n\t\"category\": \"social\",\n\t\"group\": \"{{group_id}}\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
+          "raw": "{\n\t\"content\": \"Some random post.\",\n\t\"likes\": 10,\n\t\"dislikes\": 5,\n\t\"category\": \"social\",\n\t\"group\": \"{{group_id}}\"\n}"
         },
         "url": {
           "raw": "{{host}}/api/posts/{{post_id}}",
@@ -391,12 +370,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"likes\": 1000,\n    \"dislikes\": 500,\n    \"content\": \"Put Post.\",\n    \"user\": \"{{user_id}}\",\n    \"group\": \"{{group_id}}\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
+          "raw": "{\n    \"likes\": 1000,\n    \"dislikes\": 500,\n    \"content\": \"Put Post.\",\n    \"user\": \"{{user_id}}\",\n    \"group\": \"{{group_id}}\"\n}"
         },
         "url": {
           "raw": "{{host}}/api/posts/{{post_id}}",
@@ -453,12 +427,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"content\": \"This is a Comment\",\n\t\"user\": \"{{user_id}}\",\n\t\"post\": \"{{post_id}}\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
+          "raw": "{\n\t\"content\": \"This is a Comment\",\n\t\"user\": \"{{user_id}}\",\n\t\"post\": \"{{post_id}}\"\n}"
         },
         "url": {
           "raw": "{{host}}/api/posts/{{post_id}}/comments",
@@ -646,6 +615,47 @@
           "raw": "{{host}}/api/posts",
           "host": ["{{host}}"],
           "path": ["api", "posts"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete the user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "4c353f97-9bfd-4a0a-b5d4-c3d045b46699",
+            "exec": [
+              "pm.test(\"User has been deleted successfully\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{host}}/api/users/{{user_id}}",
+          "host": ["{{host}}"],
+          "path": ["api", "users", "{{user_id}}"]
         }
       },
       "response": []

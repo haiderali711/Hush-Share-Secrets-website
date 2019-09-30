@@ -1,4 +1,5 @@
 var User = require('../models/User');
+const { uniqueNamesGenerator } = require('unique-names-generator');
 
 // Return a list of all users
 const getAllUsers = (req, res, next) => {
@@ -10,14 +11,68 @@ const getAllUsers = (req, res, next) => {
   });
 };
 
+//Authenticate the user
+const checkAuthentication = (req, res) => {
+  var email = req.body.email;
+  var newPassword = req.body.password;
+
+  User.findOne({ email: email }, (err, foundUser) => {
+    if (foundUser === null) {
+      return res.status(404).json({ message: 'user not found' });
+    }
+
+    if (newPassword === foundUser.password) {
+      res.status(200).json({
+        user: {
+          moderator: foundUser.moderator,
+          id: foundUser._id,
+          username: foundUser.username,
+          loggedIn: true
+        }
+      });
+    } else {
+      res.json({ message: 'Wrong email or password' });
+    }
+  }).catch(error => {
+    if (error === 401) res.status(404).json();
+    else res.status(500).json({ error: error });
+  });
+};
+
 // Create a new user
 const createNewUser = (req, res, next) => {
-  var user = new User(req.body);
-  user.save(function(err) {
-    if (err) {
-      return next(err);
+  var emailU = req.body.email;
+
+  User.findOne({ email: emailU }, (err, foundUser) => {
+    if (foundUser === null) {
+      var user = null;
+      if (req.body.group !== null) {
+        user = new User({
+          email: emailU,
+          username: uniqueNamesGenerator(),
+          password: req.body.password,
+          group: req.body.group
+        });
+      } else {
+        user = new User({
+          email: emailU,
+          username: uniqueNamesGenerator(),
+          password: req.body.password
+        });
+      }
+
+      user.save(function(err) {
+        if (err) {
+          return next(err);
+        }
+        res.status(201).json(user);
+      });
+    } else {
+      res.status(201).json({ emailAready: true });
     }
-    res.status(201).json(user);
+  }).catch(error => {
+    if (error === 401) res.status(404).json();
+    else res.status(500).json({ error: error });
   });
 };
 
@@ -68,7 +123,7 @@ module.exports = {
   getAllUsers,
   getUserWithId,
   createNewUser,
-  // deleteUser,
+  checkAuthentication,
   deleteUserWithId,
   changeToMod
 };

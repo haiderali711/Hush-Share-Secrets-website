@@ -1,15 +1,14 @@
 <template>
   <div id="app">
     <router-view/>
-  </div>  
+  </div>
 </template>
-
 
 <style>
 
 #app {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  height: 100vh; 
+  height: 100vh;
 }
 
 #app a {
