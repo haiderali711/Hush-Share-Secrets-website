@@ -1,7 +1,7 @@
 {
   "info": {
-    "_postman_id": "6ddb9246-77ce-4711-ac59-55ba9acbdc33",
-    "name": "Diary_Collection",
+    "_postman_id": "deaf5304-ab79-4201-85fc-8710af005656",
+    "name": "Diary",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -13,13 +13,16 @@
           "script": {
             "id": "2aec9549-81c1-4e0b-92a2-c1e01d43852e",
             "exec": [
-              "let page = pm.response.json();",
+              "var page = pm.response.json();",
+              "//--------------------------------",
               "",
-              "pm.test(\"Successful POST request\", () => {",
+              "pm.test(\"Successful POST request\", function () {",
               "    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
               "});",
               "",
-              "pm.environment.set(\"pageDate\", page.published);"
+              "//pm.globals.set(\"pageDate\", page.published);",
+              "pm.environment.set(\"pageDate\", page.published);",
+              ""
             ],
             "type": "text/javascript"
           }
@@ -55,9 +58,12 @@
           "script": {
             "id": "458f957b-367e-4e33-9ae4-b2933e779005",
             "exec": [
-              "pm.test(\"Status code is 200\", () => {",
+              "pm.test(\"Status code is 200\", function () {",
               "    pm.response.to.have.status(200);",
-              "});"
+              "});",
+              "",
+              "",
+              ""
             ],
             "type": "text/javascript"
           }
@@ -140,9 +146,12 @@
           "script": {
             "id": "6712c41d-2d48-477f-977f-d87c6006b5ca",
             "exec": [
-              "pm.test(\"Page has been deleted successfully\", () => {",
+              "pm.test(\"Page has been deleted successfully\", function () {",
               "    pm.response.to.have.status(200);",
-              "});"
+              "});",
+              "",
+              "",
+              ""
             ],
             "type": "text/javascript"
           }
@@ -170,6 +179,5 @@
       },
       "response": []
     }
-  ],
-  "protocolProfileBehavior": {}
+  ]
 }

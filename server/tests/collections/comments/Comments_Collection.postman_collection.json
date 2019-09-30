@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "66c1f9d4-24d1-4849-8ed6-a8a70fd24630",
+    "_postman_id": "d03fae51-ac06-4c61-9afc-b458d5a3df5a",
     "name": "Comments_Collection",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
@@ -28,9 +28,7 @@
               "})",
               "",
               " pm.test(\"user has uploaded correct data\", () => {",
-              " pm.expect(jsonData.username).to.eql(\"hello\");",
               " pm.expect(jsonData.email).to.eql(\"Hello@gmail.com\");",
-              " pm.expect(jsonData.password).to.eql(\"ThisIsNotFun\");",
               "});"
             ],
             "type": "text/javascript"
@@ -49,12 +47,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "      {  \r\n            \"username\": \"hello\",\r\n            \"email\": \"Hello@gmail.com\",\r\n            \"password\": \"ThisIsNotFun\"\r\n      }",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
+          "raw": "      {  \r\n            \"email\": \"Hello@gmail.com\",\r\n            \"password\": \"ThisIsNotFun\"\r\n      }"
         },
         "url": {
           "raw": "{{host}}/api/users",
@@ -110,12 +103,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"content\": \"this is a comment\",\n\t\"user\": \"{{user_id}}\",\n\t\"post\":\"5d8296147284cc7f396d68e3\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
+          "raw": "{\n\t\"content\": \"this is a comment\",\n\t\"user\": \"{{user_id}}\",\n\t\"post\":\"5d8296147284cc7f396d68e3\"\n}"
         },
         "url": {
           "raw": "{{host}}/api/comments/",
@@ -241,12 +229,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"content\":\"this is NOT a comment\"}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
+          "raw": "{\"content\":\"this is NOT a comment\"}"
         },
         "url": {
           "raw": "{{host}}/api/comments/{{comment_id}}",
@@ -319,7 +302,47 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "delete the user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "4c353f97-9bfd-4a0a-b5d4-c3d045b46699",
+            "exec": [
+              "pm.test(\"User has been deleted successfully\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{host}}/api/users/{{user_id}}",
+          "host": ["{{host}}"],
+          "path": ["api", "users", "{{user_id}}"]
+        }
+      },
+      "response": []
     }
-  ],
-  "protocolProfileBehavior": {}
+  ]
 }
