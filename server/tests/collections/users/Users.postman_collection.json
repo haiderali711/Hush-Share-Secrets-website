@@ -1,7 +1,7 @@
 {
   "info": {
-    "_postman_id": "e718c98e-57a1-4297-ab98-b7388cca38de",
-    "name": "Users_Collection",
+    "_postman_id": "52ef4004-689f-4d2f-acfb-9e474b0e24c2",
+    "name": "users",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -21,13 +21,17 @@
           "script": {
             "id": "3c9a8d15-9af9-4e61-ba8f-0aa3242010c8",
             "exec": [
-              "let userG = pm.response.json();",
               "",
-              "pm.test(\"Successful POST request\", () => {",
+              "var userG = pm.response.json();",
+              "",
+              "//--------------------------------",
+              "",
+              "pm.test(\"Successful POST request\", function () {",
               "    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
               "});",
-              "",
-              "pm.environment.set(\"userID\", userG._id);"
+              "//pm.globals.set(\"userID\", userG._id);",
+              "pm.environment.set(\"userID\", userG._id);",
+              ""
             ],
             "type": "text/javascript"
           }
@@ -45,7 +49,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\": \"ali\",\n    \"email\":\"ali@gmail.com\",\n    \"username\":\"ali.111\",\n    \"password\": \"abcdefgh\",\n    \"age\": 24\n}"
+          "raw": "{\n    \"email\":\"3456ali@gmail.com\",\n    \"password\": \"abcdefgh\"\n}"
         },
         "url": {
           "raw": "{{host}}/api/users/",
@@ -63,9 +67,12 @@
           "script": {
             "id": "f3cb0873-88c5-480d-a0c3-470d471e17f1",
             "exec": [
-              "pm.test(\"Status code is 200\", () => {",
+              "pm.test(\"Status code is 200\", function () {",
               "    pm.response.to.have.status(200);",
-              "});"
+              "});",
+              "",
+              "",
+              ""
             ],
             "type": "text/javascript"
           }
@@ -124,7 +131,7 @@
             }
           ],
           "cookie": [],
-          "body": ""
+          "body": null
         }
       ]
     },
@@ -136,9 +143,12 @@
           "script": {
             "id": "f3cb0873-88c5-480d-a0c3-470d471e17f1",
             "exec": [
-              "pm.test(\"Status code is 200\", () => {",
+              "pm.test(\"Status code is 200\", function () {",
               "    pm.response.to.have.status(200);",
-              "});"
+              "});",
+              "",
+              "",
+              ""
             ],
             "type": "text/javascript"
           }
@@ -197,7 +207,7 @@
             }
           ],
           "cookie": [],
-          "body": ""
+          "body": null
         }
       ]
     },
@@ -210,7 +220,7 @@
             "id": "ce1c8d81-257a-4a91-b49d-1ec6f3c3c927",
             "exec": [
               "",
-              "pm.test(\"User turned into Moderator\", () => {",
+              "pm.test(\"User turned into Moderator\", function () {",
               "    pm.expect(pm.response.json().nModified).to.eql(1);",
               "});"
             ],
@@ -241,6 +251,47 @@
       "response": []
     },
     {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "bad46639-d1ac-4787-9bdc-3b5dd05d7d30",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\":\"3456ali@gmail.com\",\n    \"password\": \"abcdefgh\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/users/login/",
+          "host": ["{{host}}"],
+          "path": ["api", "users", "login", ""]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "http://localhost:3000/api/users/{{userID}}",
       "event": [
         {
@@ -248,9 +299,12 @@
           "script": {
             "id": "4c353f97-9bfd-4a0a-b5d4-c3d045b46699",
             "exec": [
-              "pm.test(\"User has been deleted successfully\", () => {",
+              "pm.test(\"User has been deleted successfully\", function () {",
               "    pm.response.to.have.status(200);",
-              "});"
+              "});",
+              "",
+              "",
+              ""
             ],
             "type": "text/javascript"
           }
@@ -277,41 +331,6 @@
         }
       },
       "response": []
-    },
-    {
-      "name": "http://localhost:3000/api/users/{{userID}}",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "576bd5ed-95b0-4801-ba9c-ba8b5677aec1",
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "PUT",
-        "header": [
-          {
-            "key": "Content-Type",
-            "name": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"name\": \"gagan\",\n    \"email\" : \"gaganaaaaa@gmail.com\",\n    \"username\" :\"gagagagaga\",\n    \"password\" : \"gagagagag\",\n    \"age\": 22\n}"
-        },
-        "url": {
-          "raw": "{{host}}/api/users/{{userID}}",
-          "host": ["{{host}}"],
-          "path": ["api", "users", "{{userID}}"]
-        }
-      },
-      "response": []
     }
-  ],
-  "protocolProfileBehavior": {}
+  ]
 }
