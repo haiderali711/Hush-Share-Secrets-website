@@ -1,10 +1,63 @@
 {
   "info": {
-    "_postman_id": "86ad5fdd-089d-4c7c-b5fd-f04e6ca07c8d",
+    "_postman_id": "e10a44c0-6da7-49a4-a084-4de76a4ca59d",
     "name": "Stories_Collection",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
+    {
+      "name": "create a new user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "0c364c8d-29e3-478b-9ab8-966a200dd93e",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "let user_id = jsonData._id;",
+              "pm.environment.set(\"user_id\", user_id);",
+              "",
+              "let getUserId = pm.variables.get(\"user_id\");",
+              "",
+              "pm.test(\"Status code is 201\", () => {",
+              "    pm.response.to.have.status(201)",
+              "})",
+              "",
+              "pm.test(\"Post has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(user_id);",
+              "})",
+              "",
+              "pm.test(\"Body has correct data\", () => {",
+              "    pm.expect(jsonData.email).to.eql(\"gagan@gmail.com\");",
+              "})",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"email\": \"gagan@gmail.com\",\n\t\"password\": \"asdfghjk\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/users",
+          "host": ["{{host}}"],
+          "path": ["api", "users"]
+        }
+      },
+      "response": []
+    },
     {
       "name": "create story POST",
       "event": [
@@ -52,12 +105,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"title\":\"darkness is here\",\n\t\"content\":\"I guess it is night\",\n\t\"user\":\"{{user_id}}\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
+          "raw": "{\n\t\"title\":\"darkness is here\",\n\t\"content\":\"I guess it is night\",\n\t\"user\":\"{{user_id}}\"\n}"
         },
         "url": {
           "raw": "{{host}}/api/stories/",
@@ -106,7 +154,6 @@
               "let jsonData = pm.response.json();\r",
               "\r",
               "let getStoryId = pm.variables.get(\"story_id\");\r",
-              "let getUserId = pm.variables.get(\"user_id\");\r",
               "\r",
               "pm.test(\"Status code is 200\", () => {\r",
               "    pm.response.to.have.status(200)\r",
@@ -119,7 +166,6 @@
               "pm.test(\"Body has correct data\", () => {\r",
               "    pm.expect(jsonData.title).to.eql(\"darkness is here\");\r",
               "    pm.expect(jsonData.content).to.eql(\"I guess it is night\")\r",
-              "    pm.expect(jsonData.user._id).to.eql(getUserId);\r",
               "    pm.expect(jsonData.likes).to.eql(0);\r",
               "    pm.expect(jsonData.dislikes).to.eql(0);\r",
               "})"
@@ -184,12 +230,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"title\": \"this is my story\",\n\t\"content\": \"once upon a time\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
+          "raw": "{\n\t\"title\": \"this is my story\",\n\t\"content\": \"once upon a time\"\n}"
         },
         "url": {
           "raw": "{{host}}/api/stories/{{story_id}}",
@@ -244,12 +285,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"title\": \"This is a PUT story.\",\n\t\"content\": \"Once upon in a PUT.\",\n\t\"user\": \"{{user_id}}\",\n\t\"likes\": 1000,\n    \"dislikes\": 500\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
+          "raw": "{\n\t\"title\": \"This is a PUT story.\",\n\t\"content\": \"Once upon in a PUT.\",\n\t\"user\": \"{{user_id}}\",\n\t\"likes\": 1000,\n    \"dislikes\": 500\n}"
         },
         "url": {
           "raw": "{{host}}/api/stories/{{story_id}}",
@@ -277,7 +313,6 @@
               "});",
               "",
               "pm.test(\"user from story has correct data\", function() {",
-              "    pm.expect(jsonData.username).to.eql(\"gagan\");",
               "    pm.expect(jsonData.email).to.eql(\"gagan@gmail.com\");",
               "});"
             ],
@@ -359,7 +394,47 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "delete the user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "4c353f97-9bfd-4a0a-b5d4-c3d045b46699",
+            "exec": [
+              "pm.test(\"User has been deleted successfully\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{host}}/api/users/{{user_id}}",
+          "host": ["{{host}}"],
+          "path": ["api", "users", "{{user_id}}"]
+        }
+      },
+      "response": []
     }
-  ],
-  "protocolProfileBehavior": {}
+  ]
 }

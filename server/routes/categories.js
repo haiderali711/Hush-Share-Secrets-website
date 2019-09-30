@@ -3,9 +3,12 @@ const router = express.Router();
 
 const CategoryController = require('../controllers/categories');
 
-router.patch('/secret/', CategoryController.addSecretToCategory);
-router.post('/new/:category', CategoryController.createCategory);
-router.patch('/story/', CategoryController.addStoryToCategory);
+router.get('/', CategoryController.getAllCategory);
 router.get('/:category', CategoryController.getCategory);
+router.get('/posts/:postId', CategoryController.getCategoriesWithPostId);
+router.post('/', CategoryController.createCategory);
+router.patch('/secret/', CategoryController.addSecretToCategory);
+router.patch('/story/', CategoryController.addStoryToCategory);
+router.delete('/', CategoryController.deleteAllCategories);
 
 module.exports = router;

@@ -1,20 +1,20 @@
 {
   "info": {
-    "_postman_id": "d21c79dd-5836-42f0-95af-113828b384cb",
-    "name": "Categories_Collection",
+    "_postman_id": "0e4fef8f-19fe-423d-8a39-6046f3f349f3",
+    "name": "Categories",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "http://localhost:3000/api/categories/new/{{category}}",
+      "name": "http://localhost:3000/api/categories/",
       "event": [
         {
           "listen": "test",
           "script": {
             "id": "1a90427f-a157-4617-8823-1a3a85813c52",
             "exec": [
-              "pm.test(\"Successful POST request\", () => {",
-              "    pm.expect(pm.response.code).to.be.oneOf([201,202,500]);",
+              "pm.test(\"Successful POST request\", function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200,201,202,500]);",
               "});",
               ""
             ],
@@ -24,11 +24,22 @@
       ],
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"category\": \"helloo\"\n\t\n}"
+        },
         "url": {
-          "raw": "{{host}}/api/categories/new/ledsen",
+          "raw": "{{host}}/api/categories/",
           "host": ["{{host}}"],
-          "path": ["api", "categories", "new", "ledsen"]
+          "path": ["api", "categories", ""]
         }
       },
       "response": []
@@ -132,6 +143,5 @@
       },
       "response": []
     }
-  ],
-  "protocolProfileBehavior": {}
+  ]
 }
