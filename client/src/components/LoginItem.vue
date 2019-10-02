@@ -4,7 +4,9 @@
     <b-form-group id="input-group-1" label="Email" label-for="input-1">
       <b-form-input id="input-1" v-model="form.email" type="email" required placeholder="Enter email" ></b-form-input>
     </b-form-group>
-
+      <b-alert v-model="invalidEoP" variant="danger" dismissible>
+          {{message}}
+      </b-alert>
     <b-form-group id="input-group-2" label="Password" label-for="input-2">
       <b-form-input id="input-2" type="password" v-model="form.password" required placeholder="Password"></b-form-input>
     </b-form-group>
@@ -24,7 +26,9 @@ export default {
         email: '',
         password: ''
       },
-      show: true
+      show: true,
+      invalidEoP : false,
+      message : ''
     }
   },
   methods: {
@@ -35,7 +39,12 @@ export default {
       console.log(JSON.stringify(newUser))
       Api.post('/users/login/', newUser)
         .then(response => {
-          this.$emit('signedIn', response)
+          if (response.data.message == null){
+            this.$emit('signedIn', response)
+          }else{
+            this.message = response.data.message;
+            this.invalidEoP = true;
+          }
         })
         .catch(error => {
           console.log(error)

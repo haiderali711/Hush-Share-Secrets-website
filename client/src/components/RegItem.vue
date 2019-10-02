@@ -11,6 +11,9 @@
         ></b-form-input>
       </b-form-group>
 
+      <b-alert v-model="invalidEmail" variant="danger" dismissible>
+          Email already registered!
+      </b-alert>
       <b-form-group id="input-group-2" label="Password" label-for="input-2">
         <b-form-input
           id="input-2"
@@ -38,7 +41,8 @@ export default {
         password: ''
       },
       valid : true,
-      show: true
+      show: true,
+      invalidEmail : false
     }
   },
   methods: {
@@ -48,7 +52,11 @@ export default {
       console.log(newUser)
       Api.post('/users', newUser)
         .then(response => {
-          alert(JSON.stringify(response.data))
+          if (response.data.emailAready == true){
+            this.invalidEmail = true;
+            // alert(JSON.stringify(response.data))
+          }
+          
         })
         .catch(error => {
           console.log(error)
