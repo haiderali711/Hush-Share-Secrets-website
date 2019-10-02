@@ -37,6 +37,7 @@ export default {
         email: '',
         password: ''
       },
+      valid : true,
       show: true
     }
   },
