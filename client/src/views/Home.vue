@@ -93,16 +93,18 @@ export default {
   },
   created: function () {
       var cook = JSON.parse(getCookieObj());
-      if (cook.data.user.loggedIn == true){
-        this.logged = true;
-        if (cook.data.user.moderator == true){
-          this.mod = true
-        }else{
-          this.mod = false;
+      if (cook != null){
+        if (cook.data.user.loggedIn == true){
+          this.logged = true;
+          if (cook.data.user.moderator == true){
+            this.mod = true
+          }else{
+            this.mod = false;
+          }
+        } else {
+          this.logged = false
+          this.downL = false
         }
-      } else {
-        this.logged = false
-        this.downL = false
       }
   },
   components: {
@@ -155,12 +157,16 @@ function getCookieValue(cookieKey) {
 }
 
 function getCookieObj() {
-  var obj = '{"data" : { "user" : {';
-  obj += '"moderator" : ' + getCookieValue('moderator') + ','
-  obj += '"id" : "' + getCookieValue('id') + '",'
-  obj += '"username" : "' + getCookieValue('username') + '",'
-  obj += '"loggedIn" : ' + getCookieValue('loggedIn') + '}}}'
-  return obj
+    if (getCookieValue('moderator') == undefined ||getCookieValue('id') == undefined ||getCookieValue('username')== undefined ||getCookieValue('loggedIn')==undefined){
+      return null;
+    }else{
+      var obj = '{"data" : { "user" : {"moderator" : ' + getCookieValue('moderator') + ','+
+              '"id" : "' + getCookieValue('id') + '",'+
+              '"username" : "' + getCookieValue('username') + '",'+
+              '"loggedIn" : ' + getCookieValue('loggedIn') + '}}}';
+      console.log(obj);
+      return obj;
+    }
 }
 
 </script>
