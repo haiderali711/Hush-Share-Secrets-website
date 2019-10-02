@@ -72,23 +72,38 @@ export default {
       this.downL = false
     },
     setLoggedIn(response) {
-      console.log(response)
       this.logged = response.data.user.loggedIn
       this.mod = response.data.user.moderator
 
       // - creating cookies
-      createCookies(response)
+      setCookies(response, 1)
     },
     signOut() {
       this.downL = false
       this.mod = false
       this.logged = false
+      
+      //Deleting the Cookies
+      try {
+        setCookies(JSON.parse(getCookieObj()), -1)
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
   created: function () {
-    this.downL = false
-    this.mod = false
-    this.logged = false
+      var cook = JSON.parse(getCookieObj());
+      if (cook.data.user.loggedIn == true){
+        this.logged = true;
+        if (cook.data.user.moderator == true){
+          this.mod = true
+        }else{
+          this.mod = false;
+        }
+      } else {
+        this.logged = false
+        this.downL = false
+      }
   },
   components: {
     RegItem,
@@ -96,7 +111,7 @@ export default {
   }
 }
 
-function createCookies(response) {
+function setCookies(response, extraDays) {
   // ------------------------making keyValues for cookies-----------------
   var moderatorKV = 'moderator' + '=' + response.data.user.moderator
   var idKV = 'id' + '=' + response.data.user.id
@@ -105,7 +120,7 @@ function createCookies(response) {
 
   // ---------------------------expiry for the cookies--------------------
   var timeNow = new Date()
-  timeNow.setTime(timeNow.getTime() + 0.1 * 60 * 60 * 1000)
+  timeNow.setTime(timeNow.getTime() + (extraDays * 0.1 * 60 * 60 * 1000))
   var expires = 'expires=' + timeNow.toUTCString()
 
   // -----------------------------------creating cookies------------------
@@ -122,22 +137,31 @@ function createCookies(response) {
   document.cookie = cookie4
 }
 
-// // getting values from the cookies
-// function getCookieValue(cookieKey) {
-//   var cookiesList = document.cookie.split(';').map(function (cookie) {
-//     return cookie.trim()
-//   })
+// getting values from the cookies
+function getCookieValue(cookieKey) {
+  var cookiesList = document.cookie.split(';').map(function (cookie) {
+    return cookie.trim()
+  })
 
-//   for (var i = 0; i < cookiesList.length; i++) {
-//     var cookie = cookiesList[i].split('=')
-//     var key = cookie[0]
-//     var value = cookie[1]
-//     if (key === cookieKey) {
-//       return value
-//     }
-//   }
-//   return undefined
-// }
+  for (var i = 0; i < cookiesList.length; i++) {
+    var cookie = cookiesList[i].split('=')
+    var key = cookie[0]
+    var value = cookie[1]
+    if (key === cookieKey) {
+      return value
+    }
+  }
+  return undefined
+}
+
+function getCookieObj() {
+  var obj = '{"data" : { "user" : {';
+  obj += '"moderator" : ' + getCookieValue('moderator') + ','
+  obj += '"id" : "' + getCookieValue('id') + '",'
+  obj += '"username" : "' + getCookieValue('username') + '",'
+  obj += '"loggedIn" : ' + getCookieValue('loggedIn') + '}}}'
+  return obj
+}
 
 </script>
 
