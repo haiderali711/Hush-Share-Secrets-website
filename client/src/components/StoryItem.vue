@@ -14,7 +14,7 @@
             </template>
             <b-dropdown-item
               v-on:click="$emit('show-edit-story-modal', story._id)">
-            
+
               Edit Story
             </b-dropdown-item>
             <b-dropdown-item v-on:click="$emit('delete-story', story._id)">Delete Story</b-dropdown-item>
@@ -24,16 +24,16 @@
       </div>
 
       <router-link
-        :to="{ path: `/stories/${story._id}`, story: story}" > 
+        :to="{ path: `/stories/${story._id}`, story: story}" >
         <div v-on:click="$emit('show-detailed-story-modal', story._id)">
           <h4>{{story.title}}</h4>
-          <p class="post_excerpt"> 
+          <p class="post_excerpt">
             {{story.content}}
           </p>
         </div>
       </router-link>
       <span v-bind:style="{ color: '#495057c7' }">
-        <date :date="story.published" /> • 
+        <date :date="story.published" /> •
       </span>
       <!-- <post-categories :story="story"/> -->
     </div>
@@ -45,12 +45,12 @@
 import Bookmark from './shared/Bookmark';
 import Date from './shared/Date';
 // import ReadingTime from './shared/ReadingTime';
-// import PostCategories from './post/PostCategories'; 
-// import PostFooter from './Post/PostFooter'; 
+// import PostCategories from './post/PostCategories';
+// import PostFooter from './Post/PostFooter';
 
 export default {
-  name: 'story-item',  
-  props: ['story'], 
+  name: 'story-item',
+  props: ['story'],
   data() {
     return {
       bookmarked: false
@@ -60,8 +60,8 @@ export default {
     Bookmark,
     Date
     // ReadingTime,
-    // PostCategories,  
-    // PostFooter      
+    // PostCategories,
+    // PostFooter
   },
   methods: {
   }
@@ -69,7 +69,7 @@ export default {
 </script>
 
 <style scoped>
-  .post_container { 
+  .post_container {
     color: #495057;
     border-radius: 10px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.15);
