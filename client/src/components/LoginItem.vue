@@ -27,8 +27,8 @@ export default {
         password: ''
       },
       show: true,
-      invalidEoP : false,
-      message : ''
+      invalidEoP: false,
+      message: ''
     }
   },
   methods: {
@@ -39,11 +39,11 @@ export default {
       console.log(JSON.stringify(newUser))
       Api.post('/users/login/', newUser)
         .then(response => {
-          if (response.data.message == null){
+          if (response.data.message == null) {
             this.$emit('signedIn', response)
-          }else{
-            this.message = response.data.message;
-            this.invalidEoP = true;
+          } else {
+            this.message = response.data.message
+            this.invalidEoP = true
           }
         })
         .catch(error => {

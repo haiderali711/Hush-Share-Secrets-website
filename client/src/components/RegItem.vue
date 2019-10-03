@@ -40,9 +40,9 @@ export default {
         email: '',
         password: ''
       },
-      valid : true,
+      valid: true,
       show: true,
-      invalidEmail : false
+      invalidEmail: false
     }
   },
   methods: {
@@ -52,11 +52,10 @@ export default {
       console.log(newUser)
       Api.post('/users', newUser)
         .then(response => {
-          if (response.data.emailAready == true){
-            this.invalidEmail = true;
+          if (response.data.emailAready == true) {
+            this.invalidEmail = true
             // alert(JSON.stringify(response.data))
           }
-          
         })
         .catch(error => {
           console.log(error)

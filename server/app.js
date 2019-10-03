@@ -50,7 +50,7 @@ app.use('/api/comments', commentsController);
 app.use('/api/stories', storiesController);
 
 app.use('/api/*', function(req, res) {
-  res.status(404).json({ message: 'Not Found' });
+  res.status(404).json({ message: 'Not Found!!!' });
 });
 
 // Configuration for serving frontend in production mode
