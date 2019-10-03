@@ -4,14 +4,54 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>client</title>
+    <style>
+      .post_container .btn,
+      .modal-content .btn {
+        border: 0;
+        padding: 2px 4px;
+      }
+      .modal-content .btn {
+        padding: 4px 14px;
+      }
+      .post_container .btn:hover,
+      .modal-content .btn:hover,
+      .post_container .btn:focus,
+      .modal-content .btn:focus {
+        background-color: #E2E8F0;
+      }
+      .dropdown-item.active,
+      .dropdown-item:active,
+      .dropdown-item:focus,
+      .dropdown-item:hover {
+        color: #16181b;
+        text-decoration: none;
+        background-color: #e2e8f09c;
+      }
+      .dropdown-item:focus {
+        outline: 0 solid #E2E8F0;
+        outline-offset: -4px;
+      }
+      .modal-content {
+        color: #495057;
+        border-radius: 10px;
+        max-width: 600px;
+        margin: auto;
+      }
+      .modal-content .modal-body {
+        padding: 0;
+      }
+      .modal-content .modal-body .post_modal_content_wrapper {
+        min-height: 400px!important;
+      }
+    </style>
   </head>
   <body>
     <noscript>
       <strong>We're sorry but client doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
-    <!-- built files will be auto injected -->
   </body>
 </html>

@@ -1,37 +1,27 @@
 <template>
-  <modal :show="show" @close="close">
+  <modal :show="show" @close="close($event)">
     <form @submit.stop.prevent="handleSubmit">
       <div class="modal-header">
-        <h3>Edit Story</h3>
+        <h3>Create Post</h3>
       </div>
       <div class="modal-body">
-
-        <label class = "form-label">
-          Title *
-          <input
-            v-model="title"
-            rows="1"
-            class="form-control"
-          />
-          <em v-if="show && titleIsRequired" style="color: red">Title is required.</em>
-          <em v-if="show && titleLenIsValid" style="color: red">Title length must be below 100 characters.</em>
-          </label>
-
         <label class="form-label">
           Content *
           <textarea
-            v-model="storyContent"
+            v-model="postContent"
             rows="4"
             class="form-control"
+            placeholder="Max 300 characters"
           >
-        </textarea>
+          </textarea>
+          <input type="text" style="display:none;">
           <em v-if="show && contentIsRequired" style="color: red">Content is required.</em>
           <em v-if="contentLenIsValid" style="color: red">Content length must be below 300 characters.</em>
         </label>
       </div>
       <div class="modal-footer text-right">
-        <button class="modal-default-button" @click="close">Cancel</button>
-        <button class="modal-default-button" :disabled="!formIsValid" @click="handleSubmit">Create</button>
+        <button class="modal-default-button" @click="close($event)">Cancel</button>
+        <button class="modal-default-button" :disabled="!formIsValid" @click="handleSubmit($event)">Create</button>
       </div>
     </form>
   </modal>
@@ -42,50 +32,40 @@ import { Api } from '../../../Api';
 import Modal from './ModalTemplate';
 
 export default {
-  name: 'create-story-modal',
-  props: ['show', 'stories'],
+  name: 'create-post-modal',
+  props: ['show', 'posts'],
   data() {
     return {
-      title: '',
-      storyContent: ''
+      postContent: ''
     };
   },
   components: {
     Modal
   },
   computed: {
-    titleIsRequired() {
-      return this.title.length === 0;
-    },
-    titleLenIsValid() {
-      return this.title.length > 100;
-    },
     contentIsRequired() {
-      return this.storyContent.length === 0;
+      return this.postContent.length === 0;
     },
     contentLenIsValid() {
-      return this.storyContent.length > 300;
+      return this.postContent.length > 300;
     },
     formIsValid() {
-      return !this.titleIsRequired && !this.titleLenIsValid && !this.contentIsRequired && !this.contentLenIsValid;
+      return !this.contentIsRequired && !this.contentLenIsValid;
     }
   },
   methods: {
     handleSubmit(e) {
       e.preventDefault();
 
-      let story = {
-        title: this.title,
-        content: this.storyContent,
-        user: '5d889acfaad4ada6bdae383a'
+      let post = {
+        content: this.postContent,
+        user: '5d8433c7d0ab87a09351532d'
       };
 
-      Api.post(
-        'stories',
-        { title: story.title, content: story.content, user: story.user })
+      Api.post('posts', { content: post.content, user: post.user })
         .then(response => {
-          this.stories.unshift(response.data);
-          this.stories.pop();
+          this.posts.unshift(response.data);
+          this.posts.pop();
         })
         .catch(error => {
           console.log(error);
@@ -95,19 +75,15 @@ export default {
     },
     close(e) {
       e.preventDefault();
+
       this.$emit('close', e);
-      this.title = '';
-      this.storyContent = '';// <!-- story done-->
+      this.postContent = '';
     }
   }
 };
 </script>
 
 <style scoped>
-  * {
-    box-sizing: border-box;
-  }
-
   .modal-header h3 {
     margin-top: 0;
     color: #42b983;
