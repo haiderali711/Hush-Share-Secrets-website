@@ -7,8 +7,8 @@
       <div class="modal-body">
 
         <label class = "form-label">
-          Title * 
-          <input 
+          Title *
+          <input
             v-model="title"
             rows="1"
             class="form-control"
@@ -42,11 +42,11 @@ import { Api } from '../../../Api';
 import Modal from './ModalTemplate';
 
 export default {
-  name: 'edit-story-modal', //<!-- story done -->
-  props: ['show', 'story'], //<!-- story done-->
+  name: 'edit-story-modal', // <!-- story done -->
+  props: ['show', 'story'], // <!-- story done-->
   data() {
     return {
-      title:'',
+      title: '',
       storyContent: ''
     };
   },
@@ -59,34 +59,34 @@ export default {
   },
   computed: {
     titleIsRequired() {
-      return this.title.length === 0;//<!-- story done -->
+      return this.title.length === 0;// <!-- story done -->
     },
     contentIsRequired() {
-      return this.storyContent.length === 0;//<!-- story done -->
+      return this.storyContent.length === 0;// <!-- story done -->
     },
     contentLenIsValid() {
-      return this.storyContent.length > 300;//<!-- story done -->
+      return this.storyContent.length > 300;// <!-- story done -->
     },
     formIsValid() {
-      return !this.titleIsRequired && !this.contentIsRequired && !this.contentLenIsValid;//<!-- story DONE-->
+      return !this.titleIsRequired && !this.contentIsRequired && !this.contentLenIsValid;// <!-- story DONE-->
     }
   },
   watch: {
     show() {
       if (this.show) {
-        this.title = this.story.title;//<!-- story ADDED TITLE -->
-        this.storyContent = this.story.content;//<!-- story done -->
+        this.title = this.story.title;// <!-- story ADDED TITLE -->
+        this.storyContent = this.story.content;// <!-- story done -->
       }
     }
   },
   methods: {
     handleSubmit(e) {
       e.preventDefault();
-      
-      Api.patch(`stories/${this.story._id}`, { title: this.title, content: this.storyContent })//<!-- story done -->
+
+      Api.patch(`stories/${this.story._id}`, { title: this.title, content: this.storyContent })// <!-- story done -->
         .then(response => {
-          this.$props.story.title = this.title;//<!-- story done -->
-          this.$props.story.content = this.storyContent;//<!-- story done -->
+          this.$props.story.title = this.title;// <!-- story done -->
+          this.$props.story.content = this.storyContent;// <!-- story done -->
         })
         .catch(error => {
           console.log(error);
@@ -100,7 +100,7 @@ export default {
 
       this.$emit('close', e);
       this.title = '';
-      this.storyContent = '';//<!-- story done-->
+      this.storyContent = '';// <!-- story done-->
     }
   }
 };

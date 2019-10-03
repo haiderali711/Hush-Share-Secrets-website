@@ -3,19 +3,15 @@
     <div>
       <b-navbar id="nav_bar1" class="fixed-top" toggleable="lg" type="dark" variant="info">
         <b-navbar-brand to="/welcome">
-          <img src="../assets/logo.svg" alt="logo">
+          <img src="../assets/Group2.svg">
           <span>Hush</span>
         </b-navbar-brand>
-
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
-            <div class="nav-item dropdown show">
-              <b-nav-item onclick="myFunction()" class="dropbtn">Upload</b-nav-item>
-            </div>
             <b-nav-item  class="menuoption1" to="/welcome">Main page</b-nav-item>
             <b-nav-item  class="menuoption1" to="/stories">Stories</b-nav-item>
             <b-nav-item class= "menuoption1" to="/posts" center>Posts</b-nav-item>
-            <b-nav-item class= "menuoption" v-if= "logged" @click="signOut" right>Sign Out</b-nav-item>
+            <b-nav-item class= "menuoption" v-if= "logged" @click="signOut()" right>Sign Out</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
@@ -30,7 +26,6 @@
         </div>
         <div class="back">
           <b-link to="/posts/" center>
-
             <h2 style="color:white">Posts</h2>
             <p>Short and neat format for secrets you want to get of your chest quickly</p>
           </b-link>
@@ -57,10 +52,8 @@
           <p>This is your space. You decide what to do with it</p>
         </div>
       </div>
-
       <br>
       <br>
-
       <!-- vertical -->
       <div class="flip">
         <div class="front" style="background-color: #313131;">
@@ -87,25 +80,18 @@
         </div>
         <div class="back">
           <b-link v-if= "logged" @click="signOut()" right>
-
             <h2 style="color:white">Sign out</h2>
             <p>Are you sure you don't want to share with the world? If so, we hope to see you soon!</p>
           </b-link>
         </div>
-
       </div>
 
     </div>
   </div>
-
   <!--posts goes here-->
-
 </template>
-
 <script>
-import { Api } from '@/Api'
-import { setCookies, getCookieObj } from '../utils/CookiesController'
-import Grid from '../components/Grid'
+import { Api } from '../Api';
 
 export default {
   name: 'welcome',
@@ -113,45 +99,31 @@ export default {
     return {
       downL: false,
       logged: true,
-      mod: false }
+      mod: false };
   },
   mounted() {
-    this.getMessage()
+    this.getMessage();
   },
   methods: {
     signOut() {
-      this.downL = false
-      this.mod = false
-      this.logged = false
-
-      console.log(JSON.stringify(getCookieObj()));
-      setCookies(JSON.parse(getCookieObj()), -1)
-
-      location.href = '/#home/'
+      this.downL = false;
+      this.mod = false;
+      this.logged = false;
+      location.href = '/#home/';
     },
     getMessage() {
       Api.get('/')
         .then(response => {
-          this.message = response.data.message
+          this.message = response.data.message;
         })
         .catch(error => {
-          this.message = error
-        })
+          this.message = error;
+        });
     }
   }
-}
+};
 </script>
-
 <style scoped>
-  body {
-    color: #555;
-    background: #222;
-    text-align: center;
-    padding: 1em;
-  }
-  h1 {
-    font-size: 2.2em;
-  }
   .flip {
     position: relative;
     top:150px;
@@ -218,92 +190,41 @@ export default {
   .text-shadow {
     text-shadow: 1px 1px rgba(0, 0, 0, 0.04), 2px 2px rgba(0, 0, 0, 0.04), 3px 3px rgba(0, 0, 0, 0.04), 4px 4px rgba(0, 0, 0, 0.04), 0.125rem 0.125rem rgba(0, 0, 0, 0.04), 6px 6px rgba(0, 0, 0, 0.04), 7px 7px rgba(0, 0, 0, 0.04), 8px 8px rgba(0, 0, 0, 0.04), 9px 9px rgba(0, 0, 0, 0.04), 0.3125rem 0.3125rem rgba(0, 0, 0, 0.04), 11px 11px rgba(0, 0, 0, 0.04), 12px 12px rgba(0, 0, 0, 0.04), 13px 13px rgba(0, 0, 0, 0.04), 14px 14px rgba(0, 0, 0, 0.04), 0.625rem 0.625rem rgba(0, 0, 0, 0.04), 16px 16px rgba(0, 0, 0, 0.04), 17px 17px rgba(0, 0, 0, 0.04), 18px 18px rgba(0, 0, 0, 0.04), 19px 19px rgba(0, 0, 0, 0.04), 1.25rem 1.25rem rgba(0, 0, 0, 0.04);
   }
-
-  .dropbtn {
-    border: none;
-    cursor: pointer;
-  }
-
-  .dropdown {
-    position: relative;
-    display: inline-block;
-
-  }
-
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    overflow: auto;
-  }
-
   .dropdown-content a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
   }
-
   .dropdown a:hover {
     background-color: #ddd;
   }
-
   .show {
     display: block;
   }
-
   #nav_bar1 {
     background-color: #2F303A!important;
     width: 100%;
 
   }
-
-  .icon1{
-    position: absolute;
-    left:36px;
-    top: 30px;
-    bottom: 0%;
-  }
-
-  .name{
-    position: absolute;
-    top: 30px;
-    left: 98px;
-    font-weight: normal;
-    font-size: 30px;
-    color:#FFFFFF;
-  }
-
   .main_container2 {
     background: #FFFF;
     height: 100vh;
   }
-
   main{
     max-width: 1300px;
     margin:auto;
   }
-
-  .menuoption2, .dropdowntbn{
-    margin-right:50px;
-  }
-
   @media (max-width: 991.98px) {
-
   }
-
   @media (max-width: 1024.98px) {
 
   }
   @media (max-width: 780.98px) {
-
   }
-
   @media (max-width: 767.98px) {
     .flip{
       margin-left: 4px;
     }
   }
-
 </style>

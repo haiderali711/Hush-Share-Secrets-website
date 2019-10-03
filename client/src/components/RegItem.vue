@@ -31,7 +31,7 @@
 
 <script>
 
-import { Api } from '@/Api'
+import { Api } from '@/Api';
 
 export default {
   data() {
@@ -43,38 +43,38 @@ export default {
       valid: true,
       show: true,
       invalidEmail: false
-    }
+    };
   },
   methods: {
     onSubmit(evt) {
-      evt.preventDefault()
-      var newUser = this.form
-      console.log(newUser)
+      evt.preventDefault();
+      var newUser = this.form;
+      console.log(newUser);
       Api.post('/users', newUser)
         .then(response => {
           if (response.data.emailAready == true) {
-            this.invalidEmail = true
+            this.invalidEmail = true;
             // alert(JSON.stringify(response.data))
           }
         })
         .catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
     onReset(evt) {
-      evt.preventDefault()
+      evt.preventDefault();
       // Reset our form values
-      this.form.email = ''
-      this.form.password = ''
+      this.form.email = '';
+      this.form.password = '';
       // Trick to reset/clear native browser form validation state
-      this.show = false
+      this.show = false;
       this.$nextTick(() => {
-        this.show = true
-      })
+        this.show = true;
+      });
     }
 
   }
-}
+};
 </script>
 
 <style>

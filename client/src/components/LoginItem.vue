@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { Api } from '@/Api'
+import { Api } from '@/Api';
 
 export default {
   data() {
@@ -29,41 +29,41 @@ export default {
       show: true,
       invalidEoP: false,
       message: ''
-    }
+    };
   },
   methods: {
     onSubmit(evt) {
-      evt.preventDefault()
-      var newUser = this.form
+      evt.preventDefault();
+      var newUser = this.form;
 
-      console.log(JSON.stringify(newUser))
+      console.log(JSON.stringify(newUser));
       Api.post('/users/login/', newUser)
         .then(response => {
           if (response.data.message == null) {
-            this.$emit('signedIn', response)
+            this.$emit('signedIn', response);
           } else {
-            this.message = response.data.message
-            this.invalidEoP = true
+            this.message = response.data.message;
+            this.invalidEoP = true;
           }
         })
         .catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
     onReset(evt) {
-      evt.preventDefault()
+      evt.preventDefault();
       // Reset our form values
-      this.form.email = ''
-      this.form.password = ''
+      this.form.email = '';
+      this.form.password = '';
       // Trick to reset/clear native browser form validation state
-      this.show = false
+      this.show = false;
       this.$nextTick(() => {
-        this.show = true
-      })
+        this.show = true;
+      });
     }
   }
 
-}
+};
 
 </script>
 

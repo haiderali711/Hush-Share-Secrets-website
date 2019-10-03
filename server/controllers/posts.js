@@ -10,22 +10,22 @@ const Comment = require('../models/Comment');
  *                  500, if internal server error.
  */
 const getAllPosts = (req, res) => {
-  let filter = 0;
-  if (Object.entries(req.query).length === 1) {
-    if (req.query.des === 'true') filter = -1;
-    if (req.query.asc === 'true') filter = 1;
-  }
+  const options = {
+    // for sorting see: https://github.com/aravindnc/mongoose-paginate-v2/issues/15
+    sort: { published: -1 },
+    page: req.query.page === 'undefined' ? 1 : req.query.page,
+    limit:
+      typeof req.query.limit === 'undefined' || req.query.limit === 'undefined'
+        ? 9
+        : req.query.limit
+  };
 
-  Post.find()
-    .sort({ _id: filter })
-    .select('-__v')
-    .exec()
-    .then(docs => {
-      if (!docs.length) throw 404;
+  Post.paginate({}, options)
+    .then(result => {
+      if (!result.totalDocs) throw 404;
 
       res.status(200).json({
-        count: docs.length,
-        posts: docs.map(doc => doc)
+        ...result
       });
     })
     .catch(error => {
@@ -239,17 +239,26 @@ const deletePostWithId = (req, res) => {
  */
 const getAllCommentsWithPostId = (req, res) => {
   const id = req.params.id;
+  const countBool = req.query.count;
 
-  Comment.find({ post: { $eq: id } })
-    .select('-__v')
+  const fields = {};
+  let fieldsArray = req.query.fields ? req.query.fields.split(',') : [];
+  fieldsArray.map(field => {
+    fields[field] = 1;
+  });
+
+  Comment.find({ post: { $eq: id } }, Object.keys(fields).length ? fields : '')
     .populate('user', '-__v')
     .exec()
     .then(docs => {
       if (docs.length === 0) throw 404;
 
+      const response = {};
+      if (countBool) response.count = docs.length;
+      else response.comments = docs;
+
       res.status(200).json({
-        count: docs.length,
-        comments: docs.map(doc => doc._doc)
+        ...response
       });
     })
     .catch(error => {

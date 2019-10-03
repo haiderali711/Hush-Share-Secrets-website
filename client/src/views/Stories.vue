@@ -9,13 +9,9 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
-
-            <div class="nav-item dropdown show">
-              <b-nav-item onclick="myFunction()" class="dropbtn">Upload</b-nav-item>
-            </div>
             <b-nav-item  class="menuoption1" to="/welcome">Main page</b-nav-item>
-            <b-nav-item  class="menuoption1" to="/stories">Stories</b-nav-item>
             <b-nav-item class= "menuoption1" to="/posts" center>Posts</b-nav-item>
+            <b-nav-item  class="menuoption1" to="/stories">Stories</b-nav-item>
             <b-nav-item class= "menuoption" v-if= "logged" @click="signOut()" right>Sign Out</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
@@ -78,13 +74,13 @@
 </template>
 
 <script>
-import { Api } from '../Api'
-import { setCookies, getCookieObj } from '../utils/CookiesController'
-import Grid from '../components/Grid'
-import StoryItem from '../components/StoryItem'
-import EditStoryModal from '../components/shared/Modal/EditStoryModal'
-import CreateStoryModal from '../components/shared/Modal/CreateStoryModal'
-import Paginate from 'vuejs-paginate'
+import { Api } from '../Api';
+import { setCookies, getCookieObj } from '../utils/CookiesController';
+import Grid from '../components/Grid';
+import StoryItem from '../components/StoryItem';
+import EditStoryModal from '../components/shared/Modal/EditStoryModal';
+import CreateStoryModal from '../components/shared/Modal/CreateStoryModal';
+import Paginate from 'vuejs-paginate';
 
 export default {
   name: 'stories',
@@ -98,7 +94,7 @@ export default {
       downL: false,
       logged: true,
       mod: false
-    }
+    };
   },
   components: {
     Grid,
@@ -108,70 +104,70 @@ export default {
     CreateStoryModal
   },
   mounted() {
-    this.getStories()
+    this.getStories();
   },
   methods: {
     signOut() {
-      this.downL = false
-      this.mod = false
-      this.logged = false
+      this.downL = false;
+      this.mod = false;
+      this.logged = false;
 
       // Deleting the Cookies
       try {
-        setCookies(JSON.parse(getCookieObj()), -1)
+        setCookies(JSON.parse(getCookieObj()), -1);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-      location.href = '/#home/'
+      location.href = '/#home/';
     },
     getStories(page) {
-      const pageNum = page || this.$route.query.page
-      const limit = this.$route.query.limit
+      const pageNum = page || this.$route.query.page;
+      const limit = this.$route.query.limit;
 
-      const url = `/stories?page=${pageNum}&limit=${limit}`
+      const url = `/stories?page=${pageNum}&limit=${limit}`;
 
       Api.get(url)
         .then(response => {
-          this.stories = response.data.docs
-          this.totalPages = response.data.totalPages
+          this.stories = response.data.docs;
+          this.totalPages = response.data.totalPages;
         })
         .catch(error => {
-          this.stories = []
-          console.log(error)
-        })
+          this.stories = [];
+          console.log(error);
+        });
     },
     getNextPage(page) {
       Api.get(`/storie?page=${page}`)
         .then(response => {
-          this.$router.push(`/stories?page=${page}`)
+          this.$router.push(`/stories?page=${page}`);
 
-          this.stories = response.data.docs
+          this.stories = response.data.docs;
         })
         .catch(error => {
-          this.stories = []
-          console.log(error)
-        })
+          this.stories = [];
+          console.log(error);
+        });
     },
     editStoryModal(id) {
-      this.showEditStoryModal = true
-      let index = this.stories.findIndex(story => story._id === id)
-      this.storyToEdit = this.stories[index]
+      this.showEditStoryModal = true;
+      let index = this.stories.findIndex(story => story._id === id);
+      this.storyToEdit = this.stories[index];
     },
     createStory() {
-      this.showCreateStoryModal = true
+      this.showCreateStoryModal = true;
     },
     deleteStory(id) {
       Api.delete(`/stories/${id}`)
         .then(response => {
-          let index = this.stories.findIndex(story => story._id === id)
-          this.stories.splice(index, 1)
+          let index = this.stories.findIndex(story => story._id === id);
+          this.stories.splice(index, 1);
         })
         .catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     }
   }
-}
+};
 </script>
 
 <!--

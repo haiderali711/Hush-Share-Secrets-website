@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
@@ -9,5 +10,7 @@ const postSchema = new Schema({
   dislikes: { type: Number, default: 0 },
   group: { type: String, ref: 'Group', default: '' }
 });
+
+postSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Post', postSchema);
