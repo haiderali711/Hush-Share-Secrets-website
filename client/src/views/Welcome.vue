@@ -72,6 +72,7 @@
 <script>
 import { Api } from '../Api';
 import Grid from '../components/Grid';
+import CookiesController from '../utils/CookiesController.js';
 
 export default {
   name: 'welcome',
@@ -92,7 +93,12 @@ export default {
       this.downL = false;
       this.mod = false;
       this.logged = false;
+      
+      var resp = JSON.parse(CookiesController.getCookieObj());
+      CookiesController.setCookies(resp, -1);
+      
       location.href = '/#home/';
+
     },
     getMessage() {
       Api.get('/')
@@ -102,6 +108,12 @@ export default {
         .catch(error => {
           this.message = error;
         });
+    }
+  },
+  created : () => { 
+    var cook = JSON.parse(CookiesController.getCookieObj());
+    if (cook == null) {
+      location.href = '/#home/';
     }
   }
 };

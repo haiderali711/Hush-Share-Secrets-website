@@ -64,6 +64,7 @@
 <script>
 import { Api } from '../Api';
 import Paginate from 'vuejs-paginate';
+import CookiesController from '../utils/CookiesController';
 import Grid from '../components/Grid';
 import PostItem from '../components/PostItem';
 import PostDetails from '../components/Post/PostDetails';
@@ -94,6 +95,12 @@ export default {
     EditPostModal,
     CreatePostModal,
     Paginate
+  },
+  created : () => { 
+    var cook = JSON.parse(CookiesController.getCookieObj());
+    if (cook == null) {
+      location.href = '/#home/';
+    }
   },
   mounted() {
     this.getPosts();
@@ -136,7 +143,7 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    }
+    },
   }
 };
 </script>
