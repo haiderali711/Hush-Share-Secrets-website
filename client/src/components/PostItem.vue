@@ -8,7 +8,8 @@
         </div>
         <div class="post_actions">
           <bookmark bookmarked="gold" fill-color="gold" v-bind:style="{ marginRight: '10px' }" />
-          <b-dropdown right variant="link" toggle-class="text-decoration-none" no-caret>
+          <img v-if="!loggedIn" src="../assets/moreActions.svg" alt="more actions">
+          <b-dropdown v-if="loggedIn" right variant="link" toggle-class="text-decoration-none" no-caret>
             <template v-slot:button-content class="drop_down_button">
               <img src="../assets/moreActions.svg" alt="more actions">
             </template>
@@ -23,15 +24,14 @@
         </div>
       </div>
 
-      <router-link
-        :to="{ path: `/posts/${post._id}`, post: post}"
-      >
-        <div v-on:click="$emit('show-detailed-post-modal', post._id)">
+      <p v-if="!loggedIn">{{post.content}}</p>
+      <a v-if="loggedIn" href="#">
+        <div v-on:click="$emit('show-detailed-post-modal', post)">
         <p class="post_excerpt">
           {{post.content}}
         </p>
         </div>
-      </router-link>
+      </a>
       <span
         v-bind:style="{ color: '#495057c7' }"
       >
@@ -39,7 +39,7 @@
       </span>
       <post-categories :post="post"/>
     </div>
-    <post-footer :post="post"/>
+    <post-footer :post="post" :loggedIn="loggedIn"/>
   </div>
 </template>
 
@@ -52,7 +52,7 @@ import PostFooter from './Post/PostFooter';
 
 export default {
   name: 'post-item',
-  props: ['post'],
+  props: ['post', 'loggedIn'],
   data() {
     return {
       bookmarked: false
@@ -91,20 +91,6 @@ export default {
     margin-bottom: 15px;
   }
 
-  /*.post_avatar_wrapper {*/
-  /*  display: flex;*/
-  /*  align-items: center;*/
-  /*}*/
-  /*.post_avatar {*/
-  /*  background-color: #9FADBF;*/
-  /*  border-radius: 50%;*/
-  /*  height: 35px;*/
-  /*  width: 35px;*/
-  /*}*/
-  /*.post_username {*/
-  /*  margin-left: 14px;*/
-  /*}*/
-
   .post_excerpt {
     max-height: 81px;
     overflow: hidden;
@@ -112,37 +98,7 @@ export default {
     margin-bottom: 10px;
   }
 
-  /*.post_footer {*/
-  /*  display: flex;*/
-  /*  justify-content: space-between;*/
-  /*  align-items: center;*/
-  /*  background-color: #f1f5f7;*/
-  /*  border-radius: 0 0 10px 10px;*/
-  /*  margin-top: 11px;*/
-  /*  padding: 10px 20px 10px 20px;*/
-  /*}*/
-
   .reactions > span > img {
     margin-top: -3px;
   }
-
-  /*.reaction_button {*/
-  /*  border: 0;*/
-  /*  background-color: transparent;*/
-  /*}*/
-
-  /*.reaction_button {*/
-  /*  border-radius: 5px;*/
-  /*}*/
-
-  /*.reaction_button:hover,*/
-  /*.reaction_button:focus {*/
-  /*  border: 0;*/
-  /*  background-color: #E2E8F0;*/
-  /*}*/
-
-  /*.reaction_button:focus {*/
-  /*  outline: 0 solid #E2E8F0;*/
-  /*  outline-offset: -4px;*/
-  /*}*/
 </style>

@@ -24,14 +24,13 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-button type="submit" pill variant="outline-secondary">Register</b-button>
-      <b-button type="reset" pill variant="outline-danger">Reset</b-button>
+      <b-button type="reset" variant="outline-danger" style="margin-right: 20px">Reset</b-button>
+      <b-button type="submit" variant="outline-secondary">Register</b-button>
     </b-form>
 </template>
 
 <script>
-
-import { Api } from '@/Api';
+import { Api } from '../Api';
 
 export default {
   data() {
@@ -48,14 +47,12 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      var newUser = this.form;
-      console.log(newUser);
+
+      const newUser = this.form;
+
       Api.post('/users', newUser)
         .then(response => {
-          if (response.data.emailAready == true) {
-            this.invalidEmail = true;
-            // alert(JSON.stringify(response.data))
-          }
+          if (response.data.emailAready === true) this.invalidEmail = true;
         })
         .catch(error => {
           console.log(error);
@@ -63,16 +60,15 @@ export default {
     },
     onReset(evt) {
       evt.preventDefault();
-      // Reset our form values
+
       this.form.email = '';
       this.form.password = '';
-      // Trick to reset/clear native browser form validation state
       this.show = false;
+
       this.$nextTick(() => {
         this.show = true;
       });
     }
-
   }
 };
 </script>

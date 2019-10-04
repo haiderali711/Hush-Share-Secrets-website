@@ -3,7 +3,6 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Posts from './views/Posts.vue';
 import Stories from './views/Stories.vue';
-import Post from './views/Post.vue';
 import Welcome from './views/Welcome.vue';
 
 Vue.use(Router);
@@ -31,11 +30,6 @@ export default new Router({
       path: '/stories',
       name: 'stories',
       component: Stories
-    },
-    {
-      path: '/posts/:id',
-      name: 'post',
-      component: Post
     }
   ]
 });

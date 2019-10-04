@@ -255,7 +255,20 @@ const getAllCommentsWithPostId = (req, res) => {
 
       const response = {};
       if (countBool) response.count = docs.length;
-      else response.comments = docs;
+      else {
+        response.comments = docs.map(comment => {
+          return {
+            _id: comment._id,
+            content: comment.content,
+            post: comment.post,
+            published: comment.published,
+            user: {
+              _id: comment.user._id,
+              username: comment.user.username
+            }
+          };
+        });
+      }
 
       res.status(200).json({
         ...response
@@ -288,7 +301,16 @@ const getPostCommentWithPostId = (req, res) => {
     .then(doc => {
       if (!doc) throw 404;
 
-      res.status(200).json(doc);
+      res.status(200).json({
+        _id: doc._id,
+        content: doc.content,
+        post: doc.post,
+        user: {
+          _id: doc.user._id,
+          username: doc.user.username
+        },
+        published: doc.published
+      });
     })
     .catch(error => {
       if (error === 404)
@@ -332,8 +354,9 @@ const createPostComment = (req, res) => {
       res.status(201).json({
         _id: result._id,
         content: result.content,
+        post: result.post,
         user: result.user,
-        post: result.post
+        published: result.published
       });
     })
     .catch(error => {
