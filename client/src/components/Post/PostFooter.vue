@@ -1,21 +1,21 @@
 <template>
   <div class="post_footer">
     <div class="reactions">
-      <likes :post="post" />
-      <dis-likes :post="post"/>
+      <likes :post="post" :loggedIn="loggedIn"/>
+      <dis-likes :post="post" :loggedIn="loggedIn"/>
     </div>
     <share :post="post"/>
   </div>
 </template>
 
 <script>
-import Likes from '../shared/Post/Likes';
-import DisLikes from '../shared/Post/DisLikes';
+import Likes from './Likes';
+import DisLikes from './DisLikes';
 import Share from '../shared/Share';
 
 export default {
   name: 'post-footer',
-  props: ['post'],
+  props: ['post', 'loggedIn'],
   data() {
     return {
     };

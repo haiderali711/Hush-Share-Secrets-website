@@ -23,45 +23,39 @@
         </div>
       </div>
 
-      <router-link
-        :to="{ path: `/stories/${story._id}`, story: story}" >
-        <div v-on:click="$emit('show-detailed-story-modal', story._id)">
+      <a href="#">
+        <div v-on:click="$emit('show-detailed-story-modal', story)">
           <h4>{{story.title}}</h4>
           <p class="post_excerpt">
             {{story.content}}
           </p>
         </div>
-      </router-link>
-      <span v-bind:style="{ color: '#495057c7' }">
-        <date :date="story.published" /> •
+      </a>
+      <span
+        v-bind:style="{ color: '#495057c7' }"
+      >
+        <date :date="story.published" /> • <reading-time :content="story.content" />
       </span>
-      <!-- <post-categories :story="story"/> -->
     </div>
-    <!-- <post-footer :story="story"/> -->
   </div>
 </template>
 
 <script>
 import Bookmark from './shared/Bookmark';
 import Date from './shared/Date';
-// import ReadingTime from './shared/ReadingTime';
-// import PostCategories from './post/PostCategories';
-// import PostFooter from './Post/PostFooter';
+import ReadingTime from './shared/ReadingTime';
 
 export default {
   name: 'story-item',
   props: ['story'],
   data() {
     return {
-      bookmarked: false
     };
   },
   components: {
     Bookmark,
-    Date
-    // ReadingTime,
-    // PostCategories,
-    // PostFooter
+    Date,
+    ReadingTime
   },
   methods: {
   }
@@ -89,20 +83,6 @@ export default {
     margin-bottom: 15px;
   }
 
-  /*.post_avatar_wrapper {*/
-  /*  display: flex;*/
-  /*  align-items: center;*/
-  /*}*/
-  /*.post_avatar {*/
-  /*  background-color: #9FADBF;*/
-  /*  border-radius: 50%;*/
-  /*  height: 35px;*/
-  /*  width: 35px;*/
-  /*}*/
-  /*.post_username {*/
-  /*  margin-left: 14px;*/
-  /*}*/
-
   .post_excerpt {
     max-height: 81px;
     overflow: hidden;
@@ -110,37 +90,7 @@ export default {
     margin-bottom: 10px;
   }
 
-  /*.post_footer {*/
-  /*  display: flex;*/
-  /*  justify-content: space-between;*/
-  /*  align-items: center;*/
-  /*  background-color: #f1f5f7;*/
-  /*  border-radius: 0 0 10px 10px;*/
-  /*  margin-top: 11px;*/
-  /*  padding: 10px 20px 10px 20px;*/
-  /*}*/
-
   .reactions > span > img {
     margin-top: -3px;
   }
-
-  /*.reaction_button {*/
-  /*  border: 0;*/
-  /*  background-color: transparent;*/
-  /*}*/
-
-  /*.reaction_button {*/
-  /*  border-radius: 5px;*/
-  /*}*/
-
-  /*.reaction_button:hover,*/
-  /*.reaction_button:focus {*/
-  /*  border: 0;*/
-  /*  background-color: #E2E8F0;*/
-  /*}*/
-
-  /*.reaction_button:focus {*/
-  /*  outline: 0 solid #E2E8F0;*/
-  /*  outline-offset: -4px;*/
-  /*}*/
 </style>

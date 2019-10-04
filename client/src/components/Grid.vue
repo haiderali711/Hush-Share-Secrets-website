@@ -18,7 +18,7 @@ export default {
     grid-template-columns: repeat(3, 1fr);
     /*grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));*/
     grid-gap: 40px;
-    padding: 20px;
+    /*padding: 20px;*/
   }
 
   @media (max-width: 991.98px) {

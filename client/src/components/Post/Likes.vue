@@ -23,18 +23,20 @@
   </button>
 </template>
 <script>
-import { Api } from '../../../Api';
+import { Api } from '../../Api';
 
 export default {
   name: 'likes',
-  props: ['post'],
+  props: ['post', 'loggedIn'],
   methods: {
     updateLikes() {
-      Api.patch(`posts/${this.post._id}`, { likes: ++this.post.likes })
-        .then()
-        .catch(error => {
-          console.log(error);
-        });
+      if (this.loggedIn) {
+        Api.patch(`posts/${this.post._id}`, { likes: ++this.post.likes })
+          .then()
+          .catch(error => {
+            console.log(error);
+          });
+      }
     }
   }
 };
