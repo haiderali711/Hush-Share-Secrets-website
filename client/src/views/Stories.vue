@@ -1,24 +1,5 @@
 <template>
-  <div class="main_container2" >
-    <div>
-      <b-navbar id="nav_bar1" class="fixed-top" toggleable="lg" type="dark" variant="info">
-        <b-navbar-brand to="/welcome">
-          <img src="../assets/logo.svg">
-          <span>Hush</span>
-        </b-navbar-brand>
-
-        <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav class="ml-auto">
-            <b-nav-item  class="menuoption1" to="/welcome">Main page</b-nav-item>
-            <b-nav-item class= "menuoption1" to="/posts" center>Posts</b-nav-item>
-            <b-nav-item  class="menuoption1" to="/stories">Stories</b-nav-item>
-            <b-nav-item class= "menuoption" v-if= "logged" @click="signOut()" right>Sign Out</b-nav-item>
-          </b-navbar-nav>
-        </b-collapse>
-      </b-navbar>
-
-    </div>
-
+  <div>
     <div class="posts">
       <b-button type="button" class="createButton" @click="createStory">Create Story</b-button>
       <grid>
@@ -26,9 +7,17 @@
           v-for="story in stories"
           :key="story._id"
           :story="story"
+          @show-detailed-story-modal="detailedStoryModal"
           @show-edit-story-modal="editStoryModal"
           @delete-story="deleteStory"></story-item>
       </grid>
+
+      <story-details
+        v-if="storyDetailsToShow"
+        :story="storyDetailsToShow"
+        :show="showDetailedStoryModal"
+        @close="showDetailedStoryModal = false"
+      />
 
       <edit-story-modal
         v-if="storyToEdit"
@@ -75,12 +64,12 @@
 
 <script>
 import { Api } from '../Api';
-import { setCookies, getCookieObj } from '../utils/CookiesController';
+import Paginate from 'vuejs-paginate';
 import Grid from '../components/Grid';
 import StoryItem from '../components/StoryItem';
-import EditStoryModal from '../components/shared/Modal/EditStoryModal';
-import CreateStoryModal from '../components/shared/Modal/CreateStoryModal';
-import Paginate from 'vuejs-paginate';
+import EditStoryModal from '../components/Story/EditStoryModal';
+import CreateStoryModal from '../components/Story/CreateStoryModal';
+import StoryDetails from '../components/Story/StoryDetails';
 
 export default {
   name: 'stories',
@@ -89,6 +78,8 @@ export default {
       stories: [],
       totalPages: 0,
       storyToEdit: null,
+      showDetailedStoryModal: false,
+      storyDetailsToShow: null,
       showEditStoryModal: false,
       showCreateStoryModal: false,
       downL: false,
@@ -100,6 +91,7 @@ export default {
     Grid,
     StoryItem,
     Paginate,
+    StoryDetails,
     EditStoryModal,
     CreateStoryModal
   },
@@ -107,19 +99,6 @@ export default {
     this.getStories();
   },
   methods: {
-    signOut() {
-      this.downL = false;
-      this.mod = false;
-      this.logged = false;
-
-      // Deleting the Cookies
-      try {
-        setCookies(JSON.parse(getCookieObj()), -1);
-      } catch (error) {
-        console.log(error);
-      }
-      location.href = '/#home/';
-    },
     getStories(page) {
       const pageNum = page || this.$route.query.page;
       const limit = this.$route.query.limit;
@@ -136,17 +115,9 @@ export default {
           console.log(error);
         });
     },
-    getNextPage(page) {
-      Api.get(`/storie?page=${page}`)
-        .then(response => {
-          this.$router.push(`/stories?page=${page}`);
-
-          this.stories = response.data.docs;
-        })
-        .catch(error => {
-          this.stories = [];
-          console.log(error);
-        });
+    detailedStoryModal(story) {
+      this.showDetailedStoryModal = true;
+      this.storyDetailsToShow = story;
     },
     editStoryModal(id) {
       this.showEditStoryModal = true;
@@ -175,113 +146,7 @@ this style should not be scoped
 see, https://github.com/lokyoung/vuejs-paginate/issues/20
 -->
 <style>
-
-  #nav_bar1 {
-    background-color: #2F303A!important;
-    width: 100%;
-
-  }
-  .main_container3 {
-    background: #FFFF;
-    height: 100vh;
-  }
   .createButton {
     margin-top: 6em;
-    margin-left:1em;
-  }
-  .pagination {
-    justify-content: center;
-    margin-top: 30px;
-    padding-bottom: 20px;
-  }
-  .pagination > li {
-    display: inline;
-  }
-  .pagination > li > a,
-  .pagination > li > span {
-    position: relative;
-    float: left;
-    padding: 6px 12px;
-    margin-left: -1px;
-    line-height: 1.42857143;
-    color: #337ab7;
-    text-decoration: none;
-    background-color: #fff;
-    border: 1px solid #ddd;
-  }
-  .pagination > li:first-child > a,
-  .pagination > li:first-child > span {
-    margin-left: 0;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-  }
-  .pagination > li:last-child > a,
-  .pagination > li:last-child > span {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-  }
-  .pagination > li > a:hover,
-  .pagination > li > span:hover,
-  .pagination > li > a:focus,
-  .pagination > li > span:focus {
-    z-index: 3;
-    color: #23527c;
-    background-color: #eee;
-    border-color: #ddd;
-  }
-  .pagination > .active > a,
-  .pagination > .active > span,
-  .pagination > .active > a:hover,
-  .pagination > .active > span:hover,
-  .pagination > .active > a:focus,
-  .pagination > .active > span:focus {
-    z-index: 2;
-    color: #fff;
-    cursor: default;
-    background-color: #337ab7;
-    border-color: #337ab7;
-  }
-  .pagination > .disabled > span,
-  .pagination > .disabled > span:hover,
-  .pagination > .disabled > span:focus,
-  .pagination > .disabled > a,
-  .pagination > .disabled > a:hover,
-  .pagination > .disabled > a:focus {
-    color: #777;
-    cursor: not-allowed;
-    background-color: #fff;
-    border-color: #ddd;
-  }
-  .pagination-lg > li > a,
-  .pagination-lg > li > span {
-    padding: 10px 16px;
-    font-size: 18px;
-    line-height: 1.3333333;
-  }
-  .pagination-lg > li:first-child > a,
-  .pagination-lg > li:first-child > span {
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-  }
-  .pagination-lg > li:last-child > a,
-  .pagination-lg > li:last-child > span {
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
-  }
-  .pagination-sm > li > a,
-  .pagination-sm > li > span {
-    padding: 5px 10px;
-    font-size: 12px;
-    line-height: 1.5;
-  }
-  .pagination-sm > li:first-child > a,
-  .pagination-sm > li:first-child > span {
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-  }
-  .pagination-sm > li:last-child > a,
-  .pagination-sm > li:last-child > span {
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
   }
 </style>

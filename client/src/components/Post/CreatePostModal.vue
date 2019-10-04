@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import { Api } from '../../../Api';
-import Modal from './ModalTemplate';
+import { Api } from '../../Api';
+import Modal from '../shared/Modal/ModalTemplate';
 
 export default {
   name: 'create-post-modal',

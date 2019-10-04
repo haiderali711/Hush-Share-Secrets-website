@@ -24,18 +24,20 @@
   </button>
 </template>
 <script>
-import { Api } from '../../../Api';
+import { Api } from '../../Api';
 
 export default {
   name: 'dis-likes',
-  props: ['post'],
+  props: ['post', 'loggedIn'],
   methods: {
     updateDisLikes() {
-      Api.patch(`posts/${this.post._id}`, { dislikes: ++this.post.dislikes })
-        .then()
-        .catch(error => {
-          console.log(error);
-        });
+      if (this.loggedIn) {
+        Api.patch(`posts/${this.post._id}`, { dislikes: ++this.post.dislikes })
+          .then()
+          .catch(error => {
+            console.log(error);
+          });
+      }
     }
   }
 };
