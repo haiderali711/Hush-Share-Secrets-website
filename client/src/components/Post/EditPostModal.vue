@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import { Api } from '../../../Api';
-import Modal from './ModalTemplate';
+import { Api } from '../../Api';
+import Modal from '../shared/Modal/ModalTemplate';
 
 export default {
   name: 'edit-post-modal',
@@ -75,6 +75,7 @@ export default {
       this.$emit('close', e);
     },
     close(e) {
+      e.preventDefault();
       this.$emit('close', e);
       this.postContent = '';
     }

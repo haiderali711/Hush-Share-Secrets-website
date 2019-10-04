@@ -28,7 +28,8 @@
                 width: 20px;"
               >
               </div>
-              <span>{{comment.user.username}}</span>
+              <span v-if="comment.user.username">{{comment.user.username.slice(0, 5)}}</span>
+              <span v-else>username</span>
               <date :date="comment.published" style="margin-left: 10px"/>
           </div>
             <div style="margin-top: 15px">
@@ -45,6 +46,11 @@
       <strong v-if="comments.length === 0" style="display: inline-block;margin-bottom: 10px;">No comments!!</strong>
       <strong v-else>😫 Unable to load comments 😫.</strong>
     </div>
+
+    <form class="comments_form">
+      <input v-model="newComment.content" placeholder="comment">
+      <button type="submit" @click="createComment($event)">Submit</button>
+    </form>
   </div>
 </template>
 
@@ -59,7 +65,12 @@ export default {
     return {
       comments: [],
       loading: false,
-      error: null
+      error: null,
+      newComment: {
+        content: '',
+        user: '5d95e396704c701a56492c9e',
+        post: this.post._id
+      }
     };
   },
   components: {
@@ -76,10 +87,27 @@ export default {
         .then(response => {
           this.comments = response.data.comments;
           this.loading = false;
-          console.log(this.comments);
         })
         .catch(error => {
           this.loading = false;
+          this.error = error.toString();
+          console.log(error);
+        });
+    },
+    createComment(e) {
+      e.preventDefault();
+      this.comments.push(this.newComment);
+      Api.post(`/posts/${this.post._id}/comments`,
+        {
+          content: this.newComment.content,
+          post: this.newComment.post,
+          user: this.newComment.user
+        }
+      )
+        .then(response => {
+          this.comments.push(response.data);
+        })
+        .catch(error => {
           this.error = error.toString();
           console.log(error);
         });
@@ -89,4 +117,28 @@ export default {
 </script>
 
 <style>
+  .comments_form {
+    background-color: #fff;
+    margin: 20px -30px -14px;
+    display: flex;
+    position: sticky;
+    bottom: -15px;
+  }
+  .comments_form input {
+    flex-grow: 4;
+    margin: 0 10px;
+    padding: 5px 5px 5px 20px;
+    border-radius: 5px;
+    border: 1px solid #e2e8f0;
+    background-color: #edf2f7;
+    box-shadow: none;
+  }
+  .comments_form input:hover,
+  .comments_form input:focus {
+    border-color: #e2e8f0;
+    background-color: #fff;
+  }
+  .comments_form button {
+    border-radius: 5px;
+  }
 </style>

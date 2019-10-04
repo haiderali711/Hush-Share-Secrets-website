@@ -1,33 +1,24 @@
 <template>
   <div class="posts">
-    <div>
-      <b-navbar id="nav_bar1" class="fixed-top" toggleable="lg" type="dark" variant="info">
-        <b-navbar-brand to="/welcome">
-          <img src="../assets/logo.svg">
-          <span>Hush</span>
-        </b-navbar-brand>
-
-        <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav class="ml-auto">
-
-            <b-nav-item  class="menuoption1" to="/welcome">Main page</b-nav-item>
-            <b-nav-item class= "menuoption1" to="/posts" center>Posts</b-nav-item>
-            <b-nav-item  class="menuoption1" to="/stories">Stories</b-nav-item>
-            <b-nav-item class= "menuoption" v-if= "logged" @click="signOut" right>Sign Out</b-nav-item>
-          </b-navbar-nav>
-        </b-collapse>
-      </b-navbar>
-    </div>
-
     <b-button type="button" class="createButton" @click="createPost">Create Post</b-button>
     <grid>
       <post-item
         v-for="post in posts"
         :key="post._id"
         :post="post"
+        :loggedIn="loggedIn"
+        @show-detailed-post-modal="detailedPostModal"
         @show-edit-post-modal="editPostModal"
         @delete-post="deletePost"></post-item>
     </grid>
+
+    <post-details
+      v-if="postDetailsToShow"
+      :post="postDetailsToShow"
+      :show="showDetailedPostModal"
+      :loggedIn="loggedIn"
+      @close="showDetailedPostModal = false"
+    />
 
     <edit-post-modal
       v-if="postToEdit"
@@ -72,19 +63,23 @@
 
 <script>
 import { Api } from '../Api';
+import Paginate from 'vuejs-paginate';
 import Grid from '../components/Grid';
 import PostItem from '../components/PostItem';
-import EditPostModal from '../components/shared/Modal/EditPostModal';
-import CreatePostModal from '../components/shared/Modal/CreatePostModal';
-import Paginate from 'vuejs-paginate';
+import PostDetails from '../components/Post/PostDetails';
+import EditPostModal from '../components/Post/EditPostModal';
+import CreatePostModal from '../components/Post/CreatePostModal';
 
 export default {
   name: 'posts',
+  props: ['loggedIn'],
   data() {
     return {
       posts: [],
       totalPages: 0,
+      postDetailsToShow: null,
       postToEdit: null,
+      showDetailedPostModal: false,
       showEditPostModal: false,
       showCreatePostModal: false,
       downL: false,
@@ -95,6 +90,7 @@ export default {
   components: {
     Grid,
     PostItem,
+    PostDetails,
     EditPostModal,
     CreatePostModal,
     Paginate
@@ -111,9 +107,6 @@ export default {
 
       Api.get(url)
         .then(response => {
-          // todo this is not working
-          // this.$router.push({ path: 'posts', query: { page: this.page } });
-
           this.posts = response.data.docs;
           this.totalPages = response.data.totalPages;
         })
@@ -122,17 +115,9 @@ export default {
           console.log(error);
         });
     },
-    getNextPage(page) {
-      Api.get(`/posts?page=${page}`)
-        .then(response => {
-          this.$router.push(`/posts?page=${page}`);
-
-          this.posts = response.data.docs;
-        })
-        .catch(error => {
-          this.posts = [];
-          console.log(error);
-        });
+    detailedPostModal(post) {
+      this.showDetailedPostModal = true;
+      this.postDetailsToShow = post;
     },
     editPostModal(id) {
       this.showEditPostModal = true;

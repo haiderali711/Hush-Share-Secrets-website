@@ -44,13 +44,21 @@ export default {
   }
 
   .modal-container {
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    margin: 40px auto 0 auto;
     max-width: 500px;
     border-radius: 10px;
-    margin: 40px auto 0;
     padding: 20px 30px;
     background-color: #fff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     transition: all .3s ease;
+  }
+
+  @media (max-width: 767px) {
+    .modal-container {
+      margin: 40px 10px 0 10px;
+    }
   }
 
   .modal-template-enter {
