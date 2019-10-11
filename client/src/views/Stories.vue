@@ -98,8 +98,8 @@ export default {
   mounted() {
     this.getStories();
   },
-  created (){ 
-    var cook = JSON.parse(CookiesController.getCookieObj());
+  created() {
+    const cook = JSON.parse(CookiesController.getCookieObj());
     if (cook == null) {
       location.href = '/#home/';
     }
