@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import { Api } from '@/Api';
-import LoginItem from '@/components/LoginItem';
+import { Api } from '../Api';
+import LoginItem from '../components/LoginItem';
 
 export default {
   name: 'home',

@@ -96,11 +96,9 @@ export default {
     CreatePostModal,
     Paginate
   },
-  created : () => { 
-    var cook = JSON.parse(CookiesController.getCookieObj());
-    if (cook == null) {
-      location.href = '/#home/';
-    }
+  created: () => {
+    const cook = JSON.parse(CookiesController.getCookieObj());
+    if (cook == null) location.href = '/#home/';
   },
   mounted() {
     this.getPosts();
@@ -147,7 +145,7 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    },
+    }
   }
 };
 </script>

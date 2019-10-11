@@ -42,7 +42,6 @@ import RegItem from '../components/RegItem';
 import LoginItem from '../components/LoginItem';
 import Grid from '../components/Grid';
 import PostItem from '../components/PostItem';
-import CookiesController from '../utils/CookiesController.js';
 
 export default {
   name: 'home',

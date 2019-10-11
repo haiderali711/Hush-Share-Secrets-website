@@ -81,14 +81,11 @@ export default {
   methods: {
     getPost() {
       this.loading = true;
-      console.log(this.post._id);
-
       const url = `/posts/${this.post._id}`;
 
       Api.get(url)
         .then(response => {
           this.responsePost = response.data;
-          console.log(this.responsePost.content);
           this.loading = false;
         })
         .catch(error => {

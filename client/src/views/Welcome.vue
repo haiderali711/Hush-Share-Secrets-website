@@ -85,6 +85,10 @@ export default {
   components: {
     Grid
   },
+  created() {
+    const cook = JSON.parse(CookiesController.getCookieObj());
+    if (cook == null) location.href = '/#home/';
+  },
   mounted() {
     this.getMessage();
   },
@@ -93,12 +97,11 @@ export default {
       this.downL = false;
       this.mod = false;
       this.logged = false;
-      
-      var resp = JSON.parse(CookiesController.getCookieObj());
-      CookiesController.setCookies(resp, -1);
-      
-      location.href = '/#home/';
 
+      const resp = JSON.parse(CookiesController.getCookieObj());
+      CookiesController.setCookies(resp, -1);
+
+      location.href = '/#home/';
     },
     getMessage() {
       Api.get('/')
@@ -108,12 +111,6 @@ export default {
         .catch(error => {
           this.message = error;
         });
-    }
-  },
-  created : () => { 
-    var cook = JSON.parse(CookiesController.getCookieObj());
-    if (cook == null) {
-      location.href = '/#home/';
     }
   }
 };
