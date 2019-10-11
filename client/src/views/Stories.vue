@@ -64,6 +64,7 @@
 <script>
 import { Api } from '../Api';
 import Paginate from 'vuejs-paginate';
+import CookiesController from '../utils/CookiesController';
 import Grid from '../components/Grid';
 import StoryItem from '../components/StoryItem';
 import EditStoryModal from '../components/Story/EditStoryModal';
@@ -96,6 +97,12 @@ export default {
   },
   mounted() {
     this.getStories();
+  },
+  created (){ 
+    var cook = JSON.parse(CookiesController.getCookieObj());
+    if (cook == null) {
+      location.href = '/#home/';
+    }
   },
   methods: {
     getStories(page) {
