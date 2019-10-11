@@ -220,7 +220,7 @@
             "id": "ce1c8d81-257a-4a91-b49d-1ec6f3c3c927",
             "exec": [
               "",
-              "pm.test(\"User turned into Moderator\", function () {",
+              "pm.test(\"patched\", function () {",
               "    pm.expect(pm.response.json().nModified).to.eql(1);",
               "});"
             ],
@@ -234,13 +234,18 @@
           {
             "key": "Content-Type",
             "name": "Content-Type",
-            "value": "application/x-www-form-urlencoded",
+            "value": "application/json",
             "type": "text"
           }
         ],
         "body": {
-          "mode": "urlencoded",
-          "urlencoded": []
+          "mode": "raw",
+          "raw": "{\n            \"age\": 20,\n            \"username\": \"haider\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{host}}/api/users/{{userID}}",
