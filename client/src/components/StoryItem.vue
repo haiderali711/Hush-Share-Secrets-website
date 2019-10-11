@@ -13,8 +13,8 @@
               <img src="../assets/moreActions.svg" alt="more actions">
             </template>
             <b-dropdown-item
-              v-on:click="$emit('show-edit-story-modal', story._id)">
-
+              v-on:click="$emit('show-edit-story-modal', story._id)"
+            >
               Edit Story
             </b-dropdown-item>
             <b-dropdown-item v-on:click="$emit('delete-story', story._id)">Delete Story</b-dropdown-item>

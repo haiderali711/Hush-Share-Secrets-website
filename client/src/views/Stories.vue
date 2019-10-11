@@ -59,7 +59,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -141,10 +140,6 @@ export default {
 };
 </script>
 
-<!--
-this style should not be scoped
-see, https://github.com/lokyoung/vuejs-paginate/issues/20
--->
 <style>
   .createButton {
     margin-top: 6em;

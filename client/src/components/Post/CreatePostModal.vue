@@ -65,13 +65,14 @@ export default {
       Api.post('posts', { content: post.content, user: post.user })
         .then(response => {
           this.posts.unshift(response.data);
-          this.posts.pop();
+          if (this.posts.length > 9) this.posts.pop();
         })
         .catch(error => {
           console.log(error);
         });
 
       this.$emit('close', e);
+      this.postContent = '';
     },
     close(e) {
       e.preventDefault();

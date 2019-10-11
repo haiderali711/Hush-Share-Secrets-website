@@ -10,7 +10,6 @@
           Title *
           <input
             v-model="title"
-            rows="1"
             class="form-control"
           />
           <em v-if="show && titleIsRequired" style="color: red">Title is required.</em>
@@ -85,7 +84,7 @@ export default {
         { title: story.title, content: story.content, user: story.user })
         .then(response => {
           this.stories.unshift(response.data);
-          this.stories.pop();
+          if (this.stories.length > 9) this.stories.pop();
         })
         .catch(error => {
           console.log(error);
