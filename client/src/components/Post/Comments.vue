@@ -28,8 +28,8 @@
                 width: 20px;"
               >
               </div>
-              <span v-if="comment.user.username">{{comment.user.username.slice(0, 5)}}</span>
-              <span v-else>username</span>
+<!--              <span v-if="comment.user.username">{{comment.user.username.slice(0, 5)}}</span>-->
+              <span>username</span>
               <date :date="comment.published" style="margin-left: 10px"/>
           </div>
             <div style="margin-top: 15px">
@@ -48,7 +48,7 @@
     </div>
 
     <form class="comments_form">
-      <input v-model="newComment.content" placeholder="comment">
+      <input v-model="newComment.content" placeholder="add new comment">
       <button type="submit" @click="createComment($event)">Submit</button>
     </form>
   </div>
@@ -96,7 +96,7 @@ export default {
     },
     createComment(e) {
       e.preventDefault();
-      this.comments.push(this.newComment);
+
       Api.post(`/posts/${this.post._id}/comments`,
         {
           content: this.newComment.content,
@@ -106,6 +106,8 @@ export default {
       )
         .then(response => {
           this.comments.push(response.data);
+          this.newComment.content = '';
+          this.error = '';
         })
         .catch(error => {
           this.error = error.toString();
@@ -119,7 +121,8 @@ export default {
 <style>
   .comments_form {
     background-color: #fff;
-    margin: 20px -30px -14px;
+    margin-top: 15px;
+    margin-bottom: -10px;
     display: flex;
     position: sticky;
     bottom: -15px;

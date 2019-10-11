@@ -55,7 +55,6 @@ export default {
       Api.get(`/posts/${this.post._id}/comments?count=true`)
         .then(response => {
           this.commentCount = response.data.count;
-          console.log(this.commentCount);
         })
         .catch(error => {
           console.log(error);

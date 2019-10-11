@@ -1,39 +1,55 @@
 <template>
   <modal :show="show">
-    <div class="post_modal_header">
-      <div class="post_avatar_wrapper">
-        <div class="post_avatar"></div>
-        <span class="post_username">username</span>
-      </div>
-      <div v-if="post.user">
-      </div>
+    <div v-if="loading" class="text-center" style="margin-bottom: 20px;">
+      <b-spinner label="Spinning"></b-spinner>
       <button class=" btn close_button" @click="close">X</button>
     </div>
-    <div class="header_bottom_border"></div>
+    <div v-if="!loading && responsePost">
+      <div class="post_modal_header">
+        <div class="post_avatar_wrapper">
+          <div class="post_avatar"></div>
+          <span class="post_username">username</span>
+        </div>
+<!--        <div v-if="responsePost.user">-->
+<!--        </div>-->
+        <button class=" btn close_button" @click="close">X</button>
+      </div>
+      <div class="header_bottom_border"></div>
 
-    <div class="post_modal_content_wrapper">
-      <div class="post_detailed_content">
-        <p class="my-4">
-          {{post.content}}
-        </p>
-        <span class="date_and_reading_time">
-            <date :date="post.published" /> • <reading-time :content="post.content" />
+      <div class="post_modal_content_wrapper">
+        <div class="post_detailed_content">
+          <p style="margin-top: 20px;">
+            {{responsePost.content}}
+          </p>
+          <span class="date_and_reading_time">
+            <date
+              v-if="responsePost"
+              :date="responsePost.published"
+            />
+            •
+            <reading-time
+              v-if="responsePost"
+              :content="responsePost.content"
+            />
           </span>
-        <post-categories :post="post"/>
-        <post-footer
-          :post="post"
-          :loggedIn="loggedIn"
-          style="margin-left: -30px!important;
-                 margin-right: -30px;
-                 border-radius: 0;"
-        />
-        <comments :post="post"/>
+          <post-categories  v-if="responsePost" :post="responsePost"/>
+          <post-footer
+            v-if="responsePost"
+            :post="post"
+            :loggedIn="loggedIn"
+            style="margin-left: -30px!important;
+                   margin-right: -30px;
+                   border-radius: 0;"
+          />
+          <comments  v-if="responsePost" :post="responsePost"/>
+        </div>
       </div>
     </div>
   </modal>
 </template>
 
 <script>
+import { Api } from '../../Api';
 import Modal from '../shared/Modal/ModalTemplate';
 import PostCategories from '../Post/PostCategories';
 import PostFooter from '../Post/PostFooter';
@@ -46,6 +62,9 @@ export default {
   props: ['show', 'post', 'loggedIn'],
   data() {
     return {
+      responsePost: null,
+      loading: false,
+      error: null
     };
   },
   components: {
@@ -56,7 +75,28 @@ export default {
     PostFooter,
     Comments
   },
+  mounted() {
+    this.getPost();
+  },
   methods: {
+    getPost() {
+      this.loading = true;
+      console.log(this.post._id);
+
+      const url = `/posts/${this.post._id}`;
+
+      Api.get(url)
+        .then(response => {
+          this.responsePost = response.data;
+          console.log(this.responsePost.content);
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+          this.error = error.toString();
+          console.log(error);
+        });
+    },
     close(e) {
       this.$emit('close', e);
     }

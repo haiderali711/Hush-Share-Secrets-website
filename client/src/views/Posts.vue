@@ -17,7 +17,7 @@
       :post="postDetailsToShow"
       :show="showDetailedPostModal"
       :loggedIn="loggedIn"
-      @close="showDetailedPostModal = false"
+      @close="hideDetailedPostModal"
     />
 
     <edit-post-modal
@@ -118,6 +118,10 @@ export default {
     detailedPostModal(post) {
       this.showDetailedPostModal = true;
       this.postDetailsToShow = post;
+    },
+    hideDetailedPostModal() {
+      this.showDetailedPostModal = false;
+      this.postDetailsToShow = null;
     },
     editPostModal(id) {
       this.showEditPostModal = true;
