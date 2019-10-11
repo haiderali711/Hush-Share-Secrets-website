@@ -108,7 +108,7 @@ const deleteUserWithId = (req, res, next) => {
 const changeToMod = (req, res, next) => {
   var id = req.params.id;
 
-  User.update({ _id: id }, { $set: { moderator: true } }, function(err, user) {
+  User.update({ _id: id }, { $set: req.body }, function(err, user) {
     if (err) {
       return next(err);
     }
