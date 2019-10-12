@@ -18,6 +18,12 @@
             >
               Edit Post
             </b-dropdown-item>
+              <b-dropdown-item
+              v-on:click="$emit('show-replace-post-modal', post._id)"
+            >
+              Replace Post
+            </b-dropdown-item>
+
             <b-dropdown-item v-on:click="$emit('delete-post', post._id)">Delete Post</b-dropdown-item>
             <b-dropdown-item href="#">Report Post</b-dropdown-item>
           </b-dropdown>
