@@ -169,7 +169,7 @@ export default {
        deleteAllPosts(){
       Api.delete('/posts')  
       .then(response => {
-        this.stories = [];
+        this.posts = [];
       })
       .catch(error => {
         console.log(error);
