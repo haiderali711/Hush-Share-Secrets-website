@@ -2,12 +2,14 @@
   <div>
     <div class="posts">
       <b-button type="button" class="createButton" @click="createStory">Create Story</b-button>
+      <b-button type="button" class="createButton" @click="deleteAllStories">Delete All Stories</b-button>
       <grid>
         <story-item
           v-for="story in stories"
           :key="story._id"
           :story="story"
           @show-detailed-story-modal="detailedStoryModal"
+          @show-replace-story-modal="ReplaceStoryModal"
           @show-edit-story-modal="editStoryModal"
           @delete-story="deleteStory"></story-item>
       </grid>
@@ -24,6 +26,12 @@
         :story="storyToEdit"
         :show="showEditStoryModal"
         @close="showEditStoryModal = false"
+      />
+      <replace-story-modal
+        v-if="storyToReplace"
+        :story="storyToReplace"
+        :show="showReplaceStoryModal"
+        @close="showReplaceStoryModal = false"
       />
 
       <create-story-modal
@@ -68,6 +76,7 @@ import CookiesController from '../utils/CookiesController';
 import Grid from '../components/Grid';
 import StoryItem from '../components/StoryItem';
 import EditStoryModal from '../components/Story/EditStoryModal';
+import ReplaceStoryModal from '../components/Story/ReplaceStoryModal';
 import CreateStoryModal from '../components/Story/CreateStoryModal';
 import StoryDetails from '../components/Story/StoryDetails';
 
@@ -78,9 +87,11 @@ export default {
       stories: [],
       totalPages: 0,
       storyToEdit: null,
+      storyToReplace: null,
       showDetailedStoryModal: false,
       storyDetailsToShow: null,
       showEditStoryModal: false,
+      showReplaceStoryModal: false,
       showCreateStoryModal: false,
       downL: false,
       logged: true,
@@ -93,6 +104,7 @@ export default {
     Paginate,
     StoryDetails,
     EditStoryModal,
+    ReplaceStoryModal,
     CreateStoryModal
   },
   mounted() {
@@ -130,6 +142,11 @@ export default {
       let index = this.stories.findIndex(story => story._id === id);
       this.storyToEdit = this.stories[index];
     },
+    ReplaceStoryModal(id) {
+      this.showReplaceStoryModal = true;
+      let index = this.stories.findIndex(story => story._id === id);
+      this.storyToReplace = this.stories[index];
+    },
     createStory() {
       this.showCreateStoryModal = true;
     },
@@ -142,9 +159,19 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    }, 
+    deleteAllStories(){
+      Api.delete('/stories')  
+      .then(response => {
+        this.stories = [];
+      })
+      .catch(error => {
+        console.log(error);
+      });
     }
   }
 };
+
 </script>
 
 <style>
@@ -152,3 +179,4 @@ export default {
     margin-top: 6em;
   }
 </style>
+
