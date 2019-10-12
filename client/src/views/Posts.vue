@@ -1,6 +1,8 @@
 <template>
   <div class="posts">
     <b-button type="button" class="createButton" @click="createPost">Create Post</b-button>
+          <b-button type="button" class="createButton" @click="deleteAllPosts">Delete All Posts</b-button>
+
     <grid>
       <post-item
         v-for="post in posts"
@@ -8,7 +10,9 @@
         :post="post"
         :loggedIn="loggedIn"
         @show-detailed-post-modal="detailedPostModal"
-        @show-edit-post-modal="editPostModal"
+        @show-edit-post-modal="editPostModal"                
+        @show-replace-post-modal="ReplacePostModal"
+
         @delete-post="deletePost"></post-item>
     </grid>
 
@@ -26,6 +30,13 @@
       :show="showEditPostModal"
       @close="showEditPostModal = false"
     />
+
+      <replace-post-modal
+        v-if="postToReplace"
+        :post="postToReplace"
+        :show="showReplacePostModal"
+        @close="showReplacePostModal = false"
+      />
 
     <create-post-modal
       :show="showCreatePostModal"
@@ -69,6 +80,7 @@ import Grid from '../components/Grid';
 import PostItem from '../components/PostItem';
 import PostDetails from '../components/Post/PostDetails';
 import EditPostModal from '../components/Post/EditPostModal';
+import ReplacePostModal from '../components/Post/ReplacePostModal';
 import CreatePostModal from '../components/Post/CreatePostModal';
 
 export default {
@@ -80,8 +92,10 @@ export default {
       totalPages: 0,
       postDetailsToShow: null,
       postToEdit: null,
+      postToReplace: null,
       showDetailedPostModal: false,
       showEditPostModal: false,
+      showReplacePostModal: false,
       showCreatePostModal: false,
       downL: false,
       logged: true,
@@ -92,7 +106,8 @@ export default {
     Grid,
     PostItem,
     PostDetails,
-    EditPostModal,
+    EditPostModal,    
+    ReplacePostModal,
     CreatePostModal,
     Paginate
   },
@@ -133,6 +148,11 @@ export default {
       let index = this.posts.findIndex(post => post._id === id);
       this.postToEdit = this.posts[index];
     },
+    ReplacePostModal(id) {
+      this.showReplacePostModal = true;
+      let index = this.posts.findIndex(post => post._id === id);
+      this.postToReplace = this.posts[index];
+    },
     createPost() {
       this.showCreatePostModal = true;
     },
@@ -145,6 +165,15 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+       deleteAllPosts(){
+      Api.delete('/posts')  
+      .then(response => {
+        this.stories = [];
+      })
+      .catch(error => {
+        console.log(error);
+      });
     }
   }
 };
