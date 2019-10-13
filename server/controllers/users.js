@@ -27,7 +27,8 @@ const checkAuthentication = (req, res) => {
           moderator: foundUser.moderator,
           id: foundUser._id,
           username: foundUser.username,
-          loggedIn: true
+          loggedIn: true,
+          age: foundUser.age
         }
       });
     } else {
@@ -107,16 +108,34 @@ const deleteUserWithId = (req, res, next) => {
 //Change the status of the User to Moderator with the given Username
 const changeToMod = (req, res, next) => {
   var id = req.params.id;
+  var mod = req.body.moderator;
+  console.log(mod);
 
-  User.update({ _id: id }, { $set: req.body }, function(err, user) {
-    if (err) {
-      return next(err);
-    }
-    if (user == null) {
-      return res.status(404).json({ message: 'user not found' });
-    }
-    res.status(200).json(user);
-  });
+  if (mod == undefined) {
+    User.updateOne({ _id: id }, { $set: req.body }, function(err, user) {
+      if (err) {
+        return next(err);
+      }
+      if (user == null) {
+        return res.status(404).json({ message: 'user not found' });
+      }
+      res.status(200).json(user);
+    });
+  } else {
+    var newBody = { moderator: mod };
+    User.updateOne({ username: req.body.username }, { $set: newBody }, function(
+      err,
+      user
+    ) {
+      if (err) {
+        return next(err);
+      }
+      if (user == null) {
+        return res.status(404).json({ message: 'user not found' });
+      }
+      res.status(200).json(user);
+    });
+  }
 };
 
 module.exports = {
