@@ -15,4 +15,6 @@ router.patch('/:id', UserController.changeToMod);
 
 router.delete('/:id', UserController.deleteUserWithId);
 
+router.put('/:id', UserController.putUserWithId);
+
 module.exports = router;
