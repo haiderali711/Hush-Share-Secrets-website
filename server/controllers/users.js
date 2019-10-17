@@ -138,11 +138,32 @@ const changeToMod = (req, res, next) => {
   }
 };
 
+//replace the body of the user at a specific id
+const putUserWithId = (req, res) => {
+  const id = req.params.id;
+
+  User.findOneAndReplace({ _id: id }, req.body, { new: true })
+    .exec()
+    .then(result => {
+      if (!result) throw 404;
+
+      res.status(200).json({
+        message: 'User replaced.'
+      });
+    })
+    .catch(error => {
+      if (error === 404)
+        res.status(404).json({ error: `User with Id: ${id} not found.` });
+      else res.status(500).json({ error: error });
+    });
+};
+
 module.exports = {
   getAllUsers,
   getUserWithId,
   createNewUser,
   checkAuthentication,
   deleteUserWithId,
-  changeToMod
+  changeToMod,
+  putUserWithId
 };
