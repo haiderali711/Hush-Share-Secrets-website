@@ -256,6 +256,53 @@
       "response": []
     },
     {
+      "name": "Put : Replace a users Data at given ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "501df308-1c12-47c0-ad9f-c214859f3b65",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "",
+              "",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200)",
+              "})",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"age\": 20,\n    \"group\": \"\",\n    \"email\":\"3456ali@gmail.com\",\n    \"password\": \"abcdefgh\",\n    \"username\": \"current_harlequin_hare\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/users/{{userID}}",
+          "host": ["{{host}}"],
+          "path": ["api", "users", "{{userID}}"]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "Login",
       "event": [
         {
