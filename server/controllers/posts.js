@@ -47,7 +47,6 @@ const getPostWithId = (req, res) => {
 
   Post.findById(id)
     .select('-__v')
-    .populate('user', '-__v')
     .exec()
     .then(doc => {
       if (!doc) throw 404;
