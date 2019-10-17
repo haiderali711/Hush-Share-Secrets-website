@@ -40,6 +40,8 @@
 <script>
 import { Api } from '../../Api';
 import Modal from '../shared/Modal/ModalTemplate';
+import CookiesController from '../../utils/CookiesController.js';
+
 
 export default {
   name: 'replace-story-modal', // <!-- story done -->
@@ -57,7 +59,7 @@ export default {
   mounted() {
     this.title = this.story.title;
     this.storyContent = this.story.content;
-    this.user= '5d889acfaad4ada6bdae383a';
+    this.user= CookiesController.getCookieValue("id");
 
   },
   computed: {
@@ -88,7 +90,7 @@ export default {
 
       Api.put(`stories/${this.story._id}`, { user: this.user,title: this.title, content: this.storyContent })// <!-- story done -->
         .then(response => {
-          this.$props.story.user = "5d889acfaad4ada6bdae383a";// <!-- story done -->
+          this.$props.story.user = CookiesController.getCookieValue("id");// <!-- story done -->
           this.$props.story.title = this.title;// <!-- story done -->
           this.$props.story.content = this.storyContent;// <!-- story done -->
         })
