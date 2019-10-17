@@ -30,6 +30,8 @@
 <script>
 import { Api } from '../../Api';
 import Modal from '../shared/Modal/ModalTemplate';
+import CookiesController from '../../utils/CookiesController.js';
+
 
 export default {
   name: 'replace-post-modal',
@@ -45,7 +47,7 @@ export default {
   },
   mounted() {
     this.postContent = this.post.content;
-    this.user= '5d889acfaad4ada6bdae383a';
+    this.user= CookiesController.getCookieValue("id");
 
   },
   computed: {
@@ -72,7 +74,7 @@ export default {
 
       Api.put(`posts/${this.post._id}`, { user: this.user, content: this.postContent })
         .then(response => {
-          this.$props.post.user = "5d889acfaad4ada6bdae383a";
+          this.$props.post.user = CookiesController.getCookieValue("id");
           this.$props.post.content = this.postContent;
         })
         .catch(error => {
