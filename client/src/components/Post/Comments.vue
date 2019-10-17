@@ -29,7 +29,7 @@
               >
               </div>
 <!--              <span v-if="comment.user.username">{{comment.user.username.slice(0, 5)}}</span>-->
-              <span>username</span>
+              <span>{{comment.user}}</span>
               <date :date="comment.published" style="margin-left: 10px"/>
           </div>
             <div style="margin-top: 15px">
@@ -57,6 +57,8 @@
 <script>
 import { Api } from '../../Api';
 import Date from '../shared/Date';
+import CookiesController from '../../utils/CookiesController.js';
+
 
 export default {
   name: 'comments',
@@ -68,7 +70,7 @@ export default {
       error: null,
       newComment: {
         content: '',
-        user: '5d95e396704c701a56492c9e',
+        user: '',
         post: this.post._id
       }
     };
@@ -86,6 +88,7 @@ export default {
       Api.get(`/posts/${this.post._id}/comments`)
         .then(response => {
           this.comments = response.data.comments;
+          console.log(this.comments);
           this.loading = false;
         })
         .catch(error => {
@@ -101,7 +104,7 @@ export default {
         {
           content: this.newComment.content,
           post: this.newComment.post,
-          user: this.newComment.user
+          user: CookiesController.getCookieValue("id")
         }
       )
         .then(response => {

@@ -2,7 +2,7 @@
   <div>
     <div class="posts">
       <b-button type="button" class="createButton" @click="createStory">Create Story</b-button>
-      <b-button type="button" class="createButton" @click="deleteAllStories">Delete All Stories</b-button>
+      <b-button type="button" class="createButton" @click="deleteAllStories" v-if= mod>Delete All Stories</b-button>
       <grid>
         <story-item
           v-for="story in stories"
@@ -109,6 +109,7 @@ export default {
   },
   mounted() {
     this.getStories();
+    this.checkModerator();
   },
   created() {
     const cook = JSON.parse(CookiesController.getCookieObj());
@@ -168,6 +169,14 @@ export default {
       .catch(error => {
         console.log(error);
       });
+    },
+    checkModerator() {
+      if(CookiesController.getCookieValue('moderator') === "true"){
+        console.log(CookiesController.getCookieValue('moderator'));
+        this.mod = true;
+      }else{
+        this.mod = false;
+      }
     }
   }
 };

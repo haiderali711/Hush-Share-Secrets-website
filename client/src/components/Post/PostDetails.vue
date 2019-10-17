@@ -8,7 +8,7 @@
       <div class="post_modal_header">
         <div class="post_avatar_wrapper">
           <div class="post_avatar"></div>
-          <span class="post_username">username</span>
+          <span class="post_username">{{userN}}</span>
         </div>
 <!--        <div v-if="responsePost.user">-->
 <!--        </div>-->
@@ -62,6 +62,7 @@ export default {
   props: ['show', 'post', 'loggedIn'],
   data() {
     return {
+      userN: "",
       responsePost: null,
       loading: false,
       error: null
@@ -77,6 +78,7 @@ export default {
   },
   mounted() {
     this.getPost();
+    this.getUsername(this.post.user);
   },
   methods: {
     getPost() {
@@ -96,6 +98,15 @@ export default {
     },
     close(e) {
       this.$emit('close', e);
+    },
+    getUsername(id){
+      Api.get('/users/'+id)
+        .then(response => {
+          this.userN = response.data.username;
+        })
+        .catch(error => {
+          console.log(error.response)
+        });
     }
   }
 };
