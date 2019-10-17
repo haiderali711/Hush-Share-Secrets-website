@@ -3,7 +3,7 @@
     <div class="post_modal_header">
       <div class="post_avatar_wrapper">
         <div class="post_avatar"></div>
-        <span class="post_username">username</span>
+        <span class="post_username">{{userN}}</span>
       </div>
 <!--      <div v-if="story.user">-->
 <!--      </div>-->
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { Api } from '../../Api';
 import Modal from '../shared/Modal/ModalTemplate';
 import Date from '../shared/Date';
 import ReadingTime from '../shared/ReadingTime';
@@ -35,6 +36,7 @@ export default {
   props: ['show', 'story'],
   data() {
     return {
+      userN : ""
     };
   },
   components: {
@@ -43,9 +45,21 @@ export default {
     ReadingTime
   },
   methods: {
+    getUsername(id){
+      Api.get('/users/'+id)
+        .then(response => {
+          this.userN = response.data.username;
+        })
+        .catch(error => {
+          console.log(error.response)
+        });
+    },
     close(e) {
       this.$emit('close', e);
     }
+  },
+  mounted(){
+    this.getUsername(this.story.user);
   }
 };
 </script>

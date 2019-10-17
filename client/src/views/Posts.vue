@@ -1,7 +1,7 @@
 <template>
   <div class="posts">
     <b-button type="button" class="createButton" @click="createPost">Create Post</b-button>
-          <b-button type="button" class="createButton" @click="deleteAllPosts">Delete All Posts</b-button>
+    <b-button type="button" class="createButton" @click="deleteAllPosts" v-if= mod >Delete All Posts</b-button>
 
     <grid>
       <post-item
@@ -117,6 +117,7 @@ export default {
   },
   mounted() {
     this.getPosts();
+    this.checkModerator();
   },
   methods: {
     getPosts(page) {
@@ -174,6 +175,14 @@ export default {
       .catch(error => {
         console.log(error);
       });
+    },
+    checkModerator() {
+      if(CookiesController.getCookieValue('moderator') === "true"){
+        console.log(CookiesController.getCookieValue('moderator'));
+        this.mod = true;
+      }else{
+        this.mod = false;
+      }
     }
   }
 };

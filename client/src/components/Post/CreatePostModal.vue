@@ -30,6 +30,7 @@
 <script>
 import { Api } from '../../Api';
 import Modal from '../shared/Modal/ModalTemplate';
+import CookiesController from '../../utils/CookiesController.js';
 
 export default {
   name: 'create-post-modal',
@@ -59,7 +60,7 @@ export default {
 
       let post = {
         content: this.postContent,
-        user: '5d8433c7d0ab87a09351532d'
+        user: CookiesController.getCookieValue("id")
       };
 
       Api.post('posts', { content: post.content, user: post.user })
