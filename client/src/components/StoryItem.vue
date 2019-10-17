@@ -4,7 +4,7 @@
       <div class="post_header">
         <div class="post_avatar_wrapper">
           <div class="post_avatar"></div>
-          <span class="post_username">username</span>
+          <span class="post_username">{{userN}}</span>
         </div>
         <div class="post_actions">
           <bookmark bookmarked="gold" fill-color="gold" v-bind:style="{ marginRight: '10px' }" />
@@ -14,17 +14,19 @@
             </template>
             <b-dropdown-item
               v-on:click="$emit('show-edit-story-modal', story._id)"
+              v-if = checkIfYours
             >
               Edit Story
             </b-dropdown-item>
 
             <b-dropdown-item
               v-on:click="$emit('show-replace-story-modal', story._id)"
+              v-if = checkIfYours
             >
               Replace Story
             </b-dropdown-item>
             
-            <b-dropdown-item v-on:click="$emit('delete-story', story._id)">Delete Story</b-dropdown-item>
+            <b-dropdown-item v-on:click="$emit('delete-story', story._id)" v-if = checkIfYours>Delete Story</b-dropdown-item>
             <b-dropdown-item href="#">Report Story</b-dropdown-item>
           </b-dropdown>
         </div>
@@ -48,6 +50,7 @@
 </template>
 
 <script>
+import { Api } from '../Api';
 import Bookmark from './shared/Bookmark';
 import Date from './shared/Date';
 import ReadingTime from './shared/ReadingTime';
@@ -56,7 +59,10 @@ export default {
   name: 'story-item',
   props: ['story'],
   data() {
-    return {
+    return {     
+      userN : "",
+      checkIfYours : false,
+
     };
   },
   components: {
@@ -65,6 +71,23 @@ export default {
     ReadingTime
   },
   methods: {
+    getUsername(id){
+      Api.get('/users/'+id)
+        .then(response => {
+          this.userN = response.data.username;
+          if (this.userN == CookiesController.getCookieValue("username")){
+            this.checkIfYours = true
+          }else{
+            this.checkIfYours = false
+          }
+        })
+        .catch(error => {
+          console.log(error.response)
+        });
+    }
+  },
+  mounted(){
+    this.getUsername(this.story.user);
   }
 };
 </script>

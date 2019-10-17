@@ -262,7 +262,7 @@ const getAllCommentsWithPostId = (req, res) => {
             content: comment.content,
             post: comment.post,
             published: comment.published,
-            user: comment._id
+            user: comment.user.username
             // user: {
             //   _id: comment.user._id,
             //   username: comment.user.username

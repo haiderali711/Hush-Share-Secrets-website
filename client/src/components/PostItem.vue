@@ -4,7 +4,7 @@
       <div class="post_header">
         <div class="post_avatar_wrapper">
           <div class="post_avatar"></div>
-          <span class="post_username">username</span>
+          <span class="post_username">{{userN}}</span>
         </div>
         <div class="post_actions">
           <bookmark bookmarked="gold" fill-color="gold" v-bind:style="{ marginRight: '10px' }" />
@@ -15,16 +15,19 @@
             </template>
             <b-dropdown-item
               v-on:click="$emit('show-edit-post-modal', post._id)"
+              v-if = checkIfYours
             >
               Edit Post
             </b-dropdown-item>
               <b-dropdown-item
               v-on:click="$emit('show-replace-post-modal', post._id)"
+              v-if = checkIfYours
+
             >
               Replace Post
             </b-dropdown-item>
 
-            <b-dropdown-item v-on:click="$emit('delete-post', post._id)">Delete Post</b-dropdown-item>
+            <b-dropdown-item v-on:click="$emit('delete-post', post._id)" v-if = checkIfYours>Delete Post</b-dropdown-item>
             <b-dropdown-item href="#">Report Post</b-dropdown-item>
           </b-dropdown>
         </div>
@@ -50,19 +53,26 @@
 </template>
 
 <script>
+import { Api } from '../Api';
 import Bookmark from './shared/Bookmark';
 import Date from './shared/Date';
 import ReadingTime from './shared/ReadingTime';
 import PostCategories from './Post/PostCategories';
 import PostFooter from './Post/PostFooter';
+import CookiesController from '../utils/CookiesController.js';
 
 export default {
   name: 'post-item',
   props: ['post', 'loggedIn'],
   data() {
     return {
+      userN : "",
+      checkIfYours : false,
       bookmarked: false
     };
+  },
+  mounted(){
+    this.getUsername(this.post.user)
   },
   components: {
     Bookmark,
@@ -72,6 +82,20 @@ export default {
     PostFooter
   },
   methods: {
+    getUsername(id){
+      Api.get('/users/'+id)
+        .then(response => {
+          this.userN = response.data.username;
+          if (this.userN == CookiesController.getCookieValue("username")){
+            this.checkIfYours = true
+          }else{
+            this.checkIfYours = false
+          }
+        })
+        .catch(error => {
+          console.log(error.response)
+        });
+    }
   }
 };
 </script>

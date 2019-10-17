@@ -2,7 +2,7 @@
   <modal :show="show" @close="close">
     <form @submit.stop.prevent="handleSubmit">
       <div class="modal-header">
-        <h3>Edit Story</h3>
+        <h3>Create Story</h3>
       </div>
       <div class="modal-body">
 
@@ -39,6 +39,8 @@
 <script>
 import { Api } from '../../Api';
 import Modal from '../shared/Modal/ModalTemplate';
+import CookiesController from '../../utils/CookiesController.js';
+
 
 export default {
   name: 'create-story-modal',
@@ -76,7 +78,7 @@ export default {
       let story = {
         title: this.title,
         content: this.storyContent,
-        user: '5d889acfaad4ada6bdae383a'
+        user: CookiesController.getCookieValue("id")
       };
 
       Api.post(
