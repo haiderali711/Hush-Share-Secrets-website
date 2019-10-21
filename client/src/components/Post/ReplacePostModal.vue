@@ -46,7 +46,6 @@ export default {
     Modal
   },
   mounted() {
-    this.postContent = this.post.content;
     this.user= CookiesController.getCookieValue("id");
 
   },
