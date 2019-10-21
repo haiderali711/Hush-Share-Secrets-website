@@ -57,8 +57,7 @@ export default {
     Modal
   },
   mounted() {
-    this.title = this.story.title;
-    this.storyContent = this.story.content;
+
     this.user= CookiesController.getCookieValue("id");
 
   },
