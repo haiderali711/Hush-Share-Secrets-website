@@ -54,6 +54,8 @@ import { Api } from '../Api';
 import Bookmark from './shared/Bookmark';
 import Date from './shared/Date';
 import ReadingTime from './shared/ReadingTime';
+import CookiesController from '../utils/CookiesController.js';
+
 
 export default {
   name: 'story-item',
@@ -61,8 +63,7 @@ export default {
   data() {
     return {     
       userN : "",
-      checkIfYours : false,
-
+      checkIfYours : false
     };
   },
   components: {
@@ -75,14 +76,17 @@ export default {
       Api.get('/users/'+id)
         .then(response => {
           this.userN = response.data.username;
-          if (this.userN == CookiesController.getCookieValue("username")){
-            this.checkIfYours = true
+          if ((this.userN == CookiesController.getCookieValue("username"))){
+            this.checkIfYours = true;
           }else{
-            this.checkIfYours = false
+            this.checkIfYours = false;
+          }
+          if (CookiesController.getCookieValue("moderator") == "true"){
+            this.checkIfYours = true;
           }
         })
         .catch(error => {
-          console.log(error.response)
+          console.log(error)
         });
     }
   },
