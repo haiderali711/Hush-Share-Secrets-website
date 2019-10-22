@@ -22,7 +22,6 @@
               <b-dropdown-item
               v-on:click="$emit('show-replace-post-modal', post._id)"
               v-if = checkIfYours
-
             >
               Replace Post
             </b-dropdown-item>
@@ -86,10 +85,14 @@ export default {
       Api.get('/users/'+id)
         .then(response => {
           this.userN = response.data.username;
-          if (this.userN == CookiesController.getCookieValue("username")){
-            this.checkIfYours = true
+          if ((this.userN === CookiesController.getCookieValue("username"))){
+            this.checkIfYours = true;
           }else{
-            this.checkIfYours = false
+            this.checkIfYours = false;
+          }
+          if (CookiesController.getCookieValue("moderator") == "true"){
+            this.checkIfYours = true;
+
           }
         })
         .catch(error => {
