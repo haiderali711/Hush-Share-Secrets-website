@@ -1,0 +1,700 @@
+{
+  "info": {
+    "_postman_id": "23687862-a728-4f95-8020-254c6f696f34",
+    "name": "Posts_Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "localhost:3000/api/groups",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "27d4eae4-b3b2-4981-9cd8-f14e20b9f4d3",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "let groupId = jsonData._id;",
+              "pm.environment.set(\"group_id\", groupId);",
+              "",
+              "let getPostId = pm.variables.get(\"group_id\");",
+              "",
+              "pm.test(\"Status code is 201\", () => {",
+              "    pm.response.to.have.status(201)",
+              "})",
+              "",
+              "pm.test(\"Post has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(groupId);",
+              "})",
+              "",
+              "pm.test(\"Body has correct data\", () => {",
+              "    pm.expect(jsonData.name).to.eql(\"Some random group\");",
+              "})",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"name\": \"Some random group\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/groups",
+          "host": ["{{host}}"],
+          "path": ["api", "groups"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/users",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "0c364c8d-29e3-478b-9ab8-966a200dd93e",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "let userId = jsonData._id;",
+              "",
+              "if (userId) {",
+              "    pm.environment.set(\"user_id\", userId);",
+              "}",
+              "",
+              "let getUserId = pm.variables.get(\"user_id\");",
+              "let groupId = pm.variables.get(\"group_id\");",
+              "",
+              "pm.test(\"Status code is 201\", () => {",
+              "    pm.response.to.have.status(201)",
+              "})",
+              "",
+              "pm.test(\"Post has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(userId);",
+              "})",
+              "",
+              "pm.test(\"Body has correct data\", () => {",
+              "    if (jsonData.username) {",
+              "        pm.expect(jsonData.email).to.eql(\"gagan@gmail.com\");",
+              "        pm.expect(jsonData.group).to.eql(groupId);",
+              "    }",
+              "})",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"username\": \"gagan\",\n\t\"email\": \"gagan@gmail.com\",\n\t\"group\": \"{{group_id}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/users",
+          "host": ["{{host}}"],
+          "path": ["api", "users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/posts/",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "27d4eae4-b3b2-4981-9cd8-f14e20b9f4d3",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "let postId = jsonData._id;",
+              "pm.environment.set(\"post_id\", postId);",
+              "",
+              "let getPostId = pm.variables.get(\"post_id\");",
+              "let userId = pm.variables.get(\"user_id\");",
+              "let groupId = pm.variables.get(\"group_id\");",
+              "",
+              "pm.test(\"Status code is 201\", () => {",
+              "    pm.response.to.have.status(201)",
+              "})",
+              "",
+              "pm.test(\"Post has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(getPostId);",
+              "})",
+              "",
+              "pm.test(\"Body has correct data\", () => {",
+              "    pm.expect(jsonData.content).to.eql(\"This is a Post\");",
+              "    pm.expect(jsonData.user).to.eql(userId);",
+              "    pm.expect(jsonData.likes).to.eql(0);",
+              "    pm.expect(jsonData.dislikes).to.eql(0);",
+              "    pm.expect(jsonData.group).to.eql(groupId);",
+              "})",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"content\": \"This is a Post\",\n\t\"user\": \"{{user_id}}\",\n\t\"group\": \"{{group_id}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/posts",
+          "host": ["{{host}}"],
+          "path": ["api", "posts"]
+        },
+        "description": "Create a new Post"
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/posts/",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "9be96aea-2726-4896-b731-bf9103df00a4",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200)",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/x-www-form-urlencoded",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": []
+        },
+        "url": {
+          "raw": "{{host}}/api/posts/",
+          "host": ["{{host}}"],
+          "path": ["api", "posts", ""]
+        },
+        "description": "Get all Posts"
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/posts/{{post_id}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "9be96aea-2726-4896-b731-bf9103df00a4",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "let getPostId = pm.variables.get(\"post_id\");",
+              "let userId = pm.variables.get(\"user_id\");",
+              "let groupId = pm.variables.get(\"group_id\");",
+              "",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200)",
+              "})",
+              "",
+              "pm.test(\"Post has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(getPostId);",
+              "})",
+              "",
+              "pm.test(\"Body has correct data\", () => {",
+              "    pm.expect(jsonData.content).to.eql(\"This is a Post\");",
+              "    pm.expect(jsonData.user).to.eql(userId);",
+              "    pm.expect(jsonData.likes).to.eql(0);",
+              "    pm.expect(jsonData.dislikes).to.eql(0);",
+              "    pm.expect(jsonData.group).to.eql(groupId);",
+              "})",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/x-www-form-urlencoded",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": []
+        },
+        "url": {
+          "raw": "{{host}}/api/posts/{{post_id}}",
+          "host": ["{{host}}"],
+          "path": ["api", "posts", "{{post_id}}"]
+        },
+        "description": "Get Post with Id."
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/api/posts/{{post_id}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "fa6aff6d-bd76-4124-8a28-b5b0e9b6bbc6",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "let groupId = pm.variables.get(\"group_id\");",
+              "",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200)",
+              "})",
+              "",
+              "pm.test(\"Body has correct data\", () => {",
+              "    pm.expect(jsonData.content).to.eql(\"Some random post.\");",
+              "    pm.expect(jsonData.likes).to.eql(10);",
+              "    pm.expect(jsonData.dislikes).to.eql(5);",
+              "    pm.expect(jsonData.group).to.eql(groupId);",
+              "})",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"content\": \"Some random post.\",\n\t\"likes\": 10,\n\t\"dislikes\": 5,\n\t\"category\": \"social\",\n\t\"group\": \"{{group_id}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/posts/{{post_id}}",
+          "host": ["{{host}}"],
+          "path": ["api", "posts", "{{post_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/api/posts/{{post_id}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "fa6aff6d-bd76-4124-8a28-b5b0e9b6bbc6",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "",
+              "let groupId = pm.variables.get(\"group_id\");",
+              "",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200)",
+              "})",
+              "",
+              "pm.test(\"Body has correct data\", () => {",
+              "    pm.expect(jsonData.content).to.eql(\"Put Post.\");",
+              "    pm.expect(jsonData.likes).to.eql(1000);",
+              "    pm.expect(jsonData.dislikes).to.eql(500);",
+              "    pm.expect(jsonData.group).to.eql(groupId);",
+              "})",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"likes\": 1000,\n    \"dislikes\": 500,\n    \"content\": \"Put Post.\",\n    \"user\": \"{{user_id}}\",\n    \"group\": \"{{group_id}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/posts/{{post_id}}",
+          "host": ["{{host}}"],
+          "path": ["api", "posts", "{{post_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/posts/{{post_id}}/comments",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "27d4eae4-b3b2-4981-9cd8-f14e20b9f4d3",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "let commentId = jsonData._id;",
+              "pm.environment.set(\"comment_id\", commentId);",
+              "",
+              "let getCommentId = pm.variables.get(\"comment_id\");",
+              "let getPostId = pm.variables.get(\"post_id\");",
+              "let getUserId = pm.variables.get(\"user_id\");",
+              "",
+              "pm.test(\"Status code is 201\", () => {",
+              "    pm.response.to.have.status(201)",
+              "})",
+              "",
+              "pm.test(\"Comment has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(getCommentId);",
+              "})",
+              "",
+              "pm.test(\"Body has correct data\", () => {",
+              "    pm.expect(jsonData.content).to.eql(\"This is a Comment\");",
+              "    pm.expect(jsonData.user).to.eql(getUserId);",
+              "    pm.expect(jsonData.post).to.eql(getPostId);",
+              "})",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"content\": \"This is a Comment\",\n\t\"user\": \"{{user_id}}\",\n\t\"post\": \"{{post_id}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/posts/{{post_id}}/comments",
+          "host": ["{{host}}"],
+          "path": ["api", "posts", "{{post_id}}", "comments"]
+        },
+        "description": "Create a new Post"
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/posts/{{post_id}}/comments",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "072bd73e-e13b-41b8-92d4-b7529c656456",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200)",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/posts/{{post_id}}/comments",
+          "host": ["{{host}}"],
+          "path": ["api", "posts", "{{post_id}}", "comments"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/posts/{{post_id}}/comments/{{comment_id}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "072bd73e-e13b-41b8-92d4-b7529c656456",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "",
+              "let getCommentId = pm.variables.get(\"comment_id\");",
+              "let getPostId = pm.variables.get(\"post_id\");",
+              "let getUserId = pm.variables.get(\"user_id\");",
+              "",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200)",
+              "})",
+              "",
+              "pm.test(\"Comment has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(getCommentId);",
+              "})",
+              "",
+              "pm.test(\"Body has correct data\", () => {",
+              "    pm.expect(jsonData.content).to.eql(\"This is a Comment\");",
+              "    pm.expect(jsonData._id).to.eql(getCommentId);",
+              "    pm.expect(jsonData.user._id).to.eql(getUserId);",
+              "    pm.expect(jsonData.post).to.eql(getPostId);",
+              "})",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/posts/{{post_id}}/comments/{{comment_id}}",
+          "host": ["{{host}}"],
+          "path": ["api", "posts", "{{post_id}}", "comments", "{{comment_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/posts/{{post_id}}/comments/{{comment_id}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "072bd73e-e13b-41b8-92d4-b7529c656456",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "",
+              "let getCommentId = pm.variables.get(\"comment_id\");",
+              "let getPostId = pm.variables.get(\"post_id\");",
+              "let getUserId = pm.variables.get(\"user_id\");",
+              "",
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200)",
+              "})",
+              "",
+              "pm.test(\"Comment has correct ID\", () => {",
+              "    pm.expect(jsonData._id).to.eql(getCommentId);",
+              "})",
+              "",
+              "pm.test(\"Body has correct data\", () => {",
+              "    pm.expect(jsonData.content).to.eql(\"This is a Comment\");",
+              "    pm.expect(jsonData._id).to.eql(getCommentId);",
+              "    pm.expect(jsonData.user).to.eql(getUserId);",
+              "    pm.expect(jsonData.post).to.eql(getPostId);",
+              "})",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/posts/{{post_id}}/comments/{{comment_id}}",
+          "host": ["{{host}}"],
+          "path": ["api", "posts", "{{post_id}}", "comments", "{{comment_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/groups/{{post_id}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "32e7f35d-7c40-44cf-8fa3-43dd7cf49c62",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "let statusCode = pm.response.code;",
+              "",
+              "pm.test(`Status code is ${statusCode}`, () => {",
+              "    if (jsonData.deletedCount) pm.response.to.have.status(200);",
+              "    else if (jsonData.error) pm.response.to.have.status(404);",
+              "    else pm.response.to.have.status(500);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/groups",
+          "host": ["{{host}}"],
+          "path": ["api", "groups"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3000/api/posts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "32e7f35d-7c40-44cf-8fa3-43dd7cf49c62",
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "let statusCode = pm.response.code;",
+              "",
+              "pm.test(`Status code is ${statusCode}`, () => {",
+              "    if (jsonData.deletedCount >= 1) pm.response.to.have.status(200);",
+              "    else if (jsonData.error) pm.response.to.have.status(404);",
+              "    else pm.response.to.have.status(500);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/posts",
+          "host": ["{{host}}"],
+          "path": ["api", "posts"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete the user{{user_id}}",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "4c353f97-9bfd-4a0a-b5d4-c3d045b46699",
+            "exec": [
+              "pm.test(\"User has been deleted successfully\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{host}}/api/users/{{user_id}}",
+          "host": ["{{host}}"],
+          "path": ["api", "users", "{{user_id}}"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "protocolProfileBehavior": {}
+}
